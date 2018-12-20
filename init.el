@@ -1,4 +1,4 @@
-;;; .emacs --- Emacs init
+;;; init.el --- Emacs init
 ;;; Commentary:
 ;;; Code:
 
@@ -132,6 +132,8 @@
 (define-key global-map [?\s-a] 'mark-whole-buffer)
 
 ;; Makes russian keyboard layout work for keybindings
+(require 'quail)
+
 (defun reverse-input-method (input-method)
   "Build the reverse mapping of single letters from INPUT-METHOD."
   (interactive
@@ -370,8 +372,8 @@
   :config
   (add-to-list 'company-backends 'company-go))
 
-(provide '.emacs)
-;;; .emacs ends here
+(provide 'init)
+;;; init.el ends here
 
 ;;Local Variables:
 ;; byte-compile-warnings: (not free-vars)
