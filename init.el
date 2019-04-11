@@ -119,7 +119,7 @@
 (if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 
 ;; Keys on mac
-(setq mac-option-key-is-meta t
+(setq ;mac-option-key-is-meta t
       mac-command-key-is-meta nil
       mac-command-modifier 'super
       mac-option-modifier 'meta
@@ -164,6 +164,8 @@
 (require 'python)
 (define-key python-mode-map (kbd "C-c C-c")
   (lambda () (interactive) (python-shell-send-buffer t)))
+
+(add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
 
 ;; -- PACKAGES --
 
@@ -347,12 +349,6 @@
   :config
   (setq TeX-auto-save t))
 
-(use-package latex-preview-pane
-  :ensure t
-  :config
-  (latex-preview-pane-enable)
-  (add-hook 'LaTeX-mode-hook 'latex-preview-pane-mode))
-
 ;; Go
 (use-package go-mode
   :ensure t
@@ -361,7 +357,7 @@
     (add-hook 'before-save-hook 'gofmt-before-save) ; Call Gofmt before saving
     (if (not (string-match "go" compile-command)) ; Customize compile command to run go build
         (set (make-local-variable 'compile-command)
-             "go build -v && go test -v && go vet"))
+             "go run ."))
     (local-set-key (kbd "M-.") 'godef-jump) ; Godef jump key binding
     (local-set-key (kbd "M-*") 'pop-tag-mark))
   (add-hook 'go-mode-hook 'my-go-mode-hook)
