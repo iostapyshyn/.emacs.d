@@ -368,6 +368,28 @@
   :config
   (add-to-list 'company-backends 'company-go))
 
+(use-package rust-mode
+  :ensure t
+  :config
+  (defun my-rust-mode-hook ()
+    (if (not (string-match "cargo" compile-command))
+        (set (make-local-variable 'compile-command)
+             "cargo build")))
+  (add-hook 'rust-mode-hook 'my-rust-mode-hook)
+  (setq rust-format-on-save t))
+
+(use-package racer
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode))
+
+(use-package flycheck-rust
+  :ensure t
+  :config
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
 (provide 'init)
 ;;; init.el ends here
 
