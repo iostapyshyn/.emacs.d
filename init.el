@@ -42,7 +42,7 @@
         (height . 52)
         (fullscreen . maximized)))
 
-(set-face-attribute 'default nil :family "Fira Code")
+(set-face-attribute 'default nil :family "Hasklig")
 (set-face-attribute 'default nil :height 130)
 
 ;; Startup
