@@ -1,5 +1,5 @@
 ;;; init.el --- Emacs init
-;;; Commentary:
+;;; Commentary: USE Mac port of Emacs by Mitsuharu Yamamoto
 ;;; Code:
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -64,6 +64,7 @@
 ;; No wrapping
 (setq-default truncate-lines t)
 (setq column-number-mode t)
+(global-visual-line-mode t)
 
 ;; Lazy confirmation
 (fset 'yes-or-no-p 'y-or-n-p)
