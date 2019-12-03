@@ -107,6 +107,9 @@
           (shrink-window (- h compilation-window-height)))))))
 (add-hook 'compilation-mode-hook 'my-compilation-hook)
 
+(setq-default c-default-style "java"
+              c-basic-offset 4)
+
 (global-set-key [(f5)] 'compile)
 (global-set-key [(f6)] 'recompile)
 (global-set-key [(f7)] 'shell-command)
