@@ -1,5 +1,7 @@
 ;;; init.el --- Emacs init
-;;; Commentary: USE Mac port of Emacs by Mitsuharu Yamamoto
+;;; Commentary:
+;;; Use Mac port of Emacs by Mitsuharu Yamamoto
+;;; https://github.com/railwaycat/homebrew-emacsmacport
 ;;; Code:
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -42,7 +44,8 @@
         (height . 52)
         (fullscreen . maximized)))
 
-(set-face-attribute 'default nil :family "Hasklig")
+(set-face-attribute 'default nil :family "Fira Code")
+(set-face-attribute 'default nil :weight 'medium)
 (set-face-attribute 'default nil :height 130)
 
 ;; Startup
@@ -64,7 +67,8 @@
 ;; No wrapping
 (setq-default truncate-lines t)
 (setq column-number-mode t)
-(global-visual-line-mode t)
+
+;;(global-visual-line-mode t)
 
 ;; Lazy confirmation
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -81,7 +85,6 @@
 ;; Identation
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
-(setq c-basic-offset 4)
 
 ;; IDO
 (setq ido-enable-flex-matching t)
@@ -107,7 +110,7 @@
           (shrink-window (- h compilation-window-height)))))))
 (add-hook 'compilation-mode-hook 'my-compilation-hook)
 
-(setq-default c-default-style "java"
+(setq-default c-default-style "k&r"
               c-basic-offset 4)
 
 (global-set-key [(f5)] 'compile)
@@ -191,15 +194,15 @@
 
 ;; Color theme
 
-;(use-package base16-theme
-;  :ensure t
-;  :config (load-theme 'base16-tomorrow-night t)
-;  (set-cursor-color "#dddddd"))
-
-(use-package spacemacs-theme
-  :defer t
+(use-package base16-theme
   :ensure t
-  :init (load-theme 'spacemacs-light t))
+  :config (load-theme 'base16-tomorrow-night t)
+  (set-cursor-color "#dddddd"))
+
+;(use-package spacemacs-theme
+;  :defer t
+;  :ensure t
+;  :init (load-theme 'spacemacs-light t))
 
 ;; Better M-x
 (use-package smex
@@ -286,32 +289,68 @@
   (add-hook 'css-mode-hook  'emmet-mode))
 
 ;; C/C++/ObjC/GLSL
-(use-package rtags
-  :ensure t
-  :init
-  (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
-  (add-hook 'objc-mode-hook 'rtags-start-process-unless-running))
 
-(use-package irony
+(use-package lsp-mode
   :ensure t
   :config
-  (add-to-list 'irony-supported-major-modes 'glsl-mode)
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+  (add-hook 'c-mode-hook #'lsp)
+  (add-hook 'c++-mode-hook #'lsp)
+  (add-hook 'objc-mode-hook #'lsp)
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-clients-clangd-args (quote ("--completion-style=detailed"))))
 
-(use-package company-irony
+(use-package lsp-ui
+  :ensure t)
+
+(use-package company-lsp
   :ensure t
   :config
-  (eval-after-load 'company
-    '(add-to-list 'company-backends 'company-irony)))
+  (add-to-list 'company-backends 'company-lsp))
+
+;; ;;CCLS
+
+;; (use-package ccls
+;;   :hook ((c-mode c++-mode objc-mode cuda-mode) .
+;;          (lambda () (require 'ccls) (lsp)))
+;;   :config
+;;   (setq ccls-initialization-options
+;;         '(:index (:comments 2) :completion (:detailedLabel :json-false) :clang (:extraArgs ["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]))))
+
+;; ;;Rtags
+
+;; (use-package rtags
+;;   :ensure t)
+
+;; ;;Irony
+
+;; (use-package company-irony
+;;   :ensure t
+;;   :config
+;;   (eval-after-load 'company
+;;     '(add-to-list 'company-backends 'company-irony)))
+
+;; (use-package irony
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'irony-supported-major-modes 'glsl-mode)
+;;   (add-hook 'c++-mode-hook 'irony-mode)
+;;   (add-hook 'c-mode-hook 'irony-mode)
+;;   (add-hook 'objc-mode-hook 'irony-mode)
+;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+;;   (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
+
+;; (use-package flycheck-irony
+;;   :ensure t
+;;   :config
+;;   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+;;   (eval-after-load 'flycheck
+;;     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
 (use-package dash :ensure t)
 (use-package cmake-ide
   :ensure t
-  :config (cmake-ide-setup))
+  :config (cmake-ide-setup)
+  (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"))
 
 (use-package glsl-mode
   :ensure t)
@@ -371,28 +410,6 @@
   :ensure t
   :config
   (add-to-list 'company-backends 'company-go))
-
-(use-package rust-mode
-  :ensure t
-  :config
-  (defun my-rust-mode-hook ()
-    (if (not (string-match "cargo" compile-command))
-        (set (make-local-variable 'compile-command)
-             "cargo build")))
-  (add-hook 'rust-mode-hook 'my-rust-mode-hook)
-  (setq rust-format-on-save t))
-
-(use-package racer
-  :ensure t
-  :config
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode))
-
-(use-package flycheck-rust
-  :ensure t
-  :config
-  (with-eval-after-load 'rust-mode
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 (provide 'init)
 ;;; init.el ends here
