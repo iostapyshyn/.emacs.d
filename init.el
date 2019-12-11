@@ -320,7 +320,15 @@
  ;;Rtags
 
 (use-package rtags
-  :ensure t)
+  :ensure t
+  :config
+  (define-key global-map (kbd "M-.") (function rtags-find-symbol-at-point))
+  (define-key global-map (kbd "M-,") (function rtags-find-references-at-point))
+  (define-key global-map (kbd "M-;") (function rtags-find-file))
+  (define-key global-map (kbd "C-.") (function rtags-find-symbol))
+  (define-key global-map (kbd "C-,") (function rtags-find-references))
+  (define-key global-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+  (define-key global-map (kbd "M-i") (function rtags-imenu)))
 
 ;; ;;Irony
 
@@ -351,7 +359,9 @@
 (use-package cmake-ide
   :ensure t
   :config (cmake-ide-setup)
-  (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"))
+  (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
+  (setq cmake-ide-flags-c++ '("-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
+  (setq-default cmake-ide-rdm-rc-path (concat (getenv "HOME") "/.emacs.d/rdmrc")))
 
 (use-package glsl-mode
   :ensure t)
