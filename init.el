@@ -290,61 +290,62 @@
 
 ;; C/C++/ObjC/GLSL
 
-(use-package lsp-mode
-  :ensure t
-  :config
-  (add-hook 'c-mode-hook #'lsp)
-  (add-hook 'c++-mode-hook #'lsp)
-  (add-hook 'objc-mode-hook #'lsp)
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-clients-clangd-args (quote ("--completion-style=detailed"))))
+;(use-package lsp-mode
+;  :ensure t
+;  :config
+;  (add-hook 'c-mode-hook #'lsp)
+;  (add-hook 'c++-mode-hook #'lsp)
+;  (add-hook 'objc-mode-hook #'lsp)
+;  (setq lsp-prefer-flymake nil)
+;  (setq lsp-clients-clangd-args (quote ("--completion-style=detailed"))))
 
-(use-package lsp-ui
+;(use-package lsp-ui
+;  :ensure t)
+
+;(use-package company-lsp
+;  :ensure t
+;  :config
+;  (add-to-list 'company-backends 'company-lsp))
+
+;;CCLS
+
+;(use-package ccls
+;  :ensure t
+;  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+;         (lambda () (require 'ccls) (lsp)))
+;  :config
+;  (setq ccls-initialization-options
+;        '(:index (:comments 2) :completion (:detailedLabel :json-false) :clang (:extraArgs ["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]))))
+
+ ;;Rtags
+
+(use-package rtags
   :ensure t)
-
-(use-package company-lsp
-  :ensure t
-  :config
-  (add-to-list 'company-backends 'company-lsp))
-
-;; ;;CCLS
-
-;; (use-package ccls
-;;   :hook ((c-mode c++-mode objc-mode cuda-mode) .
-;;          (lambda () (require 'ccls) (lsp)))
-;;   :config
-;;   (setq ccls-initialization-options
-;;         '(:index (:comments 2) :completion (:detailedLabel :json-false) :clang (:extraArgs ["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]))))
-
-;; ;;Rtags
-
-;; (use-package rtags
-;;   :ensure t)
 
 ;; ;;Irony
 
-;; (use-package company-irony
-;;   :ensure t
-;;   :config
-;;   (eval-after-load 'company
-;;     '(add-to-list 'company-backends 'company-irony)))
+(use-package company-irony
+  :ensure t
+  :config
+  (eval-after-load 'company
+    '(add-to-list 'company-backends 'company-irony)))
 
-;; (use-package irony
-;;   :ensure t
-;;   :config
-;;   (add-to-list 'irony-supported-major-modes 'glsl-mode)
-;;   (add-hook 'c++-mode-hook 'irony-mode)
-;;   (add-hook 'c-mode-hook 'irony-mode)
-;;   (add-hook 'objc-mode-hook 'irony-mode)
-;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-;;   (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
+(use-package irony
+  :ensure t
+  :config
+  (add-to-list 'irony-supported-major-modes 'glsl-mode)
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
 
-;; (use-package flycheck-irony
-;;   :ensure t
-;;   :config
-;;   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-;;   (eval-after-load 'flycheck
-;;     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+(use-package flycheck-irony
+  :ensure t
+  :config
+  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
 (use-package dash :ensure t)
 (use-package cmake-ide
