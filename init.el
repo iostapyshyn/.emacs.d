@@ -109,13 +109,14 @@
           (switch-to-buffer "*compilation*")
           (shrink-window (- h compilation-window-height)))))))
 (add-hook 'compilation-mode-hook 'my-compilation-hook)
+(make-variable-buffer-local 'compile-command)
 
 (setq-default c-default-style "k&r"
               c-basic-offset 4)
 
 (global-set-key [(f5)] 'compile)
 (global-set-key [(f6)] 'recompile)
-(global-set-key [(f7)] 'shell-command)
+(global-set-key [(f7)] 'shell)
 
 ;; Discard all themes on load-theme
 (defadvice load-theme (before theme-dont-propagate activate)
@@ -182,6 +183,8 @@
 (eval-when-compile
   (require 'use-package))
 (require 'bind-key) ;; :bind requirement
+
+(use-package dash :ensure t)
 
 ;; Get environment variables
 (use-package exec-path-from-shell
@@ -322,13 +325,13 @@
 (use-package rtags
   :ensure t
   :config
-  (define-key global-map (kbd "M-.") (function rtags-find-symbol-at-point))
-  (define-key global-map (kbd "M-,") (function rtags-find-references-at-point))
-  (define-key global-map (kbd "M-;") (function rtags-find-file))
-  (define-key global-map (kbd "C-.") (function rtags-find-symbol))
-  (define-key global-map (kbd "C-,") (function rtags-find-references))
-  (define-key global-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-  (define-key global-map (kbd "M-i") (function rtags-imenu)))
+  (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
+  (define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
+  (define-key c-mode-base-map (kbd "M-;") (function rtags-find-file))
+  (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
+  (define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
+  (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+  (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu)))
 
 ;; ;;Irony
 
@@ -355,12 +358,11 @@
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
-(use-package dash :ensure t)
 (use-package cmake-ide
   :ensure t
   :config (cmake-ide-setup)
-  (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
   (setq cmake-ide-flags-c++ '("-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
+  (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
   (setq-default cmake-ide-rdm-rc-path (concat (getenv "HOME") "/.emacs.d/rdmrc")))
 
 (use-package glsl-mode
