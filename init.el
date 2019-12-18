@@ -184,6 +184,13 @@
   (require 'use-package))
 (require 'bind-key) ;; :bind requirement
 
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode t)
+  (add-to-list 'evil-emacs-state-modes 'neotree-mode)
+  (add-to-list 'evil-emacs-state-modes 'bs-mode))
+
 (use-package dash :ensure t)
 
 ;; Get environment variables
@@ -197,10 +204,15 @@
 
 ;; Color theme
 
-(use-package base16-theme
+(use-package dracula-theme
   :ensure t
-  :config (load-theme 'base16-tomorrow-night t)
-  (set-cursor-color "#dddddd"))
+  :config
+  (load-theme 'dracula t))
+
+;(use-package base16-theme
+;  :ensure t
+;  :config (load-theme 'base16-tomorrow-night t)
+;  (set-cursor-color "#dddddd"))
 
 ;(use-package spacemacs-theme
 ;  :defer t
