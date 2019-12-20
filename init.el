@@ -175,6 +175,9 @@
 
 (add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
 
+;; Remove trailing whitespaces on save.
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; -- PACKAGES --
 
 (unless (package-installed-p 'use-package)
@@ -312,70 +315,87 @@
 ;  (add-hook 'c++-mode-hook #'lsp)
 ;  (add-hook 'objc-mode-hook #'lsp)
 ;  (setq lsp-prefer-flymake nil)
-;  (setq lsp-clients-clangd-args (quote ("--completion-style=detailed"))))
-
+;  (setq lsp-enable-indentation nil)
+;  (setq lsp-enable-on-type-formatting nil)
+;  (setq lsp-clients-clangd-args (quote ("--completion-style=detailed")))
+;  (define-key evil-normal-state-map (kbd "M-.") nil))
+;
 ;(use-package lsp-ui
 ;  :ensure t)
-
+;
 ;(use-package company-lsp
 ;  :ensure t
 ;  :config
 ;  (add-to-list 'company-backends 'company-lsp))
 
-;;CCLS
+;; Rtags
 
-;(use-package ccls
-;  :ensure t
-;  :hook ((c-mode c++-mode objc-mode cuda-mode) .
-;         (lambda () (require 'ccls) (lsp)))
-;  :config
-;  (setq ccls-initialization-options
-;        '(:index (:comments 2) :completion (:detailedLabel :json-false) :clang (:extraArgs ["-I/Library/Developer/CommandLineTools/usr/include/c++/v1"]))))
+;; brew install --HEAD rtags
+;; brew services start rtags
 
- ;;Rtags
+;(use-package rtags
+; :ensure t
+; :config
+; (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
+; (define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
+; (define-key c-mode-base-map (kbd "M-;") (function rtags-find-file))
+; (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
+; (define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
+; (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+; (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu)))
 
-(use-package rtags
-  :ensure t
-  :config
-  (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
-  (define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
-  (define-key c-mode-base-map (kbd "M-;") (function rtags-find-file))
-  (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
-  (define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
-  (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-  (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu)))
+;; GNU Global Tags
+;(use-package ggtags
+; :ensure t
+; :commands ggtags-mode
+; :diminish ggtags-mode
+; :bind (("M-*" . pop-tag-mark)
+;        ("C-c t s" . ggtags-find-other-symbol)
+;        ("C-c t h" . ggtags-view-tag-history)
+;        ("C-c t r" . ggtags-find-reference)
+;        ("C-c t f" . ggtags-find-file)
+;        ("C-c t c" . ggtags-create-tags))
+; :init
+; (add-hook 'c-mode-common-hook
+;           #'(lambda ()
+;               (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+;                 (ggtags-mode 1))))
+; :config
 
-;; ;;Irony
+;(use-package cmake-ide
+; :ensure t
+; :config (cmake-ide-setup)
+; (setq cmake-ide-flags-c++ '("-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
+; (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
+; (setq-default cmake-ide-rdm-rc-path (concat (getenv "HOME") "/.emacs.d/rdmrc")))
+
+; ;;Irony
 
 (use-package company-irony
-  :ensure t
-  :config
-  (eval-after-load 'company
-    '(add-to-list 'company-backends 'company-irony)))
+ :ensure t
+ :config
+ (eval-after-load 'company
+   '(add-to-list 'company-backends 'company-irony)))
 
 (use-package irony
-  :ensure t
-  :config
-  (add-to-list 'irony-supported-major-modes 'glsl-mode)
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
+ :ensure t
+ :config
+ (add-to-list 'irony-supported-major-modes 'glsl-mode)
+ (add-hook 'c++-mode-hook 'irony-mode)
+ (add-hook 'c-mode-hook 'irony-mode)
+ (add-hook 'objc-mode-hook 'irony-mode)
+ (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+ (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
 
 (use-package flycheck-irony
-  :ensure t
-  :config
-  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+ :ensure t
+ :config
+ (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+ (eval-after-load 'flycheck
+   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
-(use-package cmake-ide
-  :ensure t
-  :config (cmake-ide-setup)
-  (setq cmake-ide-flags-c++ '("-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
-  (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
-  (setq-default cmake-ide-rdm-rc-path (concat (getenv "HOME") "/.emacs.d/rdmrc")))
+(use-package cmake-mode
+  :ensure t)
 
 (use-package glsl-mode
   :ensure t)
