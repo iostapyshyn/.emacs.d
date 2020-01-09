@@ -124,7 +124,7 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 ;; Ligatures
-(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
+;;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 
 ;; Keys on mac
 (setq ;mac-option-key-is-meta t
@@ -191,6 +191,7 @@
   :ensure t
   :config
   (evil-mode t)
+  (evil-set-initial-state 'term-mode 'emacs)
   (add-to-list 'evil-emacs-state-modes 'neotree-mode)
   (add-to-list 'evil-emacs-state-modes 'bs-mode))
 
@@ -308,91 +309,84 @@
 
 ;; C/C++/ObjC/GLSL
 
-;(use-package lsp-mode
-;  :ensure t
-;  :config
-;  (add-hook 'c-mode-hook #'lsp)
-;  (add-hook 'c++-mode-hook #'lsp)
-;  (add-hook 'objc-mode-hook #'lsp)
-;  (setq lsp-prefer-flymake nil)
-;  (setq lsp-enable-indentation nil)
-;  (setq lsp-enable-on-type-formatting nil)
-;  (setq lsp-clients-clangd-args (quote ("--completion-style=detailed")))
-;  (define-key evil-normal-state-map (kbd "M-.") nil))
-;
-;(use-package lsp-ui
-;  :ensure t)
-;
-;(use-package company-lsp
-;  :ensure t
-;  :config
-;  (add-to-list 'company-backends 'company-lsp))
+(use-package lsp-mode
+  :ensure t
+  :config
+  (add-hook 'c-mode-hook #'lsp)
+  (add-hook 'c++-mode-hook #'lsp)
+  (add-hook 'objc-mode-hook #'lsp)
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-enable-indentation nil)
+  (setq lsp-enable-on-type-formatting nil))
+
+(use-package lsp-ui
+  :ensure t)
+
+(use-package company-lsp
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-lsp))
+
+(use-package cquery
+  :ensure t
+  :config
+  (setq cquery-executable "/usr/local/bin/cquery"))
+
+;; (use-package ccls
+;;   :ensure t
+;;   :hook ((c-mode c++-mode objc-mode cuda-mode) .
+;;          (lambda () (require 'ccls) (lsp)))
+;;   :config
+;;   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
+;;   (setq ccls-initialization-options '(:clang (:extraArgs ("-I/Library/Developer/CommandLineTools/usr/include/c++/v1")))))
 
 ;; Rtags
 
 ;; brew install --HEAD rtags
 ;; brew services start rtags
 
-;(use-package rtags
-; :ensure t
-; :config
-; (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
-; (define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
-; (define-key c-mode-base-map (kbd "M-;") (function rtags-find-file))
-; (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
-; (define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
-; (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-; (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu)))
+;; (use-package rtags
+;;   :ensure t
+;;   :config
+;;   (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
+;;   (define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
+;;   (define-key c-mode-base-map (kbd "M-;") (function rtags-find-file))
+;;   (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
+;;   (define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
+;;   (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+;;   (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu)))
 
-;; GNU Global Tags
-;(use-package ggtags
-; :ensure t
-; :commands ggtags-mode
-; :diminish ggtags-mode
-; :bind (("M-*" . pop-tag-mark)
-;        ("C-c t s" . ggtags-find-other-symbol)
-;        ("C-c t h" . ggtags-view-tag-history)
-;        ("C-c t r" . ggtags-find-reference)
-;        ("C-c t f" . ggtags-find-file)
-;        ("C-c t c" . ggtags-create-tags))
-; :init
-; (add-hook 'c-mode-common-hook
-;           #'(lambda ()
-;               (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-;                 (ggtags-mode 1))))
-; :config
+;;Irony
 
-;(use-package cmake-ide
-; :ensure t
-; :config (cmake-ide-setup)
-; (setq cmake-ide-flags-c++ '("-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
-; (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
-; (setq-default cmake-ide-rdm-rc-path (concat (getenv "HOME") "/.emacs.d/rdmrc")))
+;; (use-package company-irony
+;;   :ensure t
+;;   :config
+;;   (eval-after-load 'company
+;;     '(add-to-list 'company-backends 'company-irony)))
 
-; ;;Irony
+;; (use-package irony
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'irony-supported-major-modes 'glsl-mode)
+;;   (add-hook 'c++-mode-hook 'irony-mode)
+;;   (add-hook 'c-mode-hook 'irony-mode)
+;;   (add-hook 'objc-mode-hook 'irony-mode)
+;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+;;   (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
 
-(use-package company-irony
- :ensure t
- :config
- (eval-after-load 'company
-   '(add-to-list 'company-backends 'company-irony)))
+;; (use-package flycheck-irony
+;;   :ensure t
+;;   :config
+;;   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+;;   (eval-after-load 'flycheck
+;;     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
-(use-package irony
- :ensure t
- :config
- (add-to-list 'irony-supported-major-modes 'glsl-mode)
- (add-hook 'c++-mode-hook 'irony-mode)
- (add-hook 'c-mode-hook 'irony-mode)
- (add-hook 'objc-mode-hook 'irony-mode)
- (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
- (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
-
-(use-package flycheck-irony
- :ensure t
- :config
- (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
- (eval-after-load 'flycheck
-   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+;; (use-package cmake-ide
+;;   :ensure t
+;;   :config (cmake-ide-setup)
+;;   (setq cmake-ide-flags-c++ '("-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
+;;   (add-to-list 'cmake-ide-cmake-args "-DCMAKE_EXPORT_COMPILE_COMMANDS=1")
+;;   (setq-default cmake-ide-rdm-rc-path (concat (getenv "HOME") "/.emacs.d/rdmrc")))
 
 (use-package cmake-mode
   :ensure t)
@@ -417,7 +411,15 @@
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (setq projectile-enable-caching t)
+  (setq projectile-indexing-method 'native)
+  (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
+  (add-to-list 'projectile-globally-ignored-directories ".cquery_cached_index")
+  (add-to-list 'projectile-globally-ignored-directories ".git")
+  (add-to-list 'projectile-globally-ignored-directories "build/CMakeFiles")
+  (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
+  (add-to-list 'projectile-globally-ignored-files ".DS_Store"))
 
 ;; Magit and Gist - GitHub integration
 (use-package magit
