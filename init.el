@@ -33,18 +33,14 @@
   (scroll-bar-mode 0)
   (tooltip-mode 0))
 
-;; Initial window
+;; Initial frame
 (setq initial-frame-alist
-      '((width . 152)   ; characters in a line
-        (height . 54))) ; number of lines
-
-;; Sebsequent frame
-(setq default-frame-alist
       '((width . 150)   ; characters in a line
         (height . 52)
-        (fullscreen . maximized)))
+        (fullscreen . fullboth)))
 
-(set-face-attribute 'default nil :family "Iosevka")
+;; My preferred font
+(set-face-attribute 'default nil :family "Iosevka SS10")
 (set-face-attribute 'default nil :weight 'regular)
 (set-face-attribute 'default nil :height 130)
 
@@ -192,6 +188,7 @@
   :config
   (evil-mode t)
   (evil-set-initial-state 'term-mode 'emacs)
+  (evil-set-initial-state 'vterm-mode 'emacs)
   (add-to-list 'evil-emacs-state-modes 'neotree-mode)
   (add-to-list 'evil-emacs-state-modes 'bs-mode))
 
@@ -265,6 +262,10 @@
   (setq neo-theme 'nerd)
   (setq neo-smart-open t))
 
+;; Better terminal emulator
+(use-package vterm
+  :ensure t)
+
 ;; Auto-Complete
 (use-package company
   :ensure t
@@ -327,18 +328,18 @@
   :config
   (add-to-list 'company-backends 'company-lsp))
 
-(use-package cquery
-  :ensure t
-  :config
-  (setq cquery-executable "/usr/local/bin/cquery"))
+;;(use-package cquery
+;;  :ensure t
+;;  :config
+;;  (setq cquery-executable "/usr/local/bin/cquery"))
 
-;; (use-package ccls
-;;   :ensure t
-;;   :hook ((c-mode c++-mode objc-mode cuda-mode) .
-;;          (lambda () (require 'ccls) (lsp)))
-;;   :config
-;;   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
-;;   (setq ccls-initialization-options '(:clang (:extraArgs ("-I/Library/Developer/CommandLineTools/usr/include/c++/v1")))))
+(use-package ccls
+  :ensure t
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (lsp)))
+  :config
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
+  (setq ccls-initialization-options '(:clang (:extraArgs ("-I/Library/Developer/CommandLineTools/usr/include/c++/v1")))))
 
 ;; Rtags
 
