@@ -4,6 +4,9 @@
 ;;; https://github.com/railwaycat/homebrew-emacsmacport
 ;;; Code:
 
+;;(load "server")
+;;(unless (server-running-p) (server-start))
+
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ; (load custom-file)
 
@@ -37,7 +40,7 @@
 (setq initial-frame-alist
       '((width . 150)   ; characters in a line
         (height . 52)
-        (fullscreen . fullboth)))
+        (fullscreen . maximized)))
 
 ;; My preferred font
 (set-face-attribute 'default nil :family "Iosevka SS10")
@@ -55,6 +58,10 @@
 ;; UTF-8
 (prefer-coding-system 'utf-8)
 (setq-default buffer-file-coding-system 'utf-8-auto-unix)
+
+(defun buffer-exists (bufname)
+  "Return t if buffer with a name BUFNAME exists."
+  (not (eq nil (get-buffer bufname))))
 
 ;; Error messages
 (setq visible-bell nil)
@@ -87,6 +94,9 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;; Calc
+(setq-default calc-multiplication-has-precedence nil)
+
 ;; Buffer navigation
 (global-set-key [remap list-buffers] 'bs-show)
 (global-set-key (kbd "C-x b") 'list-buffers)
@@ -112,7 +122,7 @@
 
 (global-set-key [(f5)] 'compile)
 (global-set-key [(f6)] 'recompile)
-(global-set-key [(f7)] 'shell)
+(global-set-key [(f7)] 'eshell)
 
 ;; Discard all themes on load-theme
 (defadvice load-theme (before theme-dont-propagate activate)
@@ -205,20 +215,34 @@
 
 ;; Color theme
 
-(use-package dracula-theme
+;; (use-package solarized-theme
+;;   :ensure t
+;;   :config
+;;   (setq solarized-use-variable-pitch nil)
+;;   (setq solarized-distinct-fringe-background nil)
+;;   (setq solarized-high-contrast-mode-line t)
+;;   (load-theme 'solarized-light t))
+
+;; (use-package dracula-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'dracula t))
+
+;; (use-package base16-theme
+;;   :ensure t
+;;   :config (load-theme 'base16-tomorrow-night t)
+;;   (set-cursor-color "#303030"))
+
+;; (use-package leuven-theme
+;;   :ensure t
+;;   :config
+;;   (setq org-fontify-whole-heading-line nil)
+;;   (load-theme 'leuven t))
+
+(use-package spacemacs-theme
+  :defer t
   :ensure t
-  :config
-  (load-theme 'dracula t))
-
-;(use-package base16-theme
-;  :ensure t
-;  :config (load-theme 'base16-tomorrow-night t)
-;  (set-cursor-color "#dddddd"))
-
-;(use-package spacemacs-theme
-;  :defer t
-;  :ensure t
-;  :init (load-theme 'spacemacs-light t))
+  :init (load-theme 'spacemacs-light t))
 
 ;; Better M-x
 (use-package smex
@@ -264,7 +288,17 @@
 
 ;; Better terminal emulator
 (use-package vterm
-  :ensure t)
+  :ensure t
+  :config
+  (defun vterm-open ()
+      (interactive)
+    (if (buffer-exists "vterm")
+        (if (get-buffer-process "vterm")
+            (switch-to-buffer "vterm")
+          (kill-buffer "vterm")
+          (vterm))
+      (vterm))))
+  ;;(global-set-key [(f7)] 'vterm-open))
 
 ;; Auto-Complete
 (use-package company
@@ -308,25 +342,30 @@
   (add-hook 'sgml-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook  'emmet-mode))
 
-;; C/C++/ObjC/GLSL
-
+;; LSP
 (use-package lsp-mode
   :ensure t
   :config
   (add-hook 'c-mode-hook #'lsp)
   (add-hook 'c++-mode-hook #'lsp)
   (add-hook 'objc-mode-hook #'lsp)
+  (add-hook 'python-mode-hook #'lsp)
+  (add-hook 'rust-mode-hook #'lsp)
   (setq lsp-prefer-flymake nil)
   (setq lsp-enable-indentation nil)
   (setq lsp-enable-on-type-formatting nil))
 
 (use-package lsp-ui
-  :ensure t)
+  :ensure t
+  :config
+  (setq lsp-ui-doc-enable nil)) ; Disable giant hovering pop-up boxes.
 
 (use-package company-lsp
   :ensure t
   :config
   (add-to-list 'company-backends 'company-lsp))
+
+;; C/C++/ObjC/GLSL
 
 ;;(use-package cquery
 ;;  :ensure t
@@ -396,15 +435,15 @@
   :ensure t)
 
 ;; Python
-(use-package elpy
-  :ensure t)
+;; (use-package elpy
+;;   :ensure t)
 
-(use-package company-jedi
-  :ensure t
-  :config
-  (defun my/python-mode-hook ()
-    (add-to-list 'company-backends 'company-jedi))
-  (add-hook 'python-mode-hook 'my/python-mode-hook))
+;; (use-package company-jedi
+;;   :ensure t
+;;   :config
+;;   (defun my/python-mode-hook ()
+;;     (add-to-list 'company-backends 'company-jedi))
+;;   (add-hook 'python-mode-hook 'my/python-mode-hook))
 
 ;; Projectile
 (use-package projectile
@@ -439,6 +478,13 @@
   :ensure auctex
   :config
   (setq TeX-auto-save t))
+
+;; Rust
+(use-package rust-mode
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook
+            (lambda () (setq indent-tabs-mode nil))))
 
 ;; Go
 (use-package go-mode
