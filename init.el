@@ -483,6 +483,7 @@
 (use-package rust-mode
   :ensure t
   :config
+  (setq rust-format-on-save t)
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
