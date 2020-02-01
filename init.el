@@ -350,7 +350,7 @@
   (add-hook 'c++-mode-hook #'lsp)
   (add-hook 'objc-mode-hook #'lsp)
   (add-hook 'python-mode-hook #'lsp)
-  (add-hook 'rust-mode-hook #'lsp)
+;;(add-hook 'rust-mode-hook #'lsp)
   (setq lsp-prefer-flymake nil)
   (setq lsp-enable-indentation nil)
   (setq lsp-enable-on-type-formatting nil))
@@ -479,13 +479,18 @@
   :config
   (setq TeX-auto-save t))
 
-;; Rust
-(use-package rust-mode
+(use-package rustic
   :ensure t
   :config
-  (setq rust-format-on-save t)
-  (add-hook 'rust-mode-hook
-            (lambda () (setq indent-tabs-mode nil))))
+  (setq rustic-format-on-save t))
+
+;;;; Rust
+;;(use-package rust-mode
+;;  :ensure t
+;;  :config
+;;  (setq rust-format-on-save t)
+;;  (add-hook 'rust-mode-hook
+;;            (lambda () (setq indent-tabs-mode nil))))
 
 ;; Go
 (use-package go-mode
