@@ -130,7 +130,7 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 ;; Ligatures
-;;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
+(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 
 ;; Keys on mac
 (setq ;mac-option-key-is-meta t
@@ -368,11 +368,6 @@
 
 ;; C/C++/ObjC/GLSL
 
-;;(use-package cquery
-;;  :ensure t
-;;  :config
-;;  (setq cquery-executable "/usr/local/bin/cquery"))
-
 (use-package ccls
   :ensure t
   :hook ((c-mode c++-mode objc-mode cuda-mode) .
@@ -380,47 +375,6 @@
   :config
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
   (setq ccls-initialization-options '(:clang (:extraArgs ("-I/Library/Developer/CommandLineTools/usr/include/c++/v1")))))
-
-;; Rtags
-
-;; brew install --HEAD rtags
-;; brew services start rtags
-
-;; (use-package rtags
-;;   :ensure t
-;;   :config
-;;   (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
-;;   (define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
-;;   (define-key c-mode-base-map (kbd "M-;") (function rtags-find-file))
-;;   (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
-;;   (define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
-;;   (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-;;   (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu)))
-
-;;Irony
-
-;; (use-package company-irony
-;;   :ensure t
-;;   :config
-;;   (eval-after-load 'company
-;;     '(add-to-list 'company-backends 'company-irony)))
-
-;; (use-package irony
-;;   :ensure t
-;;   :config
-;;   (add-to-list 'irony-supported-major-modes 'glsl-mode)
-;;   (add-hook 'c++-mode-hook 'irony-mode)
-;;   (add-hook 'c-mode-hook 'irony-mode)
-;;   (add-hook 'objc-mode-hook 'irony-mode)
-;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-;;   (add-to-list 'irony-additional-clang-options "-I/Library/Developer/CommandLineTools/usr/include/c++/v1"))
-
-;; (use-package flycheck-irony
-;;   :ensure t
-;;   :config
-;;   (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
-;;   (eval-after-load 'flycheck
-;;     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
 ;; (use-package cmake-ide
 ;;   :ensure t
@@ -434,17 +388,6 @@
 
 (use-package glsl-mode
   :ensure t)
-
-;; Python
-;; (use-package elpy
-;;   :ensure t)
-
-;; (use-package company-jedi
-;;   :ensure t
-;;   :config
-;;   (defun my/python-mode-hook ()
-;;     (add-to-list 'company-backends 'company-jedi))
-;;   (add-hook 'python-mode-hook 'my/python-mode-hook))
 
 ;; Projectile
 (use-package projectile
