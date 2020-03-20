@@ -71,7 +71,7 @@
 (setq-default truncate-lines t)
 (setq column-number-mode t)
 
-;;(global-visual-line-mode t)
+(global-visual-line-mode t)
 
 ;; Lazy confirmation
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -130,7 +130,7 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 ;; Ligatures
-(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
+;;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 
 ;; Keys on mac
 (setq ;mac-option-key-is-meta t
@@ -200,7 +200,15 @@
   (evil-set-initial-state 'term-mode 'emacs)
   (evil-set-initial-state 'vterm-mode 'emacs)
   (add-to-list 'evil-emacs-state-modes 'neotree-mode)
-  (add-to-list 'evil-emacs-state-modes 'bs-mode))
+  (add-to-list 'evil-emacs-state-modes 'bs-mode)
+
+  (defun save-kill-this-buffer ()
+    (interactive)
+    (save-buffer)
+    (kill-this-buffer))
+
+  (evil-ex-define-cmd "q" 'kill-this-buffer)
+  (evil-ex-define-cmd "wq" 'save-kill-this-buffer))
 
 (use-package dash :ensure t)
 
@@ -239,10 +247,20 @@
 ;;   (setq org-fontify-whole-heading-line nil)
 ;;   (load-theme 'leuven t))
 
-(use-package spacemacs-theme
-  :defer t
+;; (use-package spacemacs-theme
+;;   :defer t
+;;   :ensure t
+;;   :init (load-theme 'spacemacs-light t))
+
+(use-package modus-operandi-theme
   :ensure t
-  :init (load-theme 'spacemacs-light t))
+  :config (load-theme 'modus-operandi t))
+
+(use-package org
+  :ensure t
+  :config
+  (define-key global-map "\C-ca" 'org-agenda)
+  (setq org-agenda-files (list "~/Desktop/Org.org")))
 
 ;; Better M-x
 (use-package smex
