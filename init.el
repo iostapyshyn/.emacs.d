@@ -500,6 +500,9 @@
   :config
   (add-to-list 'company-backends 'company-go))
 
+;; install livedown with
+;; npm install -g livedown
+
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
 (require 'livedown)
 
