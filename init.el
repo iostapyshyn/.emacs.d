@@ -43,7 +43,7 @@
         (fullscreen . maximized)))
 
 ;; My preferred font
-(set-face-attribute 'default nil :family "Iosevka SS10")
+(set-face-attribute 'default nil :family "Iosevka")
 (set-face-attribute 'default nil :weight 'regular)
 (set-face-attribute 'default nil :height 130)
 
@@ -88,6 +88,8 @@
 ;; Identation
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
+
+(setq css-indent-offset 2)
 
 ;; IDO
 (setq ido-enable-flex-matching t)
@@ -360,6 +362,30 @@
   (add-hook 'sgml-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook  'emmet-mode))
 
+;;;;; Web ;;;;;
+
+;; web-mode
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+
+(use-package js2-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (setq js-indent-level 2))
+
 ;; LSP
 (use-package lsp-mode
   :ensure t
@@ -369,7 +395,7 @@
   (add-hook 'objc-mode-hook #'lsp)
   (add-hook 'python-mode-hook #'lsp)
   (add-hook 'rust-mode-hook #'lsp)
-  (setq lsp-prefer-flymake nil)
+  (add-hook 'js2-mode-hook #'lsp)
   (setq lsp-enable-indentation nil)
   (setq lsp-rust-server 'rust-analyzer)
   (setq lsp-enable-on-type-formatting nil))
@@ -473,6 +499,9 @@
   :ensure t
   :config
   (add-to-list 'company-backends 'company-go))
+
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
+(require 'livedown)
 
 (provide 'init)
 ;;; init.el ends here
