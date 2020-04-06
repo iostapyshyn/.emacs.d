@@ -249,14 +249,14 @@
 ;;   (setq org-fontify-whole-heading-line nil)
 ;;   (load-theme 'leuven t))
 
-;; (use-package spacemacs-theme
-;;   :defer t
-;;   :ensure t
-;;   :init (load-theme 'spacemacs-light t))
-
-(use-package modus-operandi-theme
+(use-package spacemacs-theme
+  :defer t
   :ensure t
-  :config (load-theme 'modus-operandi t))
+  :init (load-theme 'spacemacs-light t))
+
+;; (use-package modus-operandi-theme
+;;   :ensure t
+;;   :config (load-theme 'modus-operandi t))
 
 (use-package org
   :ensure t
@@ -499,6 +499,9 @@
   :ensure t
   :config
   (add-to-list 'company-backends 'company-go))
+
+(use-package minions
+  :config (minions-mode 1))
 
 ;; install livedown with
 ;; npm install -g livedown
