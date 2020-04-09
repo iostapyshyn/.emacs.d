@@ -1,108 +1,86 @@
 ;;; init.el --- Emacs init
 ;;; Commentary:
-;;; Use Mac port of Emacs by Mitsuharu Yamamoto
-;;; https://github.com/railwaycat/homebrew-emacsmacport
 ;;; Code:
 
-;;(load "server")
-;;(unless (server-running-p) (server-start))
-
-(setq initial-buffer-choice "~/org/inbox.org")
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-; (load custom-file) ;; Customize is trash
-
-(setq gc-cons-threshold (* 5 1024 1024))
-
-(require 'package)
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
-
-(setq default-directory (getenv "HOME"))
-
-;; Appearance
-(when window-system
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
-  (tooltip-mode 0))
-
-;;  Initial frame
-(setq initial-frame-alist
-      '((width . 90)
-        (height . 24)
-        (fullscreen . maximized)))
-
-;; My preferred font
-(set-face-attribute 'default nil :family "Iosevka")
-(set-face-attribute 'default nil :weight 'regular)
-(set-face-attribute 'default nil :height 130)
-
-;; Startup
-(setq inhibit-startup-message t
-      initial-major-mode 'lisp-mode
-      inhibit-splash-screen t)
-
-;; Backups
-(setq make-backup-files nil)
-
-;; UTF-8
-(prefer-coding-system 'utf-8)
-(setq-default buffer-file-coding-system 'utf-8-auto-unix)
+;;; --- Some utility functions ---
 
 (defun buffer-exists (bufname)
   "Return t if buffer with a name BUFNAME exists."
   (not (eq nil (get-buffer bufname))))
 
-;; Error messages
+(defadvice load-theme (before theme-dont-propagate activate)
+  "Discard all themes before loading new."
+  (mapc #'disable-theme custom-enabled-themes))
+
+;;; --- Various small tweaks ---
+
+(setq gc-cons-threshold (* 256 1024 1024))
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;; (load custom-file) ;; Customize is not used
+
+;; Appearance
+(when window-system
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+  (tooltip-mode 0)
+
+  ;;  Initial frame
+  (setq initial-frame-alist '((fullscreen . maximized)))
+
+  ;; My preferred font
+  (set-face-attribute 'default nil :family "Iosevka")
+  (set-face-attribute 'default nil :weight 'regular)
+  (set-face-attribute 'default nil :height 130))
+
+;; No startup splash screen
+(setq inhibit-startup-message t
+      inhibit-splash-screen t)
+
+;; No backup file polution
+(setq make-backup-files nil)
+
+;; UTF-8 everywhere by default
+(prefer-coding-system 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8-auto-unix)
+
+;; Error bell
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 
-;; No wrapping
+;; Lazy confirmation
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; No wrapping, rather truncate
 (setq-default truncate-lines t)
 (setq column-number-mode t)
 
-(global-visual-line-mode t)
-
-;; Lazy confirmation
-(fset 'yes-or-no-p 'y-or-n-p)
+;; (global-visual-line-mode t)
 
 ;; Multi window gdb by default
 (setq gdb-many-windows t
       gdb-show-main t)
 
 ;; Parenthesis
-(show-paren-mode 1)
 (setq show-paren-delay 0)
+(show-paren-mode 1)
 (electric-pair-mode 1)
 
 ;; Identation
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
-
 (setq css-indent-offset 2)
+(setq js-indent-level 2)
 
-;; ;; IDO
-;; (setq ido-enable-flex-matching t)
-;; (setq ido-everywhere t)
-;; (ido-mode 1)
+(setq-default c-default-style "k&r"
+              c-basic-offset 4)
 
 ;; Calc
 (setq-default calc-multiplication-has-precedence nil)
 
-;; Buffer navigation ;; overwritten later
-(global-set-key [remap list-buffers] 'bs-show)
-(global-set-key (kbd "C-x b") 'list-buffers)
-
 ;; Compilation
-(setq compilation-window-height 10)
-
-(defun my-compilation-hook ()
+(defvar compilation-window-height 10)
+(defun my/compilation-hook ()
   "Set compilation window height."
   (when (not (get-buffer-window "*compilation*"))
     (save-selected-window
@@ -112,23 +90,11 @@
           (select-window w)
           (switch-to-buffer "*compilation*")
           (shrink-window (- h compilation-window-height)))))))
-(add-hook 'compilation-mode-hook 'my-compilation-hook)
+(add-hook 'compilation-mode-hook 'my/compilation-hook)
 (make-variable-buffer-local 'compile-command)
-
-(setq-default c-default-style "k&r"
-              c-basic-offset 4)
 
 (global-set-key [(f5)] 'compile)
 (global-set-key [(f6)] 'recompile)
-(global-set-key [(f7)] 'eshell)
-
-;; Discard all themes on load-theme
-(defadvice load-theme (before theme-dont-propagate activate)
-  "Disable theme before loading new."
-  (mapc #'disable-theme custom-enabled-themes))
-
-;; Ligatures
-;;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 
 ;; Keys on mac
 (setq mac-command-key-is-meta nil
@@ -142,35 +108,6 @@
 (define-key global-map [?\s-z] 'undo)
 (define-key global-map [?\s-a] 'mark-whole-buffer)
 
-;; Makes russian keyboard layout work for keybindings
-(require 'quail)
-
-(defun reverse-input-method (input-method)
-  "Build the reverse mapping of single letters from INPUT-METHOD."
-  (interactive
-   (list (read-input-method-name "Use input method (default current): ")))
-  (if (and input-method (symbolp input-method))
-      (setq input-method (symbol-name input-method)))
-  (let ((current current-input-method)
-        (modifiers '(nil (control) (meta) (control meta))))
-    (when input-method
-      (activate-input-method input-method))
-    (when (and current-input-method quail-keyboard-layout)
-      (dolist (map (cdr (quail-map)))
-        (let* ((to (car map))
-               (from (quail-get-translation
-                      (cadr map) (char-to-string to) 1)))
-          (when (and (characterp from) (characterp to))
-            (dolist (mod modifiers)
-              (define-key local-function-key-map
-                (vector (append mod (list from)))
-                (vector (append mod (list to)))))))))
-    (when input-method
-      (activate-input-method current))))
-
-(reverse-input-method 'russian-computer)
-(reverse-input-method 'ukrainian-computer)
-
 ;; Make C-c C-c behave like C-u C-c C-c in Python mode
 (require 'python)
 (define-key python-mode-map (kbd "C-c C-c")
@@ -183,13 +120,84 @@
 
 ;; -- PACKAGES --
 
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(package-initialize)
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile
-  (require 'use-package)
-  (setq use-package-always-defer nil))
+  (require 'use-package))
 (require 'bind-key) ;; :bind requirement
+
+(use-package quail
+  :demand t
+  :config
+  ;; Makes russian keyboard layout work for keybindings
+  (defun reverse-input-method (input-method)
+    "Build the reverse mapping of single letters from INPUT-METHOD."
+    (interactive
+     (list (read-input-method-name "Use input method (default current): ")))
+    (if (and input-method (symbolp input-method))
+        (setq input-method (symbol-name input-method)))
+    (let ((current current-input-method)
+          (modifiers '(nil (control) (meta) (control meta))))
+      (when input-method
+        (activate-input-method input-method))
+      (when (and current-input-method quail-keyboard-layout)
+        (dolist (map (cdr (quail-map)))
+          (let* ((to (car map))
+                 (from (quail-get-translation
+                        (cadr map) (char-to-string to) 1)))
+            (when (and (characterp from) (characterp to))
+              (dolist (mod modifiers)
+                (define-key local-function-key-map
+                  (vector (append mod (list from)))
+                  (vector (append mod (list to)))))))))
+      (when input-method
+        (activate-input-method current))))
+
+  (reverse-input-method 'russian-computer)
+  (reverse-input-method 'ukrainian-computer))
+
+;; org-mode
+(use-package org
+  :demand t
+  :preface
+  (defvar my/org "~/org")
+  (defvar my/org-inbox (concat (file-name-as-directory my/org) "inbox.org"))
+  (defvar my/org-journal (concat (file-name-as-directory my/org) "journal.org"))
+  (setq initial-buffer-choice my/org-inbox)
+  :config
+  (define-key global-map (kbd "C-c a") 'org-agenda)
+  (define-key global-map (kbd "C-c c") 'org-capture)
+  (define-key global-map (kbd "C-c i")
+    (lambda ()
+      (interactive)
+      (find-file my/org-inbox)))
+
+  (setq-default org-display-custom-times t)
+  (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+  (setq org-agenda-start-on-weekday 1)
+  (setq calendar-week-start-day 1)
+
+  (setq org-agenda-files (list my/org))
+  (setq org-capture-templates
+        '(("i" "Inbox" entry (file+headline my/org-inbox "New")
+           "* TODO %i%?")
+          ("j" "Journal" entry (file+datetree my/org-journal)
+           "* %i%?\n  %T" :time-prompt t))))
+
+;; dired
+(use-package dired
+  :config
+  (setq dired-dwim-target t
+        dired-recursive-copies 'top
+        dired-recursive-deletes 'top
+        dired-listing-switches "-alh")
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode))
 
 ;; M-x history
 (use-package smex
@@ -221,7 +229,9 @@
   (setq ivy-display-style 'fancy)
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-re-builders-alist
+      '((t . ivy--regex-fuzzy))))
 
 (use-package counsel
   :ensure t
@@ -232,13 +242,11 @@
 
 (use-package evil
   :ensure t
+  :demand t
   :config
   (evil-mode t)
   (evil-set-initial-state 'term-mode 'emacs)
-  (evil-set-initial-state 'vterm-mode 'emacs)
-  (add-to-list 'evil-emacs-state-modes 'neotree-mode)
   (add-to-list 'evil-emacs-state-modes 'bs-mode)
-  (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
 
   (defun save-kill-this-buffer ()
     (interactive)
@@ -260,73 +268,35 @@
     (exec-path-from-shell-initialize)))
 
 ;; Color theme
-
-;; (use-package dracula-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'dracula t))
-
-;; (use-package base16-theme
-;;   :ensure t
-;;   :config (load-theme 'base16-tomorrow-night t)
-;;   (set-cursor-color "#c5c8c6"))
-
 (use-package spacemacs-theme
   :defer t
   :ensure t
-  :init (load-theme 'spacemacs-light t))
-
-;; (use-package modus-operandi-theme
-;;   :ensure t
-;;   :config (load-theme 'modus-operandi t))
-
-(use-package org
-  :ensure t
-  :config
-  (setq-default org-display-custom-times t)
-  (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
-  (setq org-agenda-start-on-weekday 1)
-  (setq calendar-week-start-day 1)
-  (define-key global-map "\C-ca" 'org-agenda)
-  (setq org-agenda-files (list "~/org/"))
-  (define-key global-map "\C-cc" 'org-capture)
-  (setq org-capture-templates
-        '(("i" "Inbox" entry (file+headline "~/org/inbox.org" "New")
-           "* TODO %i%?")
-          ("j" "Journal" entry (file+datetree "~/org/journal.org")
-           "* %i%?\n  %T" :time-prompt t)))
-  ;; Stop the org-level headers from increasing in height relative to the other text.
-  (dolist (face '(org-level-1
-                  org-level-2
-                  org-level-3
-                  org-level-4
-                  org-level-5))
-    (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
-
-;; Dired navigation
-(use-package dired
-  :bind (:map dired-mode-map
-              ("C-c C-e" . wdired-change-to-wdired-mode))
   :init
-  (setq dired-dwim-target t
-        dired-recursive-copies 'top
-        dired-recursive-deletes 'top
-        dired-listing-switches "-alh")
-  :config
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode))
+  (load-theme 'spacemacs-light t)
+  (dolist (face '(org-level-1
+                org-level-2
+                org-level-3
+                org-level-4
+                org-level-5))
+  (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
 
 ;; Neotree - navigation tree
 (use-package neotree
   :ensure t
+  :defer t
   :bind* (("<f8>". neotree-toggle))
   :init
+  (add-to-list 'evil-emacs-state-modes 'neotree-mode)
   (setq neo-theme 'nerd)
   (setq neo-smart-open t))
 
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :config
+  :defer t
+  :bind* (("<f7" . vterm-open))
+  :init
+  (evil-set-initial-state 'vterm-mode 'emacs)
   (defun vterm-open ()
       (interactive)
     (if (buffer-exists "vterm")
@@ -334,8 +304,7 @@
             (switch-to-buffer "vterm")
           (kill-buffer "vterm")
           (vterm))
-      (vterm)))
-  (global-set-key [(f7)] 'vterm-open))
+      (vterm))))
 
 ;; Auto-Complete
 (use-package company
@@ -353,9 +322,10 @@
 
 (use-package bufler
   :ensure t
-  :config
-  (global-set-key (kbd "C-x C-b") 'bufler)
-  (global-set-key (kbd "C-x b") 'bufler-switch-buffer))
+  :bind* (("C-x C-b" . bufler)
+          ("C-x b" . bufler-switch-buffer))
+  :init
+  (add-to-list 'evil-emacs-state-modes 'bufler-list-mode))
 
 ;; Flycheck
 (use-package flycheck
@@ -389,9 +359,8 @@
 
 (use-package js2-mode
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (setq js-indent-level 2))
+  :defer t
+  :mode "\\.js\\'")
 
 ;; LSP
 (use-package lsp-mode
