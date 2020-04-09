@@ -7,10 +7,12 @@
 ;;(load "server")
 ;;(unless (server-running-p) (server-start))
 
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-; (load custom-file)
+(setq initial-buffer-choice "~/org/inbox.org")
 
-(setq gc-cons-threshold (* 500 1024 1024))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+; (load custom-file) ;; Customize is trash
+
+(setq gc-cons-threshold (* 5 1024 1024))
 
 (require 'package)
 (when (>= emacs-major-version 24)
@@ -24,22 +26,16 @@
 
 (setq default-directory (getenv "HOME"))
 
-(unless (package-installed-p 'org)
-  (package-refresh-contents)
-  (package-install 'org))
-
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 5 1024 1024))))
-
 ;; Appearance
 (when window-system
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
   (tooltip-mode 0))
 
-;; Initial frame
+;;  Initial frame
 (setq initial-frame-alist
-      '((width . 150)   ; characters in a line
-        (height . 52)
+      '((width . 90)
+        (height . 24)
         (fullscreen . maximized)))
 
 ;; My preferred font
@@ -49,7 +45,7 @@
 
 ;; Startup
 (setq inhibit-startup-message t
-      initial-major-mode 'fundamental-mode
+      initial-major-mode 'lisp-mode
       inhibit-splash-screen t)
 
 ;; Backups
@@ -91,15 +87,15 @@
 
 (setq css-indent-offset 2)
 
-;; IDO
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
+;; ;; IDO
+;; (setq ido-enable-flex-matching t)
+;; (setq ido-everywhere t)
+;; (ido-mode 1)
 
 ;; Calc
 (setq-default calc-multiplication-has-precedence nil)
 
-;; Buffer navigation
+;; Buffer navigation ;; overwritten later
 (global-set-key [remap list-buffers] 'bs-show)
 (global-set-key (kbd "C-x b") 'list-buffers)
 
@@ -135,8 +131,7 @@
 ;;(if (fboundp 'mac-auto-operator-composition-mode) (mac-auto-operator-composition-mode))
 
 ;; Keys on mac
-(setq ;mac-option-key-is-meta t
-      mac-command-key-is-meta nil
+(setq mac-command-key-is-meta nil
       mac-command-modifier 'super
       mac-option-modifier 'meta
       mac-right-option-modifier nil)
@@ -192,8 +187,48 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile
-  (require 'use-package))
+  (require 'use-package)
+  (setq use-package-always-defer nil))
 (require 'bind-key) ;; :bind requirement
+
+;; M-x history
+(use-package smex
+  :ensure t
+  :config
+  (smex-initialize))
+
+;; Better undo
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode))
+
+;; Key hints
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+(use-package ivy
+  :ensure t
+  :demand t
+  :bind
+  (:map ivy-minibuffer-map ; bind in the ivy buffer
+        ("RET" . ivy-alt-done)
+        ("C-f" . ivy-immediate-done))
+  :config
+  (ivy-mode 1)
+  (setq ivy-display-style 'fancy)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t))
+
+(use-package counsel
+  :ensure t
+  :demand t
+  :after ivy
+  :config
+  (counsel-mode 1))
 
 (use-package evil
   :ensure t
@@ -203,6 +238,7 @@
   (evil-set-initial-state 'vterm-mode 'emacs)
   (add-to-list 'evil-emacs-state-modes 'neotree-mode)
   (add-to-list 'evil-emacs-state-modes 'bs-mode)
+  (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
 
   (defun save-kill-this-buffer ()
     (interactive)
@@ -225,14 +261,6 @@
 
 ;; Color theme
 
-;; (use-package solarized-theme
-;;   :ensure t
-;;   :config
-;;   (setq solarized-use-variable-pitch nil)
-;;   (setq solarized-distinct-fringe-background nil)
-;;   (setq solarized-high-contrast-mode-line t)
-;;   (load-theme 'solarized-light t))
-
 ;; (use-package dracula-theme
 ;;   :ensure t
 ;;   :config
@@ -241,13 +269,7 @@
 ;; (use-package base16-theme
 ;;   :ensure t
 ;;   :config (load-theme 'base16-tomorrow-night t)
-;;   (set-cursor-color "#303030"))
-
-;; (use-package leuven-theme
-;;   :ensure t
-;;   :config
-;;   (setq org-fontify-whole-heading-line nil)
-;;   (load-theme 'leuven t))
+;;   (set-cursor-color "#c5c8c6"))
 
 (use-package spacemacs-theme
   :defer t
@@ -261,30 +283,25 @@
 (use-package org
   :ensure t
   :config
+  (setq-default org-display-custom-times t)
+  (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+  (setq org-agenda-start-on-weekday 1)
+  (setq calendar-week-start-day 1)
   (define-key global-map "\C-ca" 'org-agenda)
-  (setq org-agenda-files (list "~/Desktop/Org.org")))
-
-;; Better M-x
-(use-package smex
-  :ensure t
-  :config
-  (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
-
-;; Better undo
-(use-package undo-tree
-  :ensure t
-  :config
-  (global-undo-tree-mode))
-
-;; Key hints
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
+  (setq org-agenda-files (list "~/org/"))
+  (define-key global-map "\C-cc" 'org-capture)
+  (setq org-capture-templates
+        '(("i" "Inbox" entry (file+headline "~/org/inbox.org" "New")
+           "* TODO %i%?")
+          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+           "* %i%?\n  %T" :time-prompt t)))
+  ;; Stop the org-level headers from increasing in height relative to the other text.
+  (dolist (face '(org-level-1
+                  org-level-2
+                  org-level-3
+                  org-level-4
+                  org-level-5))
+    (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
 
 ;; Dired navigation
 (use-package dired
@@ -317,8 +334,8 @@
             (switch-to-buffer "vterm")
           (kill-buffer "vterm")
           (vterm))
-      (vterm))))
-  ;;(global-set-key [(f7)] 'vterm-open))
+      (vterm)))
+  (global-set-key [(f7)] 'vterm-open))
 
 ;; Auto-Complete
 (use-package company
@@ -330,18 +347,15 @@
   (define-key company-active-map (kbd "SPC") nil)
   (setq company-auto-complete nil))
 
-;; Snippets
-(use-package yasnippet
-  :ensure t
-  :config
-  (yas-global-mode 1))
-
-(use-package yasnippet-snippets
-  :ensure t)
-
 ;; The Silver Searcher
 (use-package ag
   :ensure t)
+
+(use-package bufler
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x C-b") 'bufler)
+  (global-set-key (kbd "C-x b") 'bufler-switch-buffer))
 
 ;; Flycheck
 (use-package flycheck
@@ -354,13 +368,6 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
   (setf octave-block-offset 4))
-
-;; Emmet support for Emacs (Web)
-(use-package emmet-mode
-  :ensure t
-  :config
-  (add-hook 'sgml-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook  'emmet-mode))
 
 ;;;;; Web ;;;;;
 
@@ -501,6 +508,7 @@
   (add-to-list 'company-backends 'company-go))
 
 (use-package minions
+  :ensure t
   :config (minions-mode 1))
 
 ;; install livedown with
