@@ -176,6 +176,8 @@
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
 
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+
   (setq org-agenda-files (list my/org))
   (setq org-capture-templates
         '(("i" "Inbox" entry (file+headline my/org-inbox "New")
@@ -221,8 +223,10 @@
   :demand t
   :bind
   (:map ivy-minibuffer-map ; bind in the ivy buffer
-        ("RET" . ivy-alt-done)
-        ("C-f" . ivy-immediate-done))
+        ("RET"      . ivy-alt-done)
+        ("C-f"      . ivy-immediate-done)
+        ("M-<down>" . ivy-next-history-element)
+        ("M-<up>"   . ivy-previous-history-element))
   :config
   (ivy-mode 1)
   (setq ivy-display-style 'fancy)
@@ -279,7 +283,7 @@
   :ensure t
   :defer t
   :init
-  (load-theme 'spacemacs-light t)
+  (load-theme 'spacemacs-dark t)
   (dolist (face '(org-level-1
                   org-level-2
                   org-level-3
