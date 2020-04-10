@@ -264,8 +264,7 @@
 (use-package minions
   :ensure t
   :config
-  (minions-mode 1)
-  (setq minions-direct 'lsp-mode))
+  (minions-mode 1))
 
 ;; Color theme
 (use-package spacemacs-theme
