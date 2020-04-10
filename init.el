@@ -324,7 +324,9 @@
 ;; I don't use snippets but this is used by lsp-mode for function arguments
 (use-package yasnippet
   :defer t
-  :ensure t)
+  :ensure t
+  :config
+  (yas-global-mode))
 
 (use-package flycheck
   :ensure t
