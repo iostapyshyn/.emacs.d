@@ -119,15 +119,16 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile
-  (require 'use-package))
+  (require 'use-package)
+  (setq use-package-always-defer t))
 (require 'bind-key) ;; :bind requirement
 
 (use-package python
-  :demand t
   :bind (:map python-mode-map
               ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t)))))
 
 (use-package quail
+  :demand t
   :config
   ;; Makes russian keyboard layout work for keybindings
   (defun reverse-input-method (input-method)
@@ -169,18 +170,18 @@
    ("C-c i" . (lambda ()
               (interactive)
               (find-file my/org-inbox))))
-  :custom
-  (org-display-custom-times t)
-  (org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
-  (org-agenda-start-on-weekday 1)
-  (calendar-week-start-day 1)
+  :config
+  (setq-default org-display-custom-times t)
+  (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+  (setq org-agenda-start-on-weekday 1)
+  (setq calendar-week-start-day 1)
 
-  (org-agenda-files (list my/org))
-  (org-capture-templates
-   '(("i" "Inbox" entry (file+headline my/org-inbox "New")
-      "* TODO %i%?")
-     ("j" "Journal" entry (file+datetree my/org-journal)
-      "* %i%?\n  %T" :time-prompt t))))
+  (setq org-agenda-files (list my/org))
+  (setq org-capture-templates
+        '(("i" "Inbox" entry (file+headline my/org-inbox "New")
+           "* TODO %i%?")
+          ("j" "Journal" entry (file+datetree my/org-journal)
+           "* %i%?\n  %T" :time-prompt t))))
 
 ;; dired
 (use-package dired
@@ -197,18 +198,21 @@
 ;; M-x history
 (use-package smex
   :ensure t
+  :demand t
   :config
   (smex-initialize))
 
 ;; Better undo
 (use-package undo-tree
   :ensure t
+  :demand t
   :config
   (global-undo-tree-mode))
 
 ;; Key hints
 (use-package which-key
   :ensure t
+  :demand t
   :config
   (which-key-mode))
 
@@ -237,6 +241,7 @@
 
 (use-package evil
   :ensure t
+  :demand t
   :config
   (evil-mode t)
   (add-to-list 'evil-emacs-state-modes 'term-mode)
@@ -258,12 +263,14 @@
 ;; Get environment variables
 (use-package exec-path-from-shell
   :ensure t
+  :demand t
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
 (use-package minions
   :ensure t
+  :demand t
   :config
   (minions-mode 1))
 
@@ -283,7 +290,6 @@
 ;; Neotree - navigation tree
 (use-package neotree
   :ensure t
-  :defer t
   :bind* (("<f8>" . neotree-toggle))
   :config
   (setq neo-theme 'nerd)
@@ -292,7 +298,6 @@
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :defer t
   :bind* (("<f7>" . vterm-open))
   :init
   (defun vterm-open ()
@@ -304,8 +309,7 @@
           (vterm))
       (vterm))))
 
-(use-package ag
-  :ensure t)
+(use-package ag :ensure t)
 
 (use-package bufler
   :ensure t
@@ -313,6 +317,7 @@
           ("C-x b" . bufler-switch-buffer)))
 
 (use-package company
+  :demand t
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
@@ -321,19 +326,12 @@
   (define-key company-active-map (kbd "SPC") nil)
   (setq company-auto-complete nil))
 
-;; I don't use snippets but this is used by lsp-mode for function arguments
-(use-package yasnippet
-  :defer t
-  :ensure t
-  :config
-  (yas-global-mode))
-
 (use-package flycheck
+  :demand t
   :ensure t
   :init (global-flycheck-mode))
 
 (use-package octave
-  :defer t
   :mode ("\\.m\\'" . octave-mode)
   :config
   (setf octave-block-offset 4))
@@ -341,16 +339,14 @@
 ;; web-mode
 (use-package web-mode
   :ensure t
-  :defer t
-  :mode
-  (("\\.phtml\\'" . web-mode)
-   ("\\.tpl\\.php\\'" . web-mode)
-   ("\\.[agj]sp\\'" . web-mode)
-   ("\\.as[cp]x\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.mustache\\'" . web-mode)
-   ("\\.djhtml\\'" . web-mode)
-   ("\\.html?\\'" . web-mode))
+  :mode ("\\.phtml\\'"
+         "\\.tpl\\.php\\'"
+         "\\.[agj]sp\\'"
+         "\\.as[cp]x\\'"
+         "\\.erb\\'"
+         "\\.mustache\\'"
+         "\\.djhtml\\'"
+         "\\.html?\\'")
   :config
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
@@ -358,7 +354,6 @@
 
 (use-package js2-mode
   :ensure t
-  :defer t
   :mode "\\.js\\'")
 
 ;; Language Server Protocol
@@ -390,6 +385,13 @@
   :config
   (add-to-list 'company-backends 'company-lsp))
 
+;; I don't use snippets but this is used by company-lsp for function arguments
+(use-package yasnippet
+  :ensure t
+  :after company-lsp
+  :config
+  (yas-global-mode))
+
 ;; C/C++/ObjC/GLSL
 
 (use-package ccls
@@ -403,6 +405,7 @@
 
 ;; Projectile
 (use-package projectile
+  :demand t
   :ensure t
   :custom
   (projectile-enable-caching t)
@@ -422,13 +425,15 @@
 (use-package magit :ensure t)
 (use-package gist :ensure t)
 
-(use-package markdown-mode :ensure t)
+(use-package markdown-mode
+  :ensure t
+  :mode "\\.md\\'")
+
 (use-package livedown
   :after markdown-mode
   :load-path "~/.emacs.d/emacs-livedown")
 
 (use-package tex
-  :defer t
   :ensure auctex
   :config
   (setq TeX-auto-save t))
@@ -445,10 +450,10 @@
 
 (use-package dashboard
   :ensure t
+  :demand t
   :config
   (setq dashboard-startup-banner 'logo)
   (setq dashboard-center-content t)
-  (setq dashboard-set-navigator t)
   (setq show-week-agenda-p t)
   (dashboard-setup-startup-hook))
 
@@ -456,5 +461,5 @@
 ;;; init.el ends here
 
 ;;Local Variables:
-;; byte-compile-warnings: (not free-vars)
+;; byte-compile-warnings: (not free-vars unresolved)
 ;; End:
