@@ -27,7 +27,8 @@
   (tooltip-mode 0)
 
   ;;  Initial frame
-  (setq initial-frame-alist '((fullscreen . maximized)))
+;;(setq initial-frame-alist '((fullscreen . maximized)))
+  (toggle-frame-fullscreen)
 
   ;; My preferred font
   (set-face-attribute 'default nil :family "Iosevka")
@@ -319,6 +320,11 @@
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "SPC") nil)
   (setq company-auto-complete nil))
+
+;; I don't use snippets but this is used by lsp-mode for function arguments
+(use-package yasnippet
+  :defer t
+  :ensure t)
 
 (use-package flycheck
   :ensure t
