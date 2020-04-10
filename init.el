@@ -13,11 +13,12 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 ;;; --- Various small tweaks ---
-
 (setq gc-cons-threshold (* 256 1024 1024))
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
+
+(setq default-directory (getenv "HOME"))
 
 ;; Appearance
 (when window-system
@@ -161,7 +162,6 @@
   (defvar my/org "~/org")
   (defvar my/org-inbox (concat (file-name-as-directory my/org) "inbox.org"))
   (defvar my/org-journal (concat (file-name-as-directory my/org) "journal.org"))
-  (setq initial-buffer-choice my/org-inbox)
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)
@@ -243,6 +243,7 @@
   (add-to-list 'evil-emacs-state-modes 'bs-mode)
   (add-to-list 'evil-emacs-state-modes 'vterm-mode)
   (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
+  (add-to-list 'evil-emacs-state-modes 'dashboard-mode)
 
   ;; make :q and :wq close buffer instead of emacs
   (defun save-kill-this-buffer ()
@@ -397,7 +398,7 @@
 (use-package projectile
   :ensure t
   :custom
-  (projectile-enable-caching nil)
+  (projectile-enable-caching t)
   (projectile-indexing-method 'native)
   :config
   (projectile-mode 1)
@@ -434,6 +435,15 @@
   (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
+
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-startup-banner 'logo)
+  (setq dashboard-center-content t)
+  (setq dashboard-set-navigator t)
+  (setq show-week-agenda-p t)
+  (dashboard-setup-startup-hook))
 
 (provide 'init)
 ;;; init.el ends here
