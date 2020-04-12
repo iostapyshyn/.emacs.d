@@ -12,28 +12,48 @@
   "Discard all themes before loading new."
   (mapc #'disable-theme custom-enabled-themes))
 
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
+
+(defadvice load-theme (after run-after-load-theme-hook activate)
+  "Run `after-load-theme-hook'."
+  (run-hooks 'after-load-theme-hook))
+
 ;;; --- Various small tweaks ---
-(setq gc-cons-threshold (* 256 1024 1024))
+
+;; Defer garbage collection until the end of the startup process
+(setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
+      gc-cons-percentage 0.6)
+
+(add-hook 'emacs-startup-hook
+  (lambda ()
+    (setq gc-cons-threshold (* 16 1024 1024) ; 16mb
+          gc-cons-percentage 0.1)))
+
+;; Emacs consults file-name-handler-alist every time a file is read
+;; so we disable it during the startup (temporarily!)
+(defvar tmp--file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
+(add-hook 'emacs-startup-hook
+  (lambda ()
+    (setq file-name-handler-alist tmp--file-name-handler-alist)))
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
-(setq default-directory (getenv "HOME"))
-
 ;; Appearance
 (when window-system
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
-  (tooltip-mode 0)
-
-  ;;  Initial frame
-;;(setq initial-frame-alist '((fullscreen . maximized)))
-  (toggle-frame-fullscreen)
+  (push '(menu-bar-lines . 1) default-frame-alist)
+  (push '(tool-bar-lines . 0) default-frame-alist)
+  (push '(vertical-scroll-bars) default-frame-alist)
+  (push '(fullscreen . fullboth) default-frame-alist)
 
   ;; My preferred font
-  (set-face-attribute 'default nil :family "Iosevka")
-  (set-face-attribute 'default nil :weight 'regular)
-  (set-face-attribute 'default nil :height 130))
+  (set-face-attribute 'default nil
+                      :family "Iosevka"
+                      :weight 'regular
+                      :height 130))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
@@ -162,25 +182,38 @@
   :demand t
   :preface
   (defvar my/org "~/org")
-  (defvar my/org-inbox (concat (file-name-as-directory my/org) "inbox.org"))
+  (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
   (defvar my/org-journal (concat (file-name-as-directory my/org) "journal.org"))
+
+  ;; Open the inbox but still keeping the home as default directory
+  ;;(setq initial-buffer-choice my/org-index)
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (find-file my/org-index)
+              (setq default-directory "~")))
   :bind
   (("C-c a" . org-agenda)
    ("C-c c" . org-capture)
    ("C-c i" . (lambda ()
               (interactive)
-              (find-file my/org-inbox))))
+              (find-file my/org-index))))
   :config
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
 
+  ;; No security whatsoever..
+  (setq org-confirm-babel-evaluate nil
+        org-confirm-elisp-link-function nil
+        org-confirm-shell-link-function nil
+        org-export-use-babel nil)
+
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
 
   (setq org-agenda-files (list my/org))
   (setq org-capture-templates
-        '(("i" "Inbox" entry (file+headline my/org-inbox "New")
+        '(("i" "Inbox" entry (file+headline my/org-index "Inbox")
            "* TODO %i%?")
           ("j" "Journal" entry (file+datetree my/org-journal)
            "* %i%?\n  %T" :time-prompt t))))
@@ -253,7 +286,6 @@
   (add-to-list 'evil-emacs-state-modes 'bs-mode)
   (add-to-list 'evil-emacs-state-modes 'vterm-mode)
   (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
-  (add-to-list 'evil-emacs-state-modes 'dashboard-mode)
 
   ;; make :q and :wq close buffer instead of emacs
   (defun save-kill-this-buffer ()
@@ -283,13 +315,34 @@
   :ensure t
   :defer t
   :init
-  (load-theme 'spacemacs-dark t)
-  (dolist (face '(org-level-1
-                  org-level-2
-                  org-level-3
-                  org-level-4
-                  org-level-5))
-    (set-face-attribute face nil :weight 'semi-bold :height 1.0)))
+
+  ;; Keep org headlines the same size
+  (add-hook 'after-load-theme-hook
+            (lambda ()
+              (dolist (face '(org-level-1
+                              org-level-2
+                              org-level-3
+                              org-level-4
+                              org-level-5))
+                (set-face-attribute face nil :weight 'semi-bold :height 1.0))))
+
+  (defvar current-theme nil)
+  (defun synchronize-theme ()
+    "Set theme depending on the time of the day."
+    (let* ((hour
+            (string-to-number
+             (substring (current-time-string) 11 13))) ; extract the hour
+           (now
+            (if (and (>= hour 6) (<= hour 17)) ; if the hour is between 6 and 17
+                'spacemacs-light ; use light
+              'spacemacs-dark)))
+      (if (equal now current-theme)
+          nil
+        (setq current-theme now)
+        (load-theme now t))))
+
+  ;; Run synchronize-theme now and repeat every 30 minutes
+  (run-at-time nil (* 30 60) 'synchronize-theme))
 
 ;; Neotree - navigation tree
 (use-package neotree
@@ -430,12 +483,12 @@
 (use-package gist :ensure t)
 
 (use-package markdown-mode
-  :ensure t
-  :mode "\\.md\\'")
+  :ensure t)
 
 (use-package livedown
   :after markdown-mode
-  :load-path "~/.emacs.d/emacs-livedown")
+  :demand t
+  :load-path "emacs-livedown/")
 
 (use-package tex
   :ensure auctex
@@ -445,21 +498,15 @@
 ;; Rust
 (use-package rust-mode
   :ensure t
-  :mode "\\.rs\\'"
   :config
   (setq rust-format-on-save t)
   (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
-(use-package dashboard
-  :ensure t
-  :demand t
-  :config
-  (setq dashboard-startup-banner 'logo)
-  (setq dashboard-center-content t)
-  (setq show-week-agenda-p t)
-  (dashboard-setup-startup-hook))
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message (format "Emacs loaded in %s" (emacs-init-time)))))
 
 (provide 'init)
 ;;; init.el ends here
