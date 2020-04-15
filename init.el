@@ -39,6 +39,10 @@
   (lambda ()
     (setq file-name-handler-alist tmp--file-name-handler-alist)))
 
+;; Start the server
+(load "server")
+(unless (server-running-p) (server-start))
+
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
@@ -181,9 +185,19 @@
 (use-package org
   :demand t
   :preface
+  ;; Keep org headlines the same size
+  (add-hook 'after-load-theme-hook
+            (lambda ()
+              (dolist (face '(org-level-1
+                              org-level-2
+                              org-level-3
+                              org-level-4
+                              org-level-5
+                              org-tag))
+                (set-face-attribute face nil :weight 'semi-bold :height 1.0))))
+
   (defvar my/org "~/org")
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
-  (defvar my/org-journal (concat (file-name-as-directory my/org) "journal.org"))
 
   ;; Open the inbox but still keeping the home as default directory
   ;;(setq initial-buffer-choice my/org-index)
@@ -193,7 +207,6 @@
               (setq default-directory "~")))
   :bind
   (("C-c a" . org-agenda)
-   ("C-c c" . org-capture)
    ("C-c i" . (lambda ()
               (interactive)
               (find-file my/org-index))))
@@ -211,12 +224,7 @@
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
 
-  (setq org-agenda-files (list my/org))
-  (setq org-capture-templates
-        '(("i" "Inbox" entry (file+headline my/org-index "Inbox")
-           "* TODO %i%?")
-          ("j" "Journal" entry (file+datetree my/org-journal)
-           "* %i%?\n  %T" :time-prompt t))))
+  (setq org-agenda-files (list my/org)))
 
 ;; dired
 (use-package dired
@@ -286,6 +294,8 @@
   (add-to-list 'evil-emacs-state-modes 'bs-mode)
   (add-to-list 'evil-emacs-state-modes 'vterm-mode)
   (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
+  (add-to-list 'evil-emacs-state-modes 'calculator-mode)
+  (add-to-list 'evil-emacs-state-modes 'calc-mode)
 
   ;; make :q and :wq close buffer instead of emacs
   (defun save-kill-this-buffer ()
@@ -295,6 +305,13 @@
 
   (evil-ex-define-cmd "q" 'kill-this-buffer)
   (evil-ex-define-cmd "wq" 'save-kill-this-buffer))
+
+(use-package avy
+  :ensure t
+  :bind* (("C-c C-'" . avy-goto-char))
+  :preface
+  ;; This package autoloads it's functions
+  (evil-define-key '(visual normal operator) global-map (kbd "s") #'avy-goto-char-timer))
 
 ;; Get environment variables
 (use-package exec-path-from-shell
@@ -311,21 +328,17 @@
   (minions-mode 1))
 
 ;; Color theme
+(use-package dracula-theme
+  :ensure t
+  :demand t
+  :config
+  (load-theme 'dracula t))
+
 (use-package spacemacs-theme
+  :disabled
   :ensure t
   :defer t
   :init
-
-  ;; Keep org headlines the same size
-  (add-hook 'after-load-theme-hook
-            (lambda ()
-              (dolist (face '(org-level-1
-                              org-level-2
-                              org-level-3
-                              org-level-4
-                              org-level-5))
-                (set-face-attribute face nil :weight 'semi-bold :height 1.0))))
-
   (defvar current-theme nil)
   (defun synchronize-theme ()
     "Set theme depending on the time of the day."
@@ -333,7 +346,7 @@
             (string-to-number
              (substring (current-time-string) 11 13))) ; extract the hour
            (now
-            (if (and (>= hour 6) (<= hour 17)) ; if the hour is between 6 and 17
+            (if (and (> hour 6) (< hour 17)) ; if the hour is between 6 and 17
                 'spacemacs-light ; use light
               'spacemacs-dark)))
       (if (equal now current-theme)
@@ -358,7 +371,7 @@
   :bind* (("<f7>" . vterm-open))
   :init
   (defun vterm-open ()
-      (interactive)
+    (interactive)
     (if (buffer-exists "vterm")
         (if (get-buffer-process "vterm")
             (switch-to-buffer "vterm")
@@ -504,6 +517,12 @@
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
+(use-package gnus
+  :commands gnus
+  :config
+  (setq gnus-init-file (concat (file-name-as-directory my/org) ".gnus.el")))
+
+;;; Show startup time:
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message (format "Emacs loaded in %s" (emacs-init-time)))))
