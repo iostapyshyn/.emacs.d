@@ -47,12 +47,12 @@
 ;; (load custom-file) ;; Customize is not used
 
 ;; Appearance
-(when window-system
-  (push '(menu-bar-lines . 1) default-frame-alist)
-  (push '(tool-bar-lines . 0) default-frame-alist)
-  (push '(vertical-scroll-bars) default-frame-alist)
-  (push '(fullscreen . fullboth) default-frame-alist)
+(push '(menu-bar-lines . (if (eq window-system 'ns) 1 0)) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(push '(fullscreen . fullboth) default-frame-alist)
 
+(when window-system
   ;; My preferred font
   (set-face-attribute 'default nil
                       :family "Iosevka"
@@ -308,7 +308,7 @@
 
 (use-package avy
   :ensure t
-  :bind* (("C-c C-'" . avy-goto-char))
+  :bind* (("C-c C-'" . avy-goto-char-timer))
   :preface
   ;; This package autoloads it's functions
   (evil-define-key '(visual normal operator) global-map (kbd "s") #'avy-goto-char-timer))
