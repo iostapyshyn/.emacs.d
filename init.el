@@ -532,6 +532,19 @@
   :config
   (setq gnus-init-file (concat (file-name-as-directory my/org) ".gnus.el")))
 
+(use-package pdf-tools
+  :ensure t
+  :preface
+  (pdf-loader-install)
+  :config
+  (setq-default pdf-view-display-size 'fit-page)
+  (setq pdf-view-use-scaling t)
+  (setq pdf-annot-activate-created-annotations t)
+  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+  (define-key pdf-view-mode-map (kbd "h") 'pdf-annot-add-highlight-markup-annotation)
+  (define-key pdf-view-mode-map (kbd "t") 'pdf-annot-add-text-annotation)
+  (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete))
+
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
           (lambda ()
