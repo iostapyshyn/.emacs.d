@@ -81,6 +81,9 @@
 
 ;; (global-visual-line-mode t) ; I don't like this
 
+;; Scrolling behaviour
+(setq scroll-conservatively most-positive-fixnum)
+
 ;; Parenthesis
 (setq show-paren-delay 0)
 (show-paren-mode 1)
