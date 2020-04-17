@@ -262,6 +262,10 @@
   :config
   (which-key-mode))
 
+(use-package swiper
+  :ensure t
+  :bind* ("C-s" . swiper-isearch))
+
 (use-package ivy
   :ensure t
   :demand t
@@ -278,7 +282,9 @@
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   (setq ivy-re-builders-alist
-      '((t . ivy--regex-fuzzy))))
+      '((swiper-isearch . ivy--regex-plus)
+        (swiper         . ivy--regex-plus)
+        (t              . ivy--regex-fuzzy))))
 
 (use-package counsel
   :ensure t
@@ -286,10 +292,6 @@
   :after ivy smex
   :config
   (counsel-mode 1))
-
-(use-package swiper
-  :ensure t
-  :bind* ("C-s" . swiper-isearch))
 
 (use-package evil
   :ensure t
