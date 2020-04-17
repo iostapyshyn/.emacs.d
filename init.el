@@ -200,10 +200,10 @@
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
 
   ;; Open the inbox but still keeping the home as default directory
-  ;;(setq initial-buffer-choice my/org-index)
+  (when (file-exists-p my/org-index)
+    (setq initial-buffer-choice my/org-index))
   (add-hook 'emacs-startup-hook
             (lambda ()
-              (find-file my/org-index)
               (setq default-directory "~")))
   :bind
   (("C-c a" . org-agenda)
