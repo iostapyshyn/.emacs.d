@@ -287,6 +287,10 @@
   :config
   (counsel-mode 1))
 
+(use-package swiper
+  :ensure t
+  :bind* ("C-s" . swiper-isearch))
+
 (use-package evil
   :ensure t
   :demand t
@@ -383,7 +387,7 @@
           (vterm))
       (vterm))))
 
-(use-package ag :ensure t)
+(use-package deadgrep :ensure t)
 
 (use-package bufler
   :ensure t
