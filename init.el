@@ -46,6 +46,8 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
+(setq confirm-kill-emacs 'y-or-n-p)
+
 ;; Appearance
 (push '(menu-bar-lines . (if (eq window-system 'ns) 1 0)) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
