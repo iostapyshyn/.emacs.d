@@ -229,7 +229,11 @@
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
 
-  (setq org-agenda-files (list my/org)))
+  (setq org-agenda-files (list my/org))
+
+  ;; My org files may contain bookmarks. They fail to open without this:
+  (require 'bookmark)
+  (bookmark-maybe-load-default-file))
 
 ;; dired
 (use-package dired
@@ -308,6 +312,7 @@
   (add-to-list 'evil-emacs-state-modes 'calculator-mode)
   (add-to-list 'evil-emacs-state-modes 'calc-mode)
   (add-to-list 'evil-emacs-state-modes 'deadgrep-mode)
+  (add-to-list 'evil-emacs-state-modes 'process-menu-mode)
 
   ;; make :q and :wq close buffer instead of emacs
   (defun save-kill-this-buffer ()
@@ -548,6 +553,7 @@
   (define-key pdf-view-mode-map (kbd "t") 'pdf-annot-add-text-annotation)
   (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete)
 
+  (require 'pdf-outline)
   (define-key pdf-outline-buffer-mode-map (kbd "RET") 'pdf-outline-follow-link-and-quit)
   (define-key pdf-outline-buffer-mode-map (kbd "M-RET") 'pdf-outline-follow-link))
 
