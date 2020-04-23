@@ -356,8 +356,14 @@
   :ensure t
   :bind* (("<f8>" . neotree-toggle))
   :config
-  (setq neo-theme 'nerd)
-  (setq neo-smart-open t))
+  (setq neo-theme 'ascii)
+  (setq neo-smart-open t)
+  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+  (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh))
 
 ;; Better terminal emulator
 (use-package vterm
