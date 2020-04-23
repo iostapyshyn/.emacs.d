@@ -199,8 +199,8 @@
 
   ;; No security whatsoever..
   (setq org-confirm-babel-evaluate nil
-        org-confirm-elisp-link-function nil
-        org-confirm-shell-link-function nil
+        org-link-elisp-confirm-function nil
+        org-link-shell-confirm-function nil
         org-export-use-babel nil)
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
@@ -322,11 +322,11 @@
 
 ;; Color theme
 (when (window-system)
-  (use-package dracula-theme
+  (use-package atom-one-dark-theme
     :ensure t
     :demand t
     :config
-    (load-theme 'dracula t))
+    (load-theme 'atom-one-dark t))
 
   (use-package spacemacs-theme
     :disabled
@@ -371,7 +371,10 @@
             (switch-to-buffer "vterm")
           (kill-buffer "vterm")
           (vterm))
-      (vterm))))
+      (vterm)))
+  :config
+  (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
+  (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f))
 
 (use-package deadgrep :ensure t)
 
