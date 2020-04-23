@@ -366,12 +366,18 @@
   :init
   (defun vterm-open ()
     (interactive)
-    (if (buffer-exists "vterm")
-        (if (get-buffer-process "vterm")
-            (switch-to-buffer "vterm")
-          (kill-buffer "vterm")
-          (vterm))
-      (vterm)))
+    (let ((dir default-directory))
+      (if (buffer-exists "vterm")
+          (if (get-buffer-process "vterm")
+              (switch-to-buffer "vterm")
+            (kill-buffer "vterm")
+            (vterm))
+        (vterm))
+      (unless (eq dir default-directory)
+        ;; Clear the prompt and cd into current directory
+        ;; of the buffer from where vterm-open was called
+        (vterm-send-C-u)
+        (vterm-send-string (concat "cd " dir "\n")))))
   :config
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f))
