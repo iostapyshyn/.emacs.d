@@ -96,6 +96,23 @@
 (global-set-key [(f5)] 'compile)
 (global-set-key [(f6)] 'recompile)
 
+(defun c-switch-source-header ()
+  "Switch to a header/source file with the same name as current if present in the directory."
+  (interactive)
+  (defconst c-extensions '("c" "cpp" "cc" "cxx" "m"))
+  (defconst h-extensions '("h" "hpp" "hh" "hxx"))
+  (let ((extensions (cond ((member (file-name-extension buffer-file-name) c-extensions) h-extensions)
+                          ((member (file-name-extension buffer-file-name) h-extensions) c-extensions))))
+    (dolist (ext extensions)
+      (let ((file-name (concat (file-name-sans-extension buffer-file-name) "." ext)))
+        (when (file-exists-p file-name)
+          (find-file file-name))))))
+
+(dolist (hook '(c-mode-hook c++-mode-hook objc-mode-hook))
+  (add-hook hook
+            (lambda ()
+              (local-set-key (kbd "C-c h") 'c-switch-source-header))))
+
 ;; Keys on mac
 (setq mac-command-key-is-meta nil
       mac-command-modifier 'super
