@@ -298,7 +298,6 @@
   :config
   (evil-mode t)
   (add-to-list 'evil-emacs-state-modes 'term-mode)
-  (add-to-list 'evil-emacs-state-modes 'neotree-mode)
   (add-to-list 'evil-emacs-state-modes 'bs-mode)
   (add-to-list 'evil-emacs-state-modes 'vterm-mode)
   (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
