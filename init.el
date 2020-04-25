@@ -564,6 +564,10 @@
   (define-key pdf-outline-buffer-mode-map (kbd "RET") 'pdf-outline-follow-link-and-quit)
   (define-key pdf-outline-buffer-mode-map (kbd "M-RET") 'pdf-outline-follow-link))
 
+(use-package google-this
+  :ensure t
+  :bind* (("C-c / g" . google-this)))
+
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
           (lambda ()
