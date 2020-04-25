@@ -2,6 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
+(when (version< emacs-version "27")
+  (let ((early-init-file (concat user-emacs-directory "early-init.el")))
+    (when (file-exists-p early-init-file)
+      (load-file early-init-file))))
+
 ;;; --- Some utility functions ---
 
 (defun buffer-exists (bufname)
