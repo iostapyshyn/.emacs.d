@@ -311,6 +311,10 @@
   (add-to-list 'evil-emacs-state-modes 'deadgrep-mode)
   (add-to-list 'evil-emacs-state-modes 'process-menu-mode)
 
+  ;; Move cursor to previous marked position. (may be in another buffer)
+  ;; Especially useful after gd (go to definition)
+  (evil-define-key '(visual normal operator) global-map (kbd "gb") #'pop-global-mark)
+
   ;; make :q and :wq close buffer instead of emacs
   (defun save-kill-this-buffer ()
     (interactive)
