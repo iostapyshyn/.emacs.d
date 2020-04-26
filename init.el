@@ -310,6 +310,7 @@
   (add-to-list 'evil-emacs-state-modes 'calc-mode)
   (add-to-list 'evil-emacs-state-modes 'deadgrep-mode)
   (add-to-list 'evil-emacs-state-modes 'process-menu-mode)
+  (add-to-list 'evil-emacs-state-modes 'xref--xref-buffer-mode)
 
   ;; Move cursor to previous marked position. (may be in another buffer)
   ;; Especially useful after gd (go to definition)
