@@ -227,7 +227,7 @@
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
 
-  (setq org-agenda-files (list my/org))
+  (setq org-agenda-files (list my/org-index))
 
   ;; My org files may contain bookmarks. They fail to open without this:
   (require 'bookmark)
