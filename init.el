@@ -150,6 +150,8 @@
   (setq use-package-always-defer t))
 (require 'bind-key) ;; :bind requirement
 
+(use-package dash :ensure t)
+
 (use-package evil
   :ensure t
   :demand t
@@ -243,8 +245,6 @@
   (dired-listing-switches "-alh")
   :config
   (add-hook 'dired-mode-hook 'dired-hide-details-mode))
-
-(use-package dash :ensure t)
 
 ;; Make keybindings work in other keyboard layouts
 (use-package reverse-im
