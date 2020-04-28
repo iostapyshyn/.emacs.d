@@ -157,15 +157,15 @@
   :demand t
   :config
   (evil-mode t)
-  (add-to-list 'evil-emacs-state-modes 'term-mode)
-  (add-to-list 'evil-emacs-state-modes 'bs-mode)
-  (add-to-list 'evil-emacs-state-modes 'vterm-mode)
-  (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
-  (add-to-list 'evil-emacs-state-modes 'calculator-mode)
-  (add-to-list 'evil-emacs-state-modes 'calc-mode)
-  (add-to-list 'evil-emacs-state-modes 'deadgrep-mode)
-  (add-to-list 'evil-emacs-state-modes 'process-menu-mode)
-  (add-to-list 'evil-emacs-state-modes 'xref--xref-buffer-mode)
+
+  (dolist (e '(term-mode
+               vterm-mode
+               bufler-list-mode
+               calc-mode
+               deadgrep-mode
+               process-menu-mode
+               xref--xref-buffer-mode))
+    (add-to-list 'evil-emacs-state-modes e))
 
   (define-key global-map (kbd "C-f") 'evil-scroll-page-down)
   (define-key global-map (kbd "C-b") 'evil-scroll-page-up)
