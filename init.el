@@ -62,7 +62,7 @@
 (setq-default truncate-lines t)
 (setq column-number-mode t)
 
-;; (global-visual-line-mode t) ; I don't like this
+;; (global-visual-line-mode t)
 
 ;; Scrolling behaviour
 (setq scroll-conservatively most-positive-fixnum)
@@ -399,11 +399,6 @@
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f))
 
 (use-package deadgrep :ensure t)
-
-(use-package bufler
-  :ensure t
-  :bind* (("C-x C-b" . bufler)
-          ("C-x b" . bufler-switch-buffer)))
 
 (use-package company
   :demand t
