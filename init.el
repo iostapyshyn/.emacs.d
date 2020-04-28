@@ -296,9 +296,11 @@
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   (setq ivy-re-builders-alist
-      '((swiper-isearch . ivy--regex-plus)
-        (swiper         . ivy--regex-plus)
-        (t              . ivy--regex-fuzzy))))
+        '((t . ivy--regex-plus))))
+
+(use-package ivy-hydra
+  :ensure t
+  :after ivy)
 
 (use-package counsel
   :ensure t
