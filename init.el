@@ -497,18 +497,11 @@
   :demand t
   :ensure t
   :custom
-  (projectile-enable-caching t)
-  (projectile-indexing-method 'native)
+  (projectile-switch-project-action #'projectile-dired)
+  (projectile-completion-system 'ivy)
   :config
   (projectile-mode 1)
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
-  (add-to-list 'projectile-globally-ignored-directories ".cquery_cached_index")
-  (add-to-list 'projectile-globally-ignored-directories ".git")
-  (add-to-list 'projectile-globally-ignored-directories "build/CMakeFiles")
-  (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
-  (add-to-list 'projectile-globally-ignored-files ".DS_Store"))
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 ;; Magit and Gist - GitHub integration
 (use-package magit :ensure t)
