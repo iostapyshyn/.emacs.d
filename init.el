@@ -150,39 +150,36 @@
   (setq use-package-always-defer t))
 (require 'bind-key) ;; :bind requirement
 
-(use-package python
-  :bind (:map python-mode-map
-              ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t)))))
-
-(use-package quail
+(use-package evil
+  :ensure t
   :demand t
   :config
-  ;; Makes russian keyboard layout work for keybindings
-  (defun reverse-input-method (input-method)
-    "Build the reverse mapping of single letters from INPUT-METHOD."
-    (interactive
-     (list (read-input-method-name "Use input method (default current): ")))
-    (if (and input-method (symbolp input-method))
-        (setq input-method (symbol-name input-method)))
-    (let ((current current-input-method)
-          (modifiers '(nil (control) (meta) (control meta))))
-      (when input-method
-        (activate-input-method input-method))
-      (when (and current-input-method quail-keyboard-layout)
-        (dolist (map (cdr (quail-map)))
-          (let* ((to (car map))
-                 (from (quail-get-translation
-                        (cadr map) (char-to-string to) 1)))
-            (when (and (characterp from) (characterp to))
-              (dolist (mod modifiers)
-                (define-key local-function-key-map
-                  (vector (append mod (list from)))
-                  (vector (append mod (list to)))))))))
-      (when input-method
-        (activate-input-method current))))
+  (evil-mode t)
+  (add-to-list 'evil-emacs-state-modes 'term-mode)
+  (add-to-list 'evil-emacs-state-modes 'bs-mode)
+  (add-to-list 'evil-emacs-state-modes 'vterm-mode)
+  (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
+  (add-to-list 'evil-emacs-state-modes 'calculator-mode)
+  (add-to-list 'evil-emacs-state-modes 'calc-mode)
+  (add-to-list 'evil-emacs-state-modes 'deadgrep-mode)
+  (add-to-list 'evil-emacs-state-modes 'process-menu-mode)
+  (add-to-list 'evil-emacs-state-modes 'xref--xref-buffer-mode)
 
-  (reverse-input-method 'russian-computer)
-  (reverse-input-method 'ukrainian-computer))
+  (define-key global-map (kbd "C-f") 'evil-scroll-page-down)
+  (define-key global-map (kbd "C-b") 'evil-scroll-page-up)
+
+  ;; Move cursor to previous marked position. (may be in another buffer)
+  ;; Especially useful after gd (go to definition)
+  (evil-define-key '(visual normal operator) global-map (kbd "gb") #'pop-global-mark)
+
+  ;; make :q and :wq close buffer instead of emacs
+  (defun save-kill-this-buffer ()
+    (interactive)
+    (save-buffer)
+    (kill-this-buffer))
+
+  (evil-ex-define-cmd "q" 'kill-this-buffer)
+  (evil-ex-define-cmd "wq" 'save-kill-this-buffer))
 
 ;; org-mode
 (use-package org
@@ -232,6 +229,10 @@
   ;; My org files may contain bookmarks. They fail to open without this:
   (require 'bookmark)
   (bookmark-maybe-load-default-file))
+
+(use-package python
+  :bind (:map python-mode-map
+              ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t)))))
 
 ;; dired
 (use-package dired
@@ -305,34 +306,6 @@
   :after ivy smex
   :config
   (counsel-mode 1))
-
-(use-package evil
-  :ensure t
-  :demand t
-  :config
-  (evil-mode t)
-  (add-to-list 'evil-emacs-state-modes 'term-mode)
-  (add-to-list 'evil-emacs-state-modes 'bs-mode)
-  (add-to-list 'evil-emacs-state-modes 'vterm-mode)
-  (add-to-list 'evil-emacs-state-modes 'bufler-list-mode)
-  (add-to-list 'evil-emacs-state-modes 'calculator-mode)
-  (add-to-list 'evil-emacs-state-modes 'calc-mode)
-  (add-to-list 'evil-emacs-state-modes 'deadgrep-mode)
-  (add-to-list 'evil-emacs-state-modes 'process-menu-mode)
-  (add-to-list 'evil-emacs-state-modes 'xref--xref-buffer-mode)
-
-  ;; Move cursor to previous marked position. (may be in another buffer)
-  ;; Especially useful after gd (go to definition)
-  (evil-define-key '(visual normal operator) global-map (kbd "gb") #'pop-global-mark)
-
-  ;; make :q and :wq close buffer instead of emacs
-  (defun save-kill-this-buffer ()
-    (interactive)
-    (save-buffer)
-    (kill-this-buffer))
-
-  (evil-ex-define-cmd "q" 'kill-this-buffer)
-  (evil-ex-define-cmd "wq" 'save-kill-this-buffer))
 
 (use-package avy
   :ensure t
