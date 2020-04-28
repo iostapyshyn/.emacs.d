@@ -245,6 +245,15 @@
 
 (use-package dash :ensure t)
 
+;; Make keybindings work in other keyboard layouts
+(use-package reverse-im
+  :ensure t
+  :demand t
+  :custom
+  (reverse-im-input-methods '("russian-computer" "ukrainian-computer" "german"))
+  :config
+  (reverse-im-mode t))
+
 ;; M-x history
 (use-package smex
   :ensure t
