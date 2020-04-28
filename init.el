@@ -230,7 +230,9 @@
 
   ;; My org files may contain bookmarks. They fail to open without this:
   (require 'bookmark)
-  (bookmark-maybe-load-default-file))
+  (bookmark-maybe-load-default-file)
+
+  (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point))
 
 (use-package python
   :bind (:map python-mode-map
@@ -314,7 +316,7 @@
   :bind* (("C-c C-'" . avy-goto-char-timer))
   :preface
   ;; This package autoloads it's functions
-  (evil-define-key '(visual normal operator) global-map (kbd "s") #'avy-goto-char-timer))
+  (evil-define-key '(visual normal operator) global-map (kbd "SPC") #'avy-goto-char-timer))
 
 ;; Get environment variables
 (use-package exec-path-from-shell
