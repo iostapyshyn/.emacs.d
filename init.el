@@ -503,9 +503,10 @@
 (use-package markdown-mode
   :ensure t)
 
+;; Install livedown with:
+;; $ npm install -g livedown
 (use-package livedown
-  :after markdown-mode
-  :demand t
+  :commands livedown-preview
   :load-path "emacs-livedown/")
 
 (use-package tex
