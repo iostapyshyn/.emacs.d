@@ -210,8 +210,8 @@
   :bind
   (("C-c a" . org-agenda)
    ("C-c i" . (lambda ()
-              (interactive)
-              (find-file my/org-index))))
+                (interactive)
+                (find-file my/org-index))))
   :config
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
