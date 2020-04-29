@@ -316,7 +316,7 @@
   :bind* (("C-c SPC" . avy-goto-char-timer))
   :preface
   ;; This package autoloads it's functions
-  (evil-define-key '(visual normal operator) global-map (kbd "SPC") #'avy-goto-char-timer))
+  (evil-define-key '(visual normal motion operator) global-map (kbd "SPC") #'avy-goto-char-timer))
 
 ;; Get environment variables
 (use-package exec-path-from-shell
