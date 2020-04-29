@@ -167,8 +167,12 @@
                xref--xref-buffer-mode))
     (add-to-list 'evil-emacs-state-modes e))
 
+  ;; Sorry, Emacs, for rebinding these
   (define-key global-map (kbd "C-f") 'evil-scroll-page-down)
   (define-key global-map (kbd "C-b") 'evil-scroll-page-up)
+
+  (define-key global-map (kbd "C-M-f") 'scroll-other-window)
+  (define-key global-map (kbd "C-M-b") 'scroll-other-window-down)
 
   ;; make :q and :wq close buffer instead of emacs
   (defun save-kill-this-buffer ()
