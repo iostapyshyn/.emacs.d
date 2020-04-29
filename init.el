@@ -170,10 +170,6 @@
   (define-key global-map (kbd "C-f") 'evil-scroll-page-down)
   (define-key global-map (kbd "C-b") 'evil-scroll-page-up)
 
-  ;; Move cursor to previous marked position. (may be in another buffer)
-  ;; Especially useful after gd (go to definition)
-  (evil-define-key '(visual normal operator) global-map (kbd "gb") #'pop-global-mark)
-
   ;; make :q and :wq close buffer instead of emacs
   (defun save-kill-this-buffer ()
     (interactive)
