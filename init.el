@@ -309,7 +309,7 @@
 
 (use-package avy
   :ensure t
-  :bind* (("C-c C-'" . avy-goto-char-timer))
+  :bind* (("C-c SPC" . avy-goto-char-timer))
   :preface
   ;; This package autoloads it's functions
   (evil-define-key '(visual normal operator) global-map (kbd "SPC") #'avy-goto-char-timer))
