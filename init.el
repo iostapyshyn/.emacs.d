@@ -36,11 +36,16 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 
 (when window-system
-  ;; My preferred font
+  ;; My preferred fonts
   (set-face-attribute 'default nil
                       :family "Iosevka"
                       :weight 'regular
-                      :height 130))
+                      :height 130)
+
+  (set-face-attribute 'variable-pitch nil
+                      :family "PT Sans"
+                      :weight 'regular
+                      :height 1.1))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
@@ -334,6 +339,10 @@
 
 ;; Color theme
 (when (window-system)
+  ;; Keep this white theme for reading
+  (use-package paper-theme
+    :ensure t)
+
   (use-package atom-one-dark-theme
     :ensure t
     :demand t
