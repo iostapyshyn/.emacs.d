@@ -163,11 +163,9 @@
   :config
   (evil-mode t)
 
-  (dolist (e '(term-mode
+  (dolist (e '(nov-mode
                vterm-mode
-               bufler-list-mode
                calc-mode
-               deadgrep-mode
                process-menu-mode
                xref--xref-buffer-mode))
     (add-to-list 'evil-emacs-state-modes e))
@@ -558,9 +556,14 @@
   (define-key pdf-outline-buffer-mode-map (kbd "RET") 'pdf-outline-follow-link-and-quit)
   (define-key pdf-outline-buffer-mode-map (kbd "M-RET") 'pdf-outline-follow-link))
 
-(use-package darkroom
-  :commands darkroom-mode darkroom-tentative-mode
-  :ensure t)
+(use-package darkroom :ensure t)
+(use-package nov
+  :ensure t
+  :mode ("\\.epub\\'" . nov-mode)
+  :config
+  (defun nov-font-setup ()
+    (face-remap-add-relative 'variable-pitch :family "Liberation Serif" :height 1.1))
+  (add-hook 'nov-mode-hook 'nov-font-setup))
 
 (use-package google-this
   :ensure t
