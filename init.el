@@ -163,8 +163,7 @@
   :config
   (evil-mode t)
 
-  (dolist (e '(nov-mode
-               vterm-mode
+  (dolist (e '(vterm-mode
                calc-mode
                process-menu-mode
                xref--xref-buffer-mode))
@@ -407,7 +406,11 @@
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f))
 
-(use-package deadgrep :ensure t)
+(use-package deadgrep
+  :ensure t
+  :config
+  (add-to-list 'evil-motion-state-modes 'deadgrep-mode)
+  (evil-add-hjkl-bindings deadgrep-mode-map 'motion))
 
 (use-package company
   :demand t
@@ -558,11 +561,22 @@
 
 (use-package darkroom :ensure t)
 (use-package nov
+  :commands nov-bookmark-jump-handler
   :ensure t
   :mode ("\\.epub\\'" . nov-mode)
   :config
+  (setq nov-text-width 80)
+
+  (add-to-list 'evil-motion-state-modes 'nov-mode)
+  (evil-define-key 'motion nov-mode-map (kbd "SPC") 'nov-scroll-up)
+  (evil-define-key 'motion nov-mode-map (kbd "DEL") 'nov-scroll-down)
+  (evil-define-key 'motion nov-mode-map (kbd "[") 'nov-next-document)
+  (evil-define-key 'motion nov-mode-map (kbd "]") 'nov-previous-document)
+  (evil-define-key 'motion nov-mode-map (kbd "o") 'nov-goto-toc)
+  (evil-define-key 'motion nov-mode-map (kbd "g") 'nov-render-document)
+
   (defun nov-font-setup ()
-    (face-remap-add-relative 'variable-pitch :family "Liberation Serif" :height 1.1))
+    (face-remap-add-relative 'variable-pitch :family "PT Serif" :height 1.1))
   (add-hook 'nov-mode-hook 'nov-font-setup))
 
 (use-package google-this
