@@ -570,8 +570,8 @@
   (add-to-list 'evil-motion-state-modes 'nov-mode)
   (evil-define-key 'motion nov-mode-map (kbd "SPC") 'nov-scroll-up)
   (evil-define-key 'motion nov-mode-map (kbd "DEL") 'nov-scroll-down)
-  (evil-define-key 'motion nov-mode-map (kbd "[") 'nov-next-document)
-  (evil-define-key 'motion nov-mode-map (kbd "]") 'nov-previous-document)
+  (evil-define-key 'motion nov-mode-map (kbd "]") 'nov-next-document)
+  (evil-define-key 'motion nov-mode-map (kbd "[") 'nov-previous-document)
   (evil-define-key 'motion nov-mode-map (kbd "o") 'nov-goto-toc)
   (evil-define-key 'motion nov-mode-map (kbd "g") 'nov-render-document)
 
