@@ -565,7 +565,6 @@
   :ensure t
   :mode ("\\.epub\\'" . nov-mode)
   :config
-  (setq nov-text-width 80)
 
   (add-to-list 'evil-motion-state-modes 'nov-mode)
   (evil-define-key 'motion nov-mode-map (kbd "SPC") 'nov-scroll-up)
