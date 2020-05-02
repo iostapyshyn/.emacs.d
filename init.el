@@ -336,7 +336,7 @@
 
 ;; Color theme
 (when (window-system)
-  (use-package modus-operandi
+  (use-package modus-operandi-theme
     :ensure t
     :demand t
     :config
