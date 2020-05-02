@@ -341,7 +341,7 @@
     :demand t
     :config
     (setq modus-operandi-theme-rainbow-headings t)
-    (setq modus-operandi-theme-bold-constructs t)
+    (setq modus-operandi-theme-bold-constructs nil)
     (setq modus-operandi-theme-slanted-constructs t)
     (setq modus-operandi-theme-distinct-org-blocks t)
     (load-theme 'modus-operandi t)))
