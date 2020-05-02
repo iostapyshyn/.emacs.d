@@ -336,38 +336,11 @@
 
 ;; Color theme
 (when (window-system)
-  ;; Keep this white theme for reading
-  (use-package paper-theme
-    :ensure t)
-
-  (use-package atom-one-dark-theme
+  (use-package modus-operandi
     :ensure t
     :demand t
     :config
-    (load-theme 'atom-one-dark t))
-
-  (use-package spacemacs-theme
-    :disabled
-    :ensure t
-    :defer t
-    :init
-    (defvar current-theme nil)
-    (defun synchronize-theme ()
-      "Set theme depending on the time of the day."
-      (let* ((hour
-              (string-to-number
-               (substring (current-time-string) 11 13))) ; extract the hour
-             (now
-              (if (and (> hour 6) (< hour 17)) ; if the hour is between 6 and 17
-                  'spacemacs-light ; use light
-                'spacemacs-dark)))
-        (if (equal now current-theme)
-            nil
-          (setq current-theme now)
-          (load-theme now t))))
-
-    ;; Run synchronize-theme now and repeat every 30 minutes
-    (run-at-time nil (* 30 60) 'synchronize-theme)))
+    (load-theme 'modus-operandi t)))
 
 ;; Neotree - navigation tree
 (use-package neotree
