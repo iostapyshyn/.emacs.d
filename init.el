@@ -336,10 +336,14 @@
 
 ;; Color theme
 (when (window-system)
-  (use-package modus-operandi
+  (use-package modus-operandi-theme
     :ensure t
     :demand t
     :config
+    (setq modus-operandi-theme-rainbow-headings t)
+    (setq modus-operandi-theme-bold-constructs t)
+    (setq modus-operandi-theme-slanted-constructs t)
+    (setq modus-operandi-theme-distinct-org-blocks t)
     (load-theme 'modus-operandi t)))
 
 ;; Neotree - navigation tree
@@ -477,7 +481,7 @@
   :demand t
   :ensure t
   :custom
-  (projectile-switch-project-action #'projectile-dired)
+  (projectile-switch-project-action #'projectile-find-file)
   (projectile-completion-system 'ivy)
   :config
   (projectile-mode 1)
