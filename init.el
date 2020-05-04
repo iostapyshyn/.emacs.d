@@ -73,9 +73,9 @@
 (setq scroll-conservatively most-positive-fixnum)
 
 ;; Parenthesis
-(setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
 (show-paren-mode 1)
+(electric-pair-mode 1)
 
 ;; Identation
 (setq c-default-style "k&r")
