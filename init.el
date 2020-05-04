@@ -73,17 +73,20 @@
 (setq scroll-conservatively most-positive-fixnum)
 
 ;; Parenthesis
+(electric-pair-mode 1)
+
 (setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
 ;; Highlight the whole expression in lisp modes
+;; And disable electric-pair-mode
 (make-variable-buffer-local 'show-paren-style)
 (dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
   (add-hook hook
-            (lambda () (setq show-paren-style 'expression))))
-
-(electric-pair-mode 1)
+            (lambda ()
+              (setq show-paren-style 'expression)
+              (electric-pair-mode 0))))
 
 ;; Identation
 (setq c-default-style "k&r")
