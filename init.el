@@ -200,17 +200,6 @@
 (use-package org
   :demand t
   :preface
-  ;; Keep org headlines the same size
-  (add-hook 'after-load-theme-hook
-            (lambda ()
-              (dolist (face '(org-level-1
-                              org-level-2
-                              org-level-3
-                              org-level-4
-                              org-level-5
-                              org-tag))
-                (set-face-attribute face nil :weight 'semi-bold :height 1.0))))
-
   (defvar my/org "~/org")
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
 
@@ -239,7 +228,7 @@
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
 
-  (setq org-agenda-files (list my/org-index))
+  (setq org-agenda-files (list my/org))
 
   ;; My org files may contain bookmarks. They fail to open without this:
   (require 'bookmark)
@@ -535,6 +524,10 @@
   :preface
   (pdf-loader-install)
   :config
+  (add-hook 'pdf-view-mode-hook
+            (lambda ()
+              (set (make-local-variable 'evil-emacs-state-cursor) (list nil))))
+
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-view-use-scaling t)
   (setq pdf-annot-activate-created-annotations t)
