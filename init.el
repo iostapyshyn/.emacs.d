@@ -489,7 +489,11 @@
 
 ;; Magit and Gist - GitHub integration
 (use-package magit :ensure t)
-(use-package gist :ensure t)
+(use-package webpaste
+  :ensure t
+  :bind ("C-c / p" . webpaste-paste-buffer-or-region)
+  :config
+  (setq webpaste-provider-priority '("dpaste.org" "dpaste.com")))
 
 (use-package markdown-mode
   :ensure t)
