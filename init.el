@@ -73,8 +73,16 @@
 (setq scroll-conservatively most-positive-fixnum)
 
 ;; Parenthesis
+(setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
 (show-paren-mode 1)
+
+;; Highlight the whole expression in lisp modes
+(make-variable-buffer-local 'show-paren-style)
+(dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
+  (add-hook hook
+            (lambda () (setq show-paren-style 'expression))))
+
 (electric-pair-mode 1)
 
 ;; Identation
