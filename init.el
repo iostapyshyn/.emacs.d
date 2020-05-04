@@ -487,7 +487,7 @@
   (projectile-mode 1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
-;; Magit and Gist - GitHub integration
+;; Magit
 (use-package magit :ensure t)
 (use-package webpaste
   :ensure t
