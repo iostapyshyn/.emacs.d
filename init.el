@@ -211,6 +211,9 @@
               (setq default-directory "~")))
   :bind
   (("C-c a" . org-agenda)
+   ("C-c c" . (lambda ()
+                (interactive)
+                (org-capture nil "i")))
    ("C-c i" . (lambda ()
                 (interactive)
                 (find-file my/org-index))))
@@ -219,6 +222,8 @@
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
+
+  (setq org-cycle-separator-lines 1)
 
   ;; No security whatsoever..
   (setq org-confirm-babel-evaluate nil
@@ -229,6 +234,10 @@
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
 
   (setq org-agenda-files (list my/org))
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+  (setq org-capture-templates '(("i" "Inbox" entry
+                                 (file+headline my/org-index "Inbox")
+                                 "* %i%?")))
 
   ;; My org files may contain bookmarks. They fail to open without this:
   (require 'bookmark)
@@ -342,6 +351,7 @@
     :config
     (setq modus-operandi-theme-rainbow-headings t)
     (setq modus-operandi-theme-bold-constructs nil)
+    (setq modus-operandi-theme-scale-headings nil)
     (setq modus-operandi-theme-slanted-constructs t)
     (setq modus-operandi-theme-distinct-org-blocks t)
     (load-theme 'modus-operandi t)))
