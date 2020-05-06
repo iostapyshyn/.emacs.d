@@ -183,12 +183,6 @@
   ;; Sorry, Emacs, for rebinding these
   (define-key global-map (kbd "C-f") 'evil-scroll-page-down)
   (define-key global-map (kbd "C-b") 'evil-scroll-page-up)
-  (define-key global-map (kbd "C-w") evil-window-map)
-
-  (define-key evil-window-map (kbd "<right>") 'evil-window-right)
-  (define-key evil-window-map (kbd "<left>") 'evil-window-left)
-  (define-key evil-window-map (kbd "<up>") 'evil-window-up)
-  (define-key evil-window-map (kbd "<down>") 'evil-window-down)
 
   (define-key global-map (kbd "C-M-f") 'scroll-other-window)
   (define-key global-map (kbd "C-M-b") 'scroll-other-window-down)
