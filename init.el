@@ -368,6 +368,7 @@
     :config
     (setq modus-vivendi-theme-slanted-constructs t)
     (setq modus-vivendi-theme-distinct-org-blocks t)
+
     ;; A bit softer background
     (setq modus-vivendi-theme-override-colors-alist '(("bg-main" . "#101010"))))
 
