@@ -223,6 +223,13 @@
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
 
+  (add-hook 'org-mode-hook (lambda ()
+   "Beautify Org Checkbox Symbol"
+   (push '("[ ]" . "☐") prettify-symbols-alist)
+   (push '("[X]" . "☑") prettify-symbols-alist)
+   (push '("[-]" . "❍") prettify-symbols-alist)
+   (prettify-symbols-mode)))
+
   (setq org-cycle-separator-lines 1)
 
   ;; No security whatsoever..
@@ -237,7 +244,7 @@
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (setq org-capture-templates '(("i" "Inbox" entry
                                  (file+headline my/org-index "Inbox")
-                                 "* %i%?")))
+                                 "* %i%?" :empty-lines 1)))
 
   ;; My org files may contain bookmarks. They fail to open without this:
   (require 'bookmark)
@@ -349,9 +356,6 @@
     :ensure t
     :demand t
     :config
-    (setq modus-operandi-theme-rainbow-headings t)
-    (setq modus-operandi-theme-bold-constructs nil)
-    (setq modus-operandi-theme-scale-headings nil)
     (setq modus-operandi-theme-slanted-constructs t)
     (setq modus-operandi-theme-distinct-org-blocks t)
     (load-theme 'modus-operandi t)))
