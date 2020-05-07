@@ -357,20 +357,14 @@
     :demand t
     :config
     (setq modus-operandi-theme-slanted-constructs t)
-    (setq modus-operandi-theme-distinct-org-blocks t)
-
-    ;; A bit softer background
-    (setq modus-operandi-theme-override-colors-alist '(("bg-main" . "#fafafa"))))
+    (setq modus-operandi-theme-distinct-org-blocks t))
 
   (use-package modus-vivendi-theme
     :ensure t
     :demand t
     :config
     (setq modus-vivendi-theme-slanted-constructs t)
-    (setq modus-vivendi-theme-distinct-org-blocks t)
-
-    ;; A bit softer background
-    (setq modus-vivendi-theme-override-colors-alist '(("bg-main" . "#101010"))))
+    (setq modus-vivendi-theme-distinct-org-blocks t))
 
   (load-theme 'modus-operandi t))
 
