@@ -140,6 +140,11 @@
       mac-option-modifier 'meta
       mac-right-option-modifier nil)
 
+;; German postfix input method:
+;; C-\ to enable: ae -> ä
+;; Is buffer-local
+(setq default-input-method 'german-postfix)
+
 (define-key global-map [?\s-x] 'kill-region)
 (define-key global-map [?\s-c] 'kill-ring-save)
 (define-key global-map [?\s-v] 'yank)
