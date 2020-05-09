@@ -174,6 +174,7 @@
 (use-package dash :ensure t)
 
 (use-package evil
+  :disabled t
   :ensure t
   :demand t
   :config
@@ -259,9 +260,9 @@
 
   ;; My org files may contain bookmarks. They fail to open without this:
   (require 'bookmark)
-  (bookmark-maybe-load-default-file)
+  (bookmark-maybe-load-default-file))
 
-  (evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point))
+  ;;(evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point))
 
 (use-package python
   :bind (:map python-mode-map
@@ -342,10 +343,10 @@
 
 (use-package avy
   :ensure t
-  :bind* (("C-c SPC" . avy-goto-char-timer))
-  :preface
+  :bind* (("C-c SPC" . avy-goto-char-timer)))
+;;  :preface
   ;; This package autoloads it's functions
-  (evil-define-key '(visual normal motion operator) global-map (kbd "SPC") #'avy-goto-char-timer))
+;;  (evil-define-key '(visual normal motion operator) global-map (kbd "SPC") #'avy-goto-char-timer))
 
 ;; Get environment variables
 (use-package exec-path-from-shell
@@ -385,13 +386,13 @@
   :bind* (("<f8>" . neotree-toggle))
   :config
   (setq neo-theme 'ascii)
-  (setq neo-smart-open t)
-  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-  (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-  (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh))
+  (setq neo-smart-open t))
+  ;; (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+  ;; (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+  ;; (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+  ;; (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+  ;; (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  ;; (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh))
 
 ;; Better terminal emulator
 (use-package vterm
@@ -417,10 +418,10 @@
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f))
 
 (use-package deadgrep
-  :ensure t
-  :config
-  (add-to-list 'evil-motion-state-modes 'deadgrep-mode)
-  (evil-add-hjkl-bindings deadgrep-mode-map 'motion))
+  :ensure t)
+  ;;:config
+;;  (add-to-list 'evil-motion-state-modes 'deadgrep-mode)
+;;  (evil-add-hjkl-bindings deadgrep-mode-map 'motion))
 
 (use-package company
   :demand t
@@ -584,13 +585,13 @@
   :mode ("\\.epub\\'" . nov-mode)
   :config
 
-  (add-to-list 'evil-motion-state-modes 'nov-mode)
-  (evil-define-key 'motion nov-mode-map (kbd "SPC") 'nov-scroll-up)
-  (evil-define-key 'motion nov-mode-map (kbd "DEL") 'nov-scroll-down)
-  (evil-define-key 'motion nov-mode-map (kbd "]") 'nov-next-document)
-  (evil-define-key 'motion nov-mode-map (kbd "[") 'nov-previous-document)
-  (evil-define-key 'motion nov-mode-map (kbd "o") 'nov-goto-toc)
-  (evil-define-key 'motion nov-mode-map (kbd "g") 'nov-render-document)
+  ;; (add-to-list 'evil-motion-state-modes 'nov-mode)
+  ;; (evil-define-key 'motion nov-mode-map (kbd "SPC") 'nov-scroll-up)
+  ;; (evil-define-key 'motion nov-mode-map (kbd "DEL") 'nov-scroll-down)
+  ;; (evil-define-key 'motion nov-mode-map (kbd "]") 'nov-next-document)
+  ;; (evil-define-key 'motion nov-mode-map (kbd "[") 'nov-previous-document)
+  ;; (evil-define-key 'motion nov-mode-map (kbd "o") 'nov-goto-toc)
+  ;; (evil-define-key 'motion nov-mode-map (kbd "g") 'nov-render-document)
 
   (defun nov-font-setup ()
     (face-remap-add-relative 'variable-pitch :family "PT Serif" :height 1.1))
