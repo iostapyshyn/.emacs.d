@@ -173,35 +173,6 @@
 
 (use-package dash :ensure t)
 
-(use-package evil
-  :disabled t
-  :ensure t
-  :demand t
-  :config
-  (evil-mode t)
-
-  (dolist (e '(vterm-mode
-               calc-mode
-               process-menu-mode
-               xref--xref-buffer-mode))
-    (add-to-list 'evil-emacs-state-modes e))
-
-  ;; Sorry, Emacs, for rebinding these
-  (define-key global-map (kbd "C-f") 'evil-scroll-page-down)
-  (define-key global-map (kbd "C-b") 'evil-scroll-page-up)
-
-  (define-key global-map (kbd "C-M-f") 'scroll-other-window)
-  (define-key global-map (kbd "C-M-b") 'scroll-other-window-down)
-
-  ;; make :q and :wq close buffer instead of emacs
-  (defun save-kill-this-buffer ()
-    (interactive)
-    (save-buffer)
-    (kill-this-buffer))
-
-  (evil-ex-define-cmd "q" 'kill-this-buffer)
-  (evil-ex-define-cmd "wq" 'save-kill-this-buffer))
-
 ;; org-mode
 (use-package org
   :demand t
@@ -262,8 +233,6 @@
   (require 'bookmark)
   (bookmark-maybe-load-default-file))
 
-  ;;(evil-define-key 'normal org-mode-map (kbd "RET") 'org-open-at-point))
-
 (use-package python
   :bind (:map python-mode-map
               ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t)))))
@@ -308,6 +277,13 @@
   :config
   (which-key-mode))
 
+(use-package anzu
+  :ensure t
+  :config
+  (global-anzu-mode 1)
+  (define-key global-map [remap query-replace] #'anzu-query-replace)
+  (define-key global-map [remap query-replace-regexp] #'anzu-query-replace-regexp))
+
 (use-package swiper
   :ensure t
   :bind* ("C-s" . swiper-isearch))
@@ -344,9 +320,6 @@
 (use-package avy
   :ensure t
   :bind* (("C-c SPC" . avy-goto-char-timer)))
-;;  :preface
-  ;; This package autoloads it's functions
-;;  (evil-define-key '(visual normal motion operator) global-map (kbd "SPC") #'avy-goto-char-timer))
 
 ;; Get environment variables
 (use-package exec-path-from-shell
@@ -387,12 +360,6 @@
   :config
   (setq neo-theme 'ascii)
   (setq neo-smart-open t))
-  ;; (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-  ;; (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-  ;; (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-  ;; (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-  ;; (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-  ;; (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh))
 
 ;; Better terminal emulator
 (use-package vterm
@@ -419,9 +386,6 @@
 
 (use-package deadgrep
   :ensure t)
-  ;;:config
-;;  (add-to-list 'evil-motion-state-modes 'deadgrep-mode)
-;;  (evil-add-hjkl-bindings deadgrep-mode-map 'motion))
 
 (use-package company
   :demand t
@@ -562,10 +526,6 @@
   :preface
   (pdf-loader-install)
   :config
-  (add-hook 'pdf-view-mode-hook
-            (lambda ()
-              (set (make-local-variable 'evil-emacs-state-cursor) (list nil))))
-
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-view-use-scaling t)
   (setq pdf-annot-activate-created-annotations t)
@@ -584,15 +544,6 @@
   :ensure t
   :mode ("\\.epub\\'" . nov-mode)
   :config
-
-  ;; (add-to-list 'evil-motion-state-modes 'nov-mode)
-  ;; (evil-define-key 'motion nov-mode-map (kbd "SPC") 'nov-scroll-up)
-  ;; (evil-define-key 'motion nov-mode-map (kbd "DEL") 'nov-scroll-down)
-  ;; (evil-define-key 'motion nov-mode-map (kbd "]") 'nov-next-document)
-  ;; (evil-define-key 'motion nov-mode-map (kbd "[") 'nov-previous-document)
-  ;; (evil-define-key 'motion nov-mode-map (kbd "o") 'nov-goto-toc)
-  ;; (evil-define-key 'motion nov-mode-map (kbd "g") 'nov-render-document)
-
   (defun nov-font-setup ()
     (face-remap-add-relative 'variable-pitch :family "PT Serif" :height 1.1))
   (add-hook 'nov-mode-hook 'nov-font-setup))
@@ -608,7 +559,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-
-;;Local Variables:
-;; byte-compile-warnings: (not free-vars unresolved)
-;; End:
