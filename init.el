@@ -228,12 +228,17 @@
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
 
-  (add-hook 'org-mode-hook (lambda ()
-   "Beautify Org Checkbox Symbol"
-   (push '("[ ]" . "☐") prettify-symbols-alist)
-   (push '("[X]" . "☑") prettify-symbols-alist)
-   (push '("[-]" . "❍") prettify-symbols-alist)
-   (prettify-symbols-mode)))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              "Beautify Org Checkbox Symbol"
+              (push '("[ ]" . "☐") prettify-symbols-alist)
+              (push '("[X]" . "☑") prettify-symbols-alist)
+              (push '("[-]" . "❍") prettify-symbols-alist)
+              (prettify-symbols-mode)))
+
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (activate-input-method 'german-postfix)))
 
   (setq org-cycle-separator-lines 1)
 
