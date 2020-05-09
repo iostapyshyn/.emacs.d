@@ -241,6 +241,7 @@
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
 
   (setq org-agenda-files (list my/org))
+  (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
   (setq org-capture-templates '(("i" "Inbox" entry
                                  (file+headline my/org-index "Inbox")
