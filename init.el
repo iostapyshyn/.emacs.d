@@ -135,10 +135,10 @@
               (local-set-key (kbd "C-c h") 'c-switch-source-header))))
 
 ;; Keys on mac
-(setq mac-command-key-is-meta nil
-      mac-command-modifier 'super
-      mac-option-modifier 'meta
-      mac-right-option-modifier nil)
+(when (or (eq window-system 'ns) (eq window-system 'mac))
+  (setq mac-command-modifier 'super
+        mac-option-modifier 'meta
+        mac-right-option-modifier nil))
 
 ;; German postfix input method:
 ;; C-\ to enable: ae -> ä
