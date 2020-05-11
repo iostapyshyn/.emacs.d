@@ -88,8 +88,10 @@
 (dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
   (add-hook hook
             (lambda ()
-              (setq show-paren-style 'expression)
-              (electric-pair-mode 0))))
+              (electric-pair-local-mode 0)
+              (setq show-paren-style 'expression))))
+
+(global-set-key (kbd "<S-return>") (kbd "C-e C-m"))
 
 ;; Identation
 (setq c-default-style "k&r")
