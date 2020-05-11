@@ -283,13 +283,6 @@
   :config
   (which-key-mode))
 
-(use-package anzu
-  :ensure t
-  :config
-  (global-anzu-mode 1)
-  (define-key global-map [remap query-replace] #'anzu-query-replace)
-  (define-key global-map [remap query-replace-regexp] #'anzu-query-replace-regexp))
-
 (use-package swiper
   :ensure t
   :bind* ("C-s" . swiper-isearch))
