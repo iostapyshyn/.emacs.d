@@ -101,6 +101,9 @@
               css-indent-offset 2
               js-indent-level 2)
 
+;; Typed text replaces the selection
+(delete-selection-mode 1)
+
 ;; Calc
 (setq-default calc-multiplication-has-precedence nil)
 
