@@ -320,6 +320,10 @@
   :ensure t
   :bind* (("C-c SPC" . avy-goto-char-timer)))
 
+(use-package expand-region
+  :ensure t
+  :bind (("C-=" . er/expand-region)))
+
 ;; Get environment variables
 (use-package exec-path-from-shell
   :ensure t
