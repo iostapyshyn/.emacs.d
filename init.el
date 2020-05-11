@@ -153,6 +153,10 @@
 ;; Is buffer-local
 (setq default-input-method 'german-postfix)
 
+;; My org files may contain bookmarks. They fail to open without this:
+(require 'bookmark)
+(bookmark-maybe-load-default-file)
+
 (define-key global-map [?\s-x] 'kill-region)
 (define-key global-map [?\s-c] 'kill-ring-save)
 (define-key global-map [?\s-v] 'yank)
@@ -216,10 +220,6 @@
               (push '("[-]" . "❍") prettify-symbols-alist)
               (prettify-symbols-mode)))
 
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (activate-input-method 'german-postfix)))
-
   (setq org-cycle-separator-lines 1)
 
   ;; No security whatsoever..
@@ -237,9 +237,7 @@
                                  (file+headline my/org-index "Inbox")
                                  "* %i%?" :empty-lines 1)))
 
-  ;; My org files may contain bookmarks. They fail to open without this:
-  (require 'bookmark)
-  (bookmark-maybe-load-default-file))
+  (setq org-return-follows-link t))
 
 (use-package python
   :bind (:map python-mode-map
