@@ -52,7 +52,10 @@
       inhibit-splash-screen t)
 
 ;; No backup file polution
-(setq make-backup-files nil)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; UTF-8 everywhere by default
 (prefer-coding-system 'utf-8)
