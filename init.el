@@ -340,6 +340,8 @@
 
 ;; Color theme
 (when (window-system)
+  (setq custom-safe-themes t)
+
   (use-package modus-operandi-theme
     :ensure t
     :demand t
