@@ -104,6 +104,9 @@
 ;; Typed text replaces the selection
 (delete-selection-mode 1)
 
+;; re-builder syntax
+(setq reb-re-syntax 'string)
+
 ;; Calc
 (setq-default calc-multiplication-has-precedence nil)
 
@@ -229,6 +232,7 @@
         org-export-use-babel nil)
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+  (setq org-agenda-follow-mode t)
 
   (setq org-agenda-files (list my/org))
   (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
