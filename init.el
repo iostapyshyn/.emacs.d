@@ -303,8 +303,6 @@
 
 (use-package swiper
   :ensure t
-  :config
-  (setq search-default-mode #'char-fold-to-regexp)
   :bind (("C-s" . swiper-isearch)
          ("C-r" . swiper-isearch-backward)))
 
