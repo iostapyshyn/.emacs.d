@@ -551,6 +551,7 @@
   (define-key pdf-view-mode-map (kbd "t") 'pdf-annot-add-text-annotation)
   (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete)
 
+  ;; Invert RET behavior
   (require 'pdf-outline)
   (define-key pdf-outline-buffer-mode-map (kbd "RET") 'pdf-outline-follow-link-and-quit)
   (define-key pdf-outline-buffer-mode-map (kbd "M-RET") 'pdf-outline-follow-link))
