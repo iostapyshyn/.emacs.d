@@ -303,7 +303,10 @@
 
 (use-package swiper
   :ensure t
-  :bind* ("C-s" . swiper-isearch))
+  :config
+  (setq search-default-mode #'char-fold-to-regexp)
+  :bind (("C-s" . swiper-isearch)
+         ("C-r" . swiper-isearch-backward)))
 
 (use-package ivy
   :ensure t
@@ -318,8 +321,8 @@
   (ivy-mode 1)
   (setq ivy-display-style 'fancy)
   (setq ivy-count-format "(%d/%d) ")
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
+  (setq ivy-use-virtual-buffers nil)
+  (setq enable-recursive-minibuffers nil)
   (setq ivy-re-builders-alist
         '((t . ivy--regex-plus))))
 
@@ -574,7 +577,7 @@
 
 (use-package google-this
   :ensure t
-  :bind* (("C-c / g" . google-this)))
+  :bind (("C-c / g" . google-this)))
 
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
