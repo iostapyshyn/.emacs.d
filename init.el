@@ -234,6 +234,7 @@
 
   (setq org-goto-auto-isearch nil)
 
+  ;; Org source blocks
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
 
