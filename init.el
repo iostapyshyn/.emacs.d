@@ -72,6 +72,10 @@
 
 ;; (global-visual-line-mode t)
 
+;; Highlight the current line (only in X)
+(when window-system
+  (global-hl-line-mode 1))
+
 ;; Scrolling behaviour
 (setq scroll-conservatively most-positive-fixnum)
 
