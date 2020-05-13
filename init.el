@@ -208,7 +208,8 @@
                 (org-capture nil "i")))
    ("C-c i" . (lambda ()
                 (interactive)
-                (find-file my/org-index))))
+                (find-file my/org-index)))
+   ("C-c l" . org-store-link))
   :config
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
@@ -228,6 +229,9 @@
 
   ;; C-a/C-e stops before tags
   (setq org-special-ctrl-a/e t)
+
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
 
   ;; No security whatsoever..
   (setq org-confirm-babel-evaluate nil
