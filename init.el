@@ -223,7 +223,11 @@
               (push '("[-]" . "❍") prettify-symbols-alist)
               (prettify-symbols-mode)))
 
+  ;; Leave a line between closed headings
   (setq org-cycle-separator-lines 1)
+
+  ;; C-a/C-e stops before tags
+  (setq org-special-ctrl-a/e t)
 
   ;; No security whatsoever..
   (setq org-confirm-babel-evaluate nil
