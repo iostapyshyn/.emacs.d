@@ -375,7 +375,23 @@
     (setq modus-vivendi-theme-slanted-constructs t)
     (setq modus-vivendi-theme-distinct-org-blocks t))
 
-  (load-theme 'modus-operandi t))
+  (defvar current-theme nil)
+  (defun synchronize-theme ()
+    "Set theme depending on the time of the day."
+    (let* ((hour
+            (string-to-number
+             (substring (current-time-string) 11 13))) ; extract the hour
+           (now
+            (if (and (>= hour 6) (<= hour 17)) ; if the hour is between 6 and 17
+                'modus-operandi ; use light
+              'modus-vivendi)))
+      (if (equal now current-theme)
+          nil
+        (setq current-theme now)
+        (load-theme now t))))
+
+  ;; Run synchronize-theme now and repeat every 30 minutes
+  (run-at-time nil (* 30 60) 'synchronize-theme))
 
 ;; Neotree - navigation tree
 (use-package neotree
