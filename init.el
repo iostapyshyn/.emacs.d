@@ -232,6 +232,8 @@
   ;; C-a/C-e stops before tags
   (setq org-special-ctrl-a/e t)
 
+  (setq org-goto-auto-isearch nil)
+
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
 
@@ -242,14 +244,12 @@
         org-export-use-babel nil)
 
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+  (setq org-pretty-entities t)
   (setq org-agenda-follow-mode t)
 
   (setq org-agenda-files (list my/org))
   (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-  (setq org-capture-templates '(("i" "Inbox" entry
-                                 (file+headline my/org-index "Inbox")
-                                 "* %i%?" :empty-lines 1)))
 
   (setq org-return-follows-link t))
 
