@@ -259,7 +259,11 @@
   (dired-recursive-deletes 'top)
   (dired-listing-switches "-alh")
   :config
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode))
+  (require 'dired-x)
+  (setq-default dired-omit-files-p t) ; Buffer-local variable
+  (setq dired-omit-files "^\\.[^.]\\|^\\.$")
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+  (add-hook 'dired-mode-hook 'dired-omit-mode))
 
 ;; Make keybindings work in other keyboard layouts
 (use-package reverse-im
