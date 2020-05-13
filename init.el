@@ -207,11 +207,9 @@
               (setq default-directory "~")))
   :bind
   (("C-c a" . org-agenda)
-   ("C-c c" . (lambda ()
-                (interactive)
-                (org-capture nil "i")))
    ("C-c i" . (lambda ()
                 (interactive)
+                (push-mark)
                 (find-file my/org-index)))
    ("C-c l" . org-store-link))
   :config
