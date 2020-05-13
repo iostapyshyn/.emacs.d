@@ -422,7 +422,9 @@
         (vterm-send-string (concat "cd " dir "\n")))))
   :config
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
-  (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f))
+  (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f)
+  (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
+  (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n))
 
 (use-package deadgrep
   :ensure t)
