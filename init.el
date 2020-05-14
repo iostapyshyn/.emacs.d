@@ -325,8 +325,7 @@
         '((t . ivy--regex-plus))))
 
 (use-package ivy-hydra
-  :ensure t
-  :after ivy)
+  :ensure t)
 
 (use-package counsel
   :ensure t
