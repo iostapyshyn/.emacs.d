@@ -406,6 +406,11 @@
   ;; Run synchronize-theme now and repeat every 30 minutes
   (run-at-time nil (* 30 60) 'synchronize-theme))
 
+(use-package rainbow-delimiters
+  :ensure t
+  :hook ((emacs-lisp-mode
+          lisp-mode) . rainbow-delimiters-mode))
+
 ;; Neotree - navigation tree
 (use-package neotree
   :ensure t
