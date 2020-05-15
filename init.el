@@ -271,6 +271,9 @@
   (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   (add-hook 'dired-mode-hook 'dired-omit-mode))
 
+(use-package flyspell
+  :bind ("C-c ! !" . flyspell-mode))
+
 ;; Make keybindings work in other keyboard layouts
 (use-package reverse-im
   :ensure t
