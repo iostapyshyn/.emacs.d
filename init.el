@@ -486,7 +486,7 @@
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$"))
 
 (use-package lsp-ui
-  :after lsp-mode
+  :commands lsp-ui-mode
   :ensure t
   :custom
   (lsp-ui-doc-enable nil)) ; Disable giant hovering pop-up boxes.
