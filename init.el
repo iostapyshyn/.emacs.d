@@ -272,9 +272,20 @@
   (add-hook 'dired-mode-hook 'dired-omit-mode))
 
 (use-package flyspell
-  :bind ("C-c ! !" . flyspell-mode))
+  :bind* ("C-c ! !" . flyspell-toggle)
+  :config
+  (defun flyspell-toggle ()
+    "Turn on flyspell mode if off and run a check on
+     the buffer. Disable flyspell-mode otherwise."
+    (interactive)
+    (if (and (boundp 'flyspell-mode) flyspell-mode)
+        (flyspell-mode 0)
+      (if (derived-mode-p 'prog-mode)
+          (flyspell-prog-mode)
+        (flyspell-mode 1))
+      (flyspell-buffer))))
 
-;; Make keybindings work in other keyboard layouts
+;; Make key-bindings work in other keyboard layouts
 (use-package reverse-im
   :ensure t
   :demand t
