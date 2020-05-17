@@ -426,7 +426,28 @@
   (setq neo-smart-open t))
 
 (use-package eshell
-  :bind ("<s-return>" . eshell))
+  :bind ("<s-return>" . eshell-open-save-directory)
+  :config
+  ;; Pressing <s-return> twice will open eshell and cd into prev.
+  ;; buffer directory.
+  (define-key eshell-mode-map (kbd "<s-return>") 'eshell-cd-saved-directory)
+
+  (defun eshell-open-save-directory (&optional arg)
+    "Opens eshell, but saves buffer directory in a variable `eshell-saved-directory'.
+See `eshell-cd-saved-directory'."
+    (interactive "P")
+    (setq eshell-saved-directory default-directory)
+    (eshell arg)
+    (where-is 'eshell-cd-saved-directory))
+
+  (defun eshell-cd-saved-directory ()
+    "Changes current eshell directory to the one previously saved
+by `eshell-open-save-directory'."
+    (interactive)
+    (and eshell-saved-directory
+         (progn
+           (cd eshell-saved-directory)
+           (eshell-reset nil)))))
 
 ;; Better terminal emulator
 (use-package vterm
