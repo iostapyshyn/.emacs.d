@@ -42,6 +42,9 @@
                       :weight 'regular
                       :height 130)
 
+  (set-face-attribute 'fixed-pitch nil
+                      :family 'unspecified)
+
   (set-face-attribute 'variable-pitch nil
                       :family "PT Sans"
                       :weight 'regular
@@ -243,7 +246,10 @@
         org-link-shell-confirm-function nil
         org-export-use-babel nil)
 
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
+        ;; imagemagick can preview tikz
+        org-preview-latex-default-process 'imagemagick)
+
   (setq org-pretty-entities t)
   (setq org-agenda-follow-mode t)
 
@@ -565,7 +571,16 @@
 (use-package tex
   :ensure auctex
   :config
-  (setq TeX-auto-save t))
+  (setq TeX-auto-save t)
+  (TeX-global-PDF-mode 1)
+
+  ;; Use pdf-tools to open PDF files
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-start-server t)
+
+  ;; Update PDF buffers after successful LaTeX runs
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer))
 
 ;; Rust
 (use-package rust-mode
