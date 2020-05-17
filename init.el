@@ -425,6 +425,9 @@
   (setq neo-theme 'ascii)
   (setq neo-smart-open t))
 
+(use-package eshell
+  :bind ("<s-return>" . eshell))
+
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
