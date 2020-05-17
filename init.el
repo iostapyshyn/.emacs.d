@@ -80,6 +80,7 @@
               (setq show-paren-style 'expression))))
 
 (global-set-key (kbd "<S-return>") (kbd "C-e C-m"))
+(global-set-key (kbd "<C-S-return>") (kbd "C-a C-o"))
 
 ;; Identation
 (setq c-default-style "k&r")
@@ -420,13 +421,14 @@
   (setq neo-smart-open t))
 
 (use-package eshell
-  :bind ("<s-return>" . eshell-open-save-directory)
+  :bind ("<s-return>" . eshell-open-with-directory)
   :config
   ;; Pressing <s-return> twice will open eshell and cd into prev.
   ;; buffer directory.
-  (define-key eshell-mode-map (kbd "<s-return>") 'eshell-cd-saved-directory)
+  (with-eval-after-load 'esh-mode
+    (define-key eshell-mode-map (kbd "<s-return>") 'eshell-cd-saved-directory))
 
-  (defun eshell-open-save-directory (&optional arg)
+  (defun eshell-open-with-directory (&optional arg)
     "Opens eshell, but saves buffer directory in a variable `eshell-saved-directory'.
 See `eshell-cd-saved-directory'."
     (interactive "P")
@@ -436,7 +438,7 @@ See `eshell-cd-saved-directory'."
 
   (defun eshell-cd-saved-directory ()
     "Changes current eshell directory to the one previously saved
-by `eshell-open-save-directory'."
+by `eshell-open-with-directory'."
     (interactive)
     (and eshell-saved-directory
          (progn
@@ -450,18 +452,12 @@ by `eshell-open-save-directory'."
   :init
   (defun vterm-open ()
     (interactive)
-    (let ((dir default-directory))
-      (if (buffer-exists "vterm")
-          (if (get-buffer-process "vterm")
-              (switch-to-buffer "vterm")
-            (kill-buffer "vterm")
-            (vterm))
-        (vterm))
-      (unless (eq dir default-directory)
-        ;; Clear the prompt and cd into current directory
-        ;; of the buffer from where vterm-open was called
-        (vterm-send-C-u)
-        (vterm-send-string (concat "cd " dir "\n")))))
+    (if (get-buffer "vterm")
+        (if (get-buffer-process "vterm")
+            (switch-to-buffer "vterm")
+          (kill-buffer "vterm")
+          (vterm))
+        (vterm)))
   :config
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f)
