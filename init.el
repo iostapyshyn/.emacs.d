@@ -7,33 +7,12 @@
     (when (file-exists-p early-init-file)
       (load-file early-init-file))))
 
-;;; --- Some utility functions ---
-
-(defun buffer-exists (bufname)
-  "Return t if buffer with a name BUFNAME exists."
-  (not (eq nil (get-buffer bufname))))
-
-(defadvice load-theme (before theme-dont-propagate activate)
-  "Discard all themes before loading new."
-  (mapc #'disable-theme custom-enabled-themes))
-
-(defvar after-load-theme-hook nil
-  "Hook run after a color theme is loaded using `load-theme'.")
-
-(defadvice load-theme (after run-after-load-theme-hook activate)
-  "Run `after-load-theme-hook'."
-  (run-hooks 'after-load-theme-hook))
-
-;;; --- Various small tweaks ---
-
 ;; Start the server
 (load "server")
 (unless (server-running-p) (server-start))
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
-
-(setq confirm-kill-emacs 'y-or-n-p)
 
 (when window-system
   ;; My preferred fonts
@@ -68,6 +47,8 @@
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 (fset 'yes-or-no-p 'y-or-n-p)
+
+(setq confirm-kill-emacs 'y-or-n-p)
 
 ;; No wrapping, rather truncate
 (setq-default truncate-lines t)
@@ -115,7 +96,8 @@
 (setq reb-re-syntax 'string)
 
 ;; Calc
-(setq-default calc-multiplication-has-precedence nil)
+(with-eval-after-load 'calc
+  (setq-default calc-multiplication-has-precedence nil))
 
 ;; Compilation
 (setq compilation-window-height 10)
@@ -164,8 +146,9 @@
 (setq default-input-method 'german-postfix)
 
 ;; My org files may contain bookmarks. They fail to open without this:
-(require 'bookmark)
-(bookmark-maybe-load-default-file)
+(defadvice bookmark-jump (before theme-dont-propagate activate)
+  "Load bookmarks file before trying to jump non-interactively."
+  (bookmark-maybe-load-default-file))
 
 (define-key global-map [?\s-x] 'kill-region)
 (define-key global-map [?\s-c] 'kill-ring-save)
@@ -379,6 +362,17 @@
 ;; Color theme
 (when (window-system)
   (setq custom-safe-themes t)
+
+  (defadvice load-theme (before theme-dont-propagate activate)
+    "Discard all themes before loading new."
+    (mapc #'disable-theme custom-enabled-themes))
+
+  (defvar after-load-theme-hook nil
+    "Hook run after a color theme is loaded using `load-theme'.")
+
+  (defadvice load-theme (after run-after-load-theme-hook activate)
+    "Run `after-load-theme-hook'."
+    (run-hooks 'after-load-theme-hook))
 
   (use-package modus-operandi-theme
     :ensure t
@@ -655,7 +649,7 @@ by `eshell-open-save-directory'."
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (message (format "Emacs loaded in %s" (emacs-init-time)))))
+            (message (format "Emacs loaded in %s." (emacs-init-time)))))
 
 (provide 'init)
 ;;; init.el ends here
