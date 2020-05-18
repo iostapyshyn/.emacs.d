@@ -440,13 +440,18 @@
   (with-eval-after-load 'esh-mode
     (define-key eshell-mode-map (kbd "<s-return>") 'eshell-cd-saved-directory))
 
+  (defvar eshell-saved-directory "~"
+    "Default directory of the buffer in which `eshell-open-with-directory'
+was called last time.")
+
   (defun eshell-open-with-directory (&optional arg)
     "Opens eshell, but saves buffer directory in a variable `eshell-saved-directory'.
 See `eshell-cd-saved-directory'."
     (interactive "P")
     (setq eshell-saved-directory default-directory)
     (eshell arg)
-    (where-is 'eshell-cd-saved-directory))
+    (unless (equal default-directory eshell-saved-directory)
+      (where-is 'eshell-cd-saved-directory)))
 
   (defun eshell-cd-saved-directory ()
     "Changes current eshell directory to the one previously saved
