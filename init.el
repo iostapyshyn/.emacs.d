@@ -238,6 +238,11 @@
   (setq org-agenda-follow-mode t)
 
   (setq org-agenda-files (list my/org))
+  (setq org-agenda-custom-commands '(("a" "Agenda and all TODOs"
+                                      ((agenda "")
+                                       (todo "TODO"))
+                                      nil)))
+
   (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
