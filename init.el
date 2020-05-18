@@ -151,6 +151,13 @@
   "Load bookmarks file before trying to jump non-interactively."
   (bookmark-maybe-load-default-file))
 
+(defun goto-line-with-line-numbers ()
+  (interactive)
+  (let ((display-line-numbers t))
+    (call-interactively #'goto-line)))
+
+(global-set-key [remap goto-line] #'goto-line-with-line-numbers)
+
 (define-key global-map [?\s-x] 'kill-region)
 (define-key global-map [?\s-c] 'kill-ring-save)
 (define-key global-map [?\s-v] 'yank)
