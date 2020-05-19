@@ -169,6 +169,15 @@
 ;; Remove trailing whitespaces on save.
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; A place to define keybindings which shall not be shadowed:
+(define-minor-mode my-minor-mode
+  "A minor mode so that my keybindings won't be shadowed by other major modes."
+  :global t
+  :init-value t ;; On by default
+  :lighter nil
+  :keymap `((,(kbd "C-,") . previous-buffer)
+            (,(kbd "C-.") . next-buffer)))
+
 ;; -- PACKAGES --
 
 (require 'package)
