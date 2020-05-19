@@ -79,9 +79,6 @@
               (electric-pair-local-mode 0)
               (setq show-paren-style 'expression))))
 
-(global-set-key (kbd "<S-return>") (kbd "C-e C-m"))
-(global-set-key (kbd "<C-S-return>") (kbd "C-a C-o"))
-
 ;; Identation
 (setq c-default-style "k&r")
 (setq-default indent-tabs-mode nil
