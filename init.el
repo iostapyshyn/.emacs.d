@@ -495,6 +495,7 @@ by `eshell-open-with-directory'."
 (use-package flycheck
   :demand t
   :ensure t
+  :bind ("C-c ! @" . flycheck-mode)
   :init (global-flycheck-mode))
 
 (use-package octave
