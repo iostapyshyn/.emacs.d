@@ -2,20 +2,17 @@
 ;;; Commentary:
 ;;; Code:
 
+;; Load early-init.el if emacs < 27
 (when (version< emacs-version "27")
   (let ((early-init-file (concat user-emacs-directory "early-init.el")))
     (when (file-exists-p early-init-file)
       (load-file early-init-file))))
 
-;; Start the server
-(load "server")
-(unless (server-running-p) (server-start))
-
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
+;; My preferred fonts
 (when window-system
-  ;; My preferred fonts
   (set-face-attribute 'default nil
                       :family "Iosevka"
                       :weight 'regular
@@ -48,24 +45,22 @@
 (setq ring-bell-function 'ignore)
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(setq confirm-kill-emacs 'y-or-n-p)
+;; Ask permission before killing emacs.
+(setq confirm-kill-emacs 'yes-or-no-p)
 
-;; No wrapping, rather truncate
+;; No wrapping, truncate lines
 (setq-default truncate-lines t)
 (setq column-number-mode t)
-
-;; (global-visual-line-mode t)
 
 ;; Highlight the current line (only in X)
 (when window-system
   (global-hl-line-mode 1))
 
-;; Scrolling behaviour
+;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
 
 ;; Parenthesis
 (electric-pair-mode 1)
-
 (setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
 (show-paren-mode 1)
@@ -79,7 +74,7 @@
               (electric-pair-local-mode 0)
               (setq show-paren-style 'expression))))
 
-;; Identation
+;; Identation settings:
 (setq c-default-style "k&r")
 (setq-default indent-tabs-mode nil
               tab-width 4
@@ -90,14 +85,38 @@
 ;; Typed text replaces the selection
 (delete-selection-mode 1)
 
-;; re-builder syntax
+;; make re-builder not require double escaping
 (setq reb-re-syntax 'string)
 
 ;; Calc
 (with-eval-after-load 'calc
   (setq-default calc-multiplication-has-precedence nil))
 
-;; Compilation
+;; German postfix input method:
+;; C-\ to enable: ae -> ä
+;; Is buffer-local
+(setq default-input-method 'german-postfix)
+
+;; My org files may contain bookmarks. They fail to open without this:
+(defadvice bookmark-jump (before theme-dont-propagate activate)
+  "Load bookmarks file before trying to jump non-interactively."
+  (bookmark-maybe-load-default-file))
+
+;; Keys on mac
+(when (or (eq window-system 'ns) (eq window-system 'mac))
+  (setq mac-command-modifier 'super
+        mac-option-modifier 'meta
+        mac-right-option-modifier nil))
+
+(add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
+
+;; Remove trailing whitespaces on save.
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+
+;;; --- Personal custom modes and functions ---
+
+;; Compilation window should be rather small
 (setq compilation-window-height 10)
 (defun my/compilation-hook ()
   "Set compilation window height."
@@ -111,7 +130,6 @@
           (shrink-window (- h compilation-window-height)))))))
 (add-hook 'compilation-mode-hook 'my/compilation-hook)
 (make-variable-buffer-local 'compile-command)
-
 (global-set-key [(f5)] 'compile)
 (global-set-key [(f6)] 'recompile)
 
@@ -132,39 +150,12 @@
             (lambda ()
               (local-set-key (kbd "C-c h") 'c-switch-source-header))))
 
-;; Keys on mac
-(when (or (eq window-system 'ns) (eq window-system 'mac))
-  (setq mac-command-modifier 'super
-        mac-option-modifier 'meta
-        mac-right-option-modifier nil))
-
-;; German postfix input method:
-;; C-\ to enable: ae -> ä
-;; Is buffer-local
-(setq default-input-method 'german-postfix)
-
-;; My org files may contain bookmarks. They fail to open without this:
-(defadvice bookmark-jump (before theme-dont-propagate activate)
-  "Load bookmarks file before trying to jump non-interactively."
-  (bookmark-maybe-load-default-file))
-
 (defun goto-line-with-line-numbers ()
+  "Show line numbers when querying for `goto-line'."
   (interactive)
   (let ((display-line-numbers t))
     (call-interactively #'goto-line)))
-
 (global-set-key [remap goto-line] #'goto-line-with-line-numbers)
-
-(define-key global-map [?\s-x] 'kill-region)
-(define-key global-map [?\s-c] 'kill-ring-save)
-(define-key global-map [?\s-v] 'yank)
-(define-key global-map [?\s-z] 'undo)
-(define-key global-map [?\s-a] 'mark-whole-buffer)
-
-(add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
-
-;; Remove trailing whitespaces on save.
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; A place to define keybindings which shall not be shadowed:
 (define-minor-mode my-minor-mode
@@ -175,7 +166,8 @@
   :keymap `((,(kbd "C-,") . previous-buffer)
             (,(kbd "C-.") . next-buffer)))
 
-;; -- PACKAGES --
+
+;;; --- PACKAGES ---
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -665,6 +657,13 @@ by `eshell-open-with-directory'."
 (use-package google-this
   :ensure t
   :bind (("C-c / g" . google-this)))
+
+
+;;; --- Some final nuances ---
+
+;; Start the server if not running
+(load "server")
+(unless (server-running-p) (server-start))
 
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
