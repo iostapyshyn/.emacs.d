@@ -127,10 +127,10 @@
                                                mode-line-modified
                                                mode-line-remote
                                                mode-line-frame-identification
-                                               mode-line-position
+                                               mode-line-position " "
                                                mode-line-buffer-identification)
                                          (list '(vc-mode vc-mode)
-                                               " %[%m%] "
+                                               " (%[%m%]) "
                                                (format-time-string "│%H:%M%p│")
                                                " ")))))
 
