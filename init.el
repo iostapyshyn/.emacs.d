@@ -130,7 +130,7 @@
                                                mode-line-position " "
                                                mode-line-buffer-identification)
                                          (list '(vc-mode vc-mode)
-                                               " (%[%m%]) "
+                                               " %[%m%] "
                                                (format-time-string "│%H:%M%p│")
                                                " ")))))
 
