@@ -116,6 +116,25 @@
 
 ;;; --- Personal custom modes and functions ---
 
+(defun mode-line-render (left right)
+  "Return a string of `window-width' length containing LEFT, and RIGHT aligned respectively."
+  (let* ((available-width (- (window-total-width) (+ (length (format-mode-line left)) (length (format-mode-line right))))))
+    (append left (list (format (format "%%%ds" available-width) "")) right)))
+
+(setq-default mode-line-format '((:eval (mode-line-render
+                                         (list " "
+                                               mode-line-mule-info
+                                               mode-line-modified
+                                               mode-line-remote
+                                               mode-line-frame-identification
+                                               mode-line-buffer-identification
+                                               " "
+                                               mode-line-position
+                                               '(vc-mode vc-mode))
+                                         (list "%[%m%] "
+                                               (format-time-string "│%H:%M%p│")
+                                               " ")))))
+
 ;; Compilation window should be rather small
 (setq compilation-window-height 10)
 (defun my/compilation-hook ()
