@@ -383,12 +383,6 @@
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
-(use-package minions
-  :ensure t
-  :demand t
-  :config
-  (minions-mode 1))
-
 ;; Color theme
 (when (window-system)
   (setq custom-safe-themes t)
