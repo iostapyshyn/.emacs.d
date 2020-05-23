@@ -121,18 +121,23 @@
   (let* ((available-width (- (window-total-width) (+ (length (format-mode-line left)) (length (format-mode-line right))))))
     (append left (list (format (format "%%%ds" available-width) "")) right)))
 
-(setq-default mode-line-format '((:eval (mode-line-render
-                                         (list " "
-                                               mode-line-mule-info
-                                               mode-line-modified
-                                               mode-line-remote
-                                               mode-line-frame-identification
-                                               mode-line-position " "
-                                               mode-line-buffer-identification)
-                                         (list '(vc-mode vc-mode)
-                                               " %[%m%] "
-                                               (format-time-string "│%H:%M%p│")
-                                               " ")))))
+(setq-default header-line-format '((:eval (mode-line-render
+                                           (list " "
+                                                 mode-line-mule-info
+                                                 mode-line-modified
+                                                 mode-line-remote
+                                                 mode-line-frame-identification
+                                                 mode-line-position " "
+                                                 mode-line-buffer-identification)
+                                           (list '(vc-mode vc-mode)
+                                                 " %[%m%] "
+                                                 (format-time-string "│%H:%M%p│")
+                                                 " ")))))
+
+(setq-default mode-line-format nil)
+
+(set-face-attribute 'header-line nil :inherit 'mode-line)
+(set-face-attribute 'minibuffer-prompt nil :overline t)
 
 ;; Compilation window should be rather small
 (setq compilation-window-height 10)
@@ -673,6 +678,10 @@ by `eshell-open-with-directory'."
 
 
 ;;; --- Some final nuances ---
+
+;; testing
+(set-face-attribute 'header-line nil :inherit 'mode-line)
+(set-face-attribute 'minibuffer-prompt nil :overline t)
 
 ;; Start the server if not running
 (load "server")
