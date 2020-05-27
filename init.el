@@ -97,10 +97,11 @@
 ;; Is buffer-local
 (setq default-input-method 'german-postfix)
 
-;; My org files may contain bookmarks. They fail to open without this:
-(defadvice bookmark-jump (before theme-dont-propagate activate)
+;; My org files may contain bookmarks. They fail to open non-interactively:
+(defadvice bookmark-jump (before bookmarks-load activate)
   "Load bookmarks file before trying to jump non-interactively."
-  (bookmark-maybe-load-default-file))
+  (bookmark-maybe-load-default-file)
+  (advice-remove 'bookmarks-load 'bookmark-jump))
 
 ;; Keys on mac
 (when (or (eq window-system 'ns) (eq window-system 'mac))
@@ -242,6 +243,9 @@
   ;; C-a/C-e stops before tags
   (setq org-special-ctrl-a/e t)
 
+  ;; Fast navigation
+  (setq org-use-speed-commands t)
+
   (setq org-goto-auto-isearch nil)
 
   (setq org-src-fontify-natively t)
@@ -352,7 +356,7 @@
   (setq ivy-display-style 'fancy)
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-use-virtual-buffers nil)
-  (setq enable-recursive-minibuffers nil)
+  (setq enable-recursive-minibuffers t)
   (setq ivy-re-builders-alist
         '((t . ivy--regex-plus))))
 
