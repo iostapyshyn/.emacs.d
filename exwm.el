@@ -29,3 +29,5 @@
 ;; Enable EXWM
 (exwm-enable)
 (exwm-init)
+
+(add-hook 'emacs-startup-hook 'eshell)
