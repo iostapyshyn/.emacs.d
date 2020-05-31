@@ -676,6 +676,7 @@ by `eshell-open-with-directory'."
   (define-key pdf-outline-buffer-mode-map (kbd "M-RET") 'pdf-outline-follow-link))
 
 (use-package pdf-view-restore
+  :ensure t
   :after pdf-tools
   :hook (pdf-view-mode . pdf-view-restore-mode)
   :config
