@@ -87,6 +87,9 @@
 ;; Typed text replaces the selection
 (delete-selection-mode 1)
 
+;; Don't allow mark commands when the mark is inactive
+(setq mark-even-if-inactive nil)
+
 ;; make re-builder not require double escaping
 (setq reb-re-syntax 'string)
 
