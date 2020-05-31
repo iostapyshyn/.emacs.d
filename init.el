@@ -8,6 +8,8 @@
     (when (file-exists-p early-init-file)
       (load-file early-init-file))))
 
+(setq load-prefer-newer t)
+
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
