@@ -493,12 +493,12 @@ See `eshell-cd-saved-directory'.
 If eshell is already open and no argument is specified, change to that directory.
 "
     (interactive "P")
-    (if (and (eq major-mode 'eshell-mode) (not arg) eshell-saved-directory)
+    (if (and (derived-mode-p 'eshell-mode) (not arg) eshell-saved-directory)
         (progn
           (cd eshell-saved-directory)
           (eshell-reset nil))
       (setq eshell-saved-directory default-directory)
-      (eshell (or arg 0))
+      (eshell arg)
       (unless (equal default-directory eshell-saved-directory)
         (where-is 'eshell-open-with-directory)))))
 
