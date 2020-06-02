@@ -481,8 +481,6 @@ Transient Mark mode is on but the region is inactive."
 
   ;; Pressing <s-return> twice will open eshell and cd into prev.
   ;; buffer directory.
-  (with-eval-after-load 'esh-mode
-    (define-key eshell-mode-map (kbd "<s-return>") 'eshell-cd-saved-directory))
 
   (defvar eshell-saved-directory "~"
     "Default directory of the buffer in which `eshell-open-with-directory'
@@ -490,21 +488,19 @@ was called last time.")
 
   (defun eshell-open-with-directory (&optional arg)
     "Opens eshell, but saves buffer directory in a variable `eshell-saved-directory'.
-See `eshell-cd-saved-directory'."
-    (interactive "P")
-    (setq eshell-saved-directory default-directory)
-    (eshell arg)
-    (unless (equal default-directory eshell-saved-directory)
-      (where-is 'eshell-cd-saved-directory)))
+See `eshell-cd-saved-directory'.
 
-  (defun eshell-cd-saved-directory ()
-    "Changes current eshell directory to the one previously saved
-by `eshell-open-with-directory'."
-    (interactive)
-    (and eshell-saved-directory
-         (progn
-           (cd eshell-saved-directory)
-           (eshell-reset nil)))))
+If eshell is already open and no argument is specified, change to that directory.
+"
+    (interactive "P")
+    (if (and (eq major-mode 'eshell-mode) (not arg) eshell-saved-directory)
+        (progn
+          (cd eshell-saved-directory)
+          (eshell-reset nil))
+      (setq eshell-saved-directory default-directory)
+      (eshell (or arg 0))
+      (unless (equal default-directory eshell-saved-directory)
+        (where-is 'eshell-open-with-directory)))))
 
 ;; Better terminal emulator
 (use-package vterm
