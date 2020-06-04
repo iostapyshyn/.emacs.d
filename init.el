@@ -204,7 +204,13 @@ Transient Mark mode is on but the region is inactive."
   :init-value t ;; On by default
   :lighter nil
   :keymap `((,(kbd "C-,") . previous-buffer)
-            (,(kbd "C-.") . next-buffer)))
+            (,(kbd "C-.") . next-buffer)
+            (,(kbd "C->") . (lambda ()
+                              (interactive)
+                              (other-window +1)))
+            (,(kbd "C-<") . (lambda ()
+                              (interactive)
+                              (other-window -1)))))
 
 
 ;;; --- PACKAGES ---
