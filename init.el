@@ -54,6 +54,9 @@
 (setq-default truncate-lines t)
 (setq column-number-mode t)
 
+;; Visual line mode in appropriate modes
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
 ;; Highlight the current line (only in X)
 (when window-system
   (global-hl-line-mode 1))
@@ -431,6 +434,7 @@ If the input is empty, select the previous history element instead."
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
+
 ;; Color theme
 (when (window-system)
   (setq custom-safe-themes t)
