@@ -102,6 +102,9 @@
 (setq recentf-max-saved-items 25)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
+;; C-z is not very useful and there is C-x C-z instead:
+(global-set-key (kbd "C-z") 'zap-up-to-char)
+
 ;; Calc
 (with-eval-after-load 'calc
   (add-hook 'calc-mode-hook (lambda ()
