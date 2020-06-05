@@ -93,6 +93,12 @@
 ;; make re-builder not require double escaping
 (setq reb-re-syntax 'string)
 
+;; Recentf
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(setq recentf-max-saved-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
 ;; Calc
 (with-eval-after-load 'calc
   (add-hook 'calc-mode-hook (lambda ()
@@ -406,6 +412,7 @@ If the input is empty, select the previous history element instead."
   :demand t
   :after ivy smex
   :config
+  (global-set-key [remap recentf-open-files] 'counsel-recentf)
   (counsel-mode 1))
 
 (use-package avy
