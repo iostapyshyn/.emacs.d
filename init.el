@@ -107,9 +107,6 @@
 
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
-;; C-z is not very useful and there is C-x C-z instead:
-(global-set-key (kbd "C-z") 'zap-up-to-char)
-
 ;; Calc
 (with-eval-after-load 'calc
   (add-hook 'calc-mode-hook (lambda ()
@@ -436,6 +433,10 @@ If the input is empty, select the previous history element instead."
 (use-package expand-region
   :ensure t
   :bind (("C-=" . er/expand-region)))
+
+(use-package goto-chg
+  :ensure t
+  :bind (("C-z" . goto-last-change)))
 
 ;; Get environment variables
 (use-package exec-path-from-shell
