@@ -367,7 +367,18 @@ Transient Mark mode is on but the region is inactive."
 (use-package swiper
   :ensure t
   :bind (("C-s" . swiper-isearch)
-         ("C-r" . swiper-isearch-backward)))
+         ("C-r" . swiper-isearch-backward)
+         (:map swiper-map
+               ("C-s" . swiper-C-s)
+               ("C-r" . swiper-C-r)))
+  :config
+  (defun swiper-C-r (&optional arg)
+    "Move cursor vertically down ARG candidates.
+If the input is empty, select the previous history element instead."
+    (interactive "p")
+    (if (string= ivy-text "")
+        (ivy-next-history-element 1)
+      (ivy-previous-line arg))))
 
 (use-package ivy
   :ensure t
