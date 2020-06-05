@@ -100,6 +100,11 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
+(setq recentf-exclude '("^/var/folders\\.*"
+                        "COMMIT_EDITMSG\\'"
+                        ".*-autoloads\\.el\\'"
+                        "[/\\]\\.elpa/"))
+
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 ;; C-z is not very useful and there is C-x C-z instead:
@@ -248,6 +253,9 @@ Transient Mark mode is on but the region is inactive."
   :preface
   (defvar my/org "~/org")
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
+
+  ;; Don't show index on recent files
+  (add-to-list 'recentf-exclude (expand-file-name my/org-index))
 
   ;; Open the inbox but still keeping the home as default directory
   (when (file-exists-p my/org-index)
