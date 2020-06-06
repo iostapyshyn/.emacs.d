@@ -103,7 +103,8 @@
 (setq recentf-exclude '("^/var/folders\\.*"
                         "COMMIT_EDITMSG\\'"
                         ".*-autoloads\\.el\\'"
-                        "[/\\]\\.elpa/"))
+                        "[/\\]\\.elpa/"
+                        "\\.newsrc\\(\\|\\.eld\\)\\'"))
 
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
