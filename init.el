@@ -120,6 +120,12 @@
 ;; Is buffer-local
 (setq default-input-method 'german-postfix)
 
+(defun activate-default-input-method ()
+  "Activate the default input method."
+  (interactive)
+  (activate-input-method default-input-method))
+(add-hook 'text-mode-hook 'activate-default-input-method)
+
 ;; My org files may contain bookmarks. They fail to open non-interactively:
 (defadvice bookmark-jump (before bookmarks-load activate)
   "Load bookmarks file before trying to jump non-interactively."
@@ -253,7 +259,8 @@ Transient Mark mode is on but the region is inactive."
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
 
   ;; Don't show index on recent files
-  (add-to-list 'recentf-exclude (expand-file-name my/org-index))
+  (with-eval-after-load 'recentf
+    (add-to-list 'recentf-exclude (expand-file-name my/org-index)))
 
   ;; Open the inbox but still keeping the home as default directory
   (when (file-exists-p my/org-index)
@@ -339,11 +346,11 @@ Transient Mark mode is on but the region is inactive."
   (add-hook 'dired-mode-hook 'dired-omit-mode))
 
 (use-package flyspell
-  :bind* ("C-c ! !" . flyspell-toggle)
+  :bind* ("C-c @" . flyspell-toggle)
   :config
   (defun flyspell-toggle ()
     "Turn on flyspell mode if off and run a check on
-     the buffer. Disable flyspell-mode otherwise."
+the buffer. Disable flyspell-mode otherwise."
     (interactive)
     (if (and (boundp 'flyspell-mode) flyspell-mode)
         (flyspell-mode 0)
@@ -560,7 +567,8 @@ If eshell is already open and no argument is specified, change to that directory
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f)
   (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
-  (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n))
+  (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n)
+  (setq vterm-kill-buffer-on-exit t))
 
 (use-package deadgrep
   :ensure t)
@@ -578,7 +586,7 @@ If eshell is already open and no argument is specified, change to that directory
 (use-package flycheck
   :demand t
   :ensure t
-  :bind ("C-c ! @" . flycheck-mode)
+  :bind ("C-c ! !" . flycheck-mode)
   :init (global-flycheck-mode))
 
 (use-package octave
@@ -610,18 +618,12 @@ If eshell is already open and no argument is specified, change to that directory
 (use-package lsp-mode
   :ensure t
   :hook
-  ((c-mode
-    c++-mode
-    objc-mode
-    python-mode
-    rust-mode
+  ((rust-mode ;; c-mode c++-mode objc-mode python-mode
     js2-mode) . lsp-deferred)
   :custom
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
-  (lsp-rust-server 'rust-analyzer)
-  :config
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$"))
+  (lsp-rust-server 'rust-analyzer))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -643,12 +645,6 @@ If eshell is already open and no argument is specified, change to that directory
   (yas-global-mode))
 
 ;; C/C++/ObjC/GLSL
-
-(use-package ccls
-  :after lsp-mode
-  :ensure t
-  :config
-  (setq ccls-initialization-options '(:clang (:extraArgs ("-I/Library/Developer/CommandLineTools/usr/include/c++/v1")))))
 
 (use-package cmake-mode :ensure t)
 (use-package glsl-mode :ensure t)
@@ -736,14 +732,6 @@ If eshell is already open and no argument is specified, change to that directory
   (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
 
 (use-package darkroom :ensure t)
-(use-package nov
-  :commands nov-bookmark-jump-handler
-  :ensure t
-  :mode ("\\.epub\\'" . nov-mode)
-  :config
-  (defun nov-font-setup ()
-    (face-remap-add-relative 'variable-pitch :family "PT Serif" :height 1.1))
-  (add-hook 'nov-mode-hook 'nov-font-setup))
 
 (use-package google-this
   :ensure t
