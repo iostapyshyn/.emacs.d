@@ -731,7 +731,6 @@ If eshell is already open and no argument is specified, change to that directory
 
 (use-package olivetti
   :ensure t
-  :bind* ("C-c \\" . olivetti-mode)
   :custom
   (olivetti-body-width 0.75)
   (olivetti-enable-visual-line-mode nil))
