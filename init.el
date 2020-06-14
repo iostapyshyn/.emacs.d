@@ -729,7 +729,12 @@ If eshell is already open and no argument is specified, change to that directory
   :config
   (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
 
-(use-package darkroom :ensure t)
+(use-package olivetti
+  :ensure t
+  :bind ("C-c \\" . olivetti-mode)
+  :custom
+  (olivetti-body-width 0.75)
+  (olivetti-enable-visual-line-mode nil))
 
 (use-package google-this
   :ensure t
