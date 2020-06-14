@@ -732,7 +732,7 @@ If eshell is already open and no argument is specified, change to that directory
 (use-package olivetti
   :ensure t
   :custom
-  (olivetti-body-width 0.75)
+  (olivetti-body-width 0.64)
   (olivetti-enable-visual-line-mode nil))
 
 (use-package google-this
