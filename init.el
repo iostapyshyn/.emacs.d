@@ -42,6 +42,9 @@
 (setq ring-bell-function 'ignore)
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; Zap up to char instead of zap to char
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+
 ;; Ask permission before killing emacs.
 (setq confirm-kill-emacs 'yes-or-no-p)
 
