@@ -15,9 +15,9 @@
 
 ;; My preferred fonts
 (when window-system
-  (let ((monospace  '(:family "Iosevka" :weight regular :height 130))
-        (serif      '(:family "CMU Serif" :weight regular :height 150))
-        (typewriter '(:family "CMU Typewriter Text" :weight regular :height 150)))
+  (let ((monospace  '(:family "Iosevka"             :weight regular :height 130))
+        (typewriter '(:family "CMU Typewriter Text" :weight regular :height 150))
+        (serif      '(:family "CMU Serif"           :weight regular :height 150)))
     (apply 'set-face-attribute 'default nil           monospace)
     (apply 'set-face-attribute 'fixed-pitch nil       monospace)
     (apply 'set-face-attribute 'variable-pitch nil    serif)
