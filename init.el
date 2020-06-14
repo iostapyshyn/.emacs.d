@@ -15,18 +15,13 @@
 
 ;; My preferred fonts
 (when window-system
-  (set-face-attribute 'default nil
-                      :family "Iosevka"
-                      :weight 'regular
-                      :height 130)
-
-  (set-face-attribute 'fixed-pitch nil
-                      :family 'unspecified)
-
-  (set-face-attribute 'variable-pitch nil
-                      :family "PT Sans"
-                      :weight 'regular
-                      :height 1.1))
+  (let ((monospace  '(:family "Iosevka" :weight regular :height 130))
+        (serif      '(:family "CMU Serif" :weight regular :height 150))
+        (typewriter '(:family "CMU Typewriter Text" :weight regular :height 150)))
+    (apply 'set-face-attribute 'default nil           monospace)
+    (apply 'set-face-attribute 'fixed-pitch nil       monospace)
+    (apply 'set-face-attribute 'variable-pitch nil    serif)
+    (apply 'set-face-attribute 'fixed-pitch-serif nil typewriter)))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
