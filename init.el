@@ -15,10 +15,9 @@
 
 ;; My preferred fonts
 (when window-system
-  (set-face-attribute 'default nil           :family "Iosevka"  :weight 'regular :height 130)
-  (set-face-attribute 'variable-pitch nil    :family "PT Serif" :weight 'regular :height 1.23)
-  (set-face-attribute 'fixed-pitch nil       :family 'unspecified)
-  (set-face-attribute 'fixed-pitch-serif nil :family 'unspecified))
+  (set-face-attribute 'default nil           :family "Iosevka"  :height 130)
+  (set-face-attribute 'fixed-pitch nil       :family "Iosevka"  :height 1.0)
+  (set-face-attribute 'variable-pitch nil    :family "PT Serif" :height 1.23))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
@@ -51,6 +50,9 @@
 
 ;; Visual line mode in appropriate modes
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+
+(setq sentence-end-double-space nil)
+(setq message-fill-column nil)
 
 ;; Highlight the current line (only in X)
 (when window-system
