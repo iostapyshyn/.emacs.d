@@ -53,6 +53,9 @@
 
 (global-subword-mode)
 
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'text-mode-hook 'superword-mode)
+
 ;; Highlight the current line (only in X)
 (when window-system
   (global-hl-line-mode 1))
@@ -115,6 +118,9 @@
 ;; C-\ to enable: ae -> ä
 ;; Is buffer-local
 (setq default-input-method 'german-postfix)
+(add-hook 'text-mode-hook
+          (lambda ()
+            (activate-input-method default-input-method)))
 
 ;; My org files may contain bookmarks. They fail to open non-interactively:
 (defadvice bookmark-jump (before bookmarks-load activate)
@@ -135,16 +141,6 @@
 
 
 ;;; --- Personal custom modes and functions ---
-
-(add-hook 'text-mode-hook
-          (lambda ()
-            (activate-input-method default-input-method)
-            (turn-on-visual-line-mode)
-            (superword-mode 1)))
-
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (subword-mode 1)))
 
 (defun spw/exchange-point-and-mark (arg)
   "Exchange point and mark, but reactivate mark a bit less often.
@@ -313,7 +309,7 @@ Transient Mark mode is on but the region is inactive."
         ;; imagemagick can preview tikz
         org-preview-latex-default-process 'imagemagick)
 
-  (setq org-pretty-entities t)
+  ;; (setq org-pretty-entities t)
   (setq org-agenda-follow-mode t)
 
   (setq org-agenda-files (list my/org))
