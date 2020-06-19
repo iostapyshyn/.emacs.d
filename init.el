@@ -48,11 +48,10 @@
 (setq-default truncate-lines t)
 (setq column-number-mode t)
 
-;; Visual line mode in appropriate modes
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
-
 (setq sentence-end-double-space nil)
 (setq message-fill-column nil)
+
+(global-subword-mode)
 
 ;; Highlight the current line (only in X)
 (when window-system
@@ -117,12 +116,6 @@
 ;; Is buffer-local
 (setq default-input-method 'german-postfix)
 
-(defun activate-default-input-method ()
-  "Activate the default input method."
-  (interactive)
-  (activate-input-method default-input-method))
-(add-hook 'text-mode-hook 'activate-default-input-method)
-
 ;; My org files may contain bookmarks. They fail to open non-interactively:
 (defadvice bookmark-jump (before bookmarks-load activate)
   "Load bookmarks file before trying to jump non-interactively."
@@ -142,6 +135,16 @@
 
 
 ;;; --- Personal custom modes and functions ---
+
+(add-hook 'text-mode-hook
+          (lambda ()
+            (activate-input-method default-input-method)
+            (turn-on-visual-line-mode)
+            (superword-mode 1)))
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (subword-mode 1)))
 
 (defun spw/exchange-point-and-mark (arg)
   "Exchange point and mark, but reactivate mark a bit less often.
