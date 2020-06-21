@@ -751,6 +751,8 @@ If eshell is already open and no argument is specified, change to that directory
           (lambda ()
             (message (format "Emacs loaded in %s." (emacs-init-time)))))
 
+(setq default-directory "~")
+
 (provide 'init)
 ;;; init.el ends here
 
