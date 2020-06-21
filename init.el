@@ -249,8 +249,16 @@ Transient Mark mode is on but the region is inactive."
 
 ;; org-mode
 (use-package org
-  :demand t
-  :preface
+  :bind*
+  (("C-c a" . org-agenda)
+   ("C-c i" . org-my-index)
+   ("C-c l" . org-store-link)
+   ;; Dont allow minor modes (such as visual-line-mode) to rebind special org-mode keys
+   (:map org-mode-map
+         ("C-e" . org-end-of-line)
+         ("C-a" . org-beginning-of-line)
+         ("C-k" . org-kill-line)))
+  :config
   (defvar my/org "~/org")
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
 
@@ -258,38 +266,22 @@ Transient Mark mode is on but the region is inactive."
   (with-eval-after-load 'recentf
     (add-to-list 'recentf-exclude (expand-file-name my/org-index)))
 
-  ;; Open the inbox but still keeping the home as default directory
-  (when (file-exists-p my/org-index)
-    (setq initial-buffer-choice my/org-index))
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (setq default-directory "~")))
-  :bind
-  (("C-c a" . org-agenda)
-   ("C-c i" . (lambda ()
-                (interactive)
-                (push-mark)
-                (find-file my/org-index)))
-   ("C-c l" . org-store-link))
-  :config
+  (defun org-my-index ()
+    (interactive)
+    (push-mark)
+    (find-file my/org-index))
+
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
-
-  (add-hook 'org-mode-hook
-            (lambda ()
-              "Beautify Org Checkbox Symbol"
-              (push '("[ ]" . "☐") prettify-symbols-alist)
-              (push '("[X]" . "☑") prettify-symbols-alist)
-              (push '("[-]" . "❍") prettify-symbols-alist)
-              (prettify-symbols-mode)))
 
   ;; Leave a line between closed headings
   (setq org-cycle-separator-lines 1)
 
   ;; C-a/C-e stops before tags
   (setq org-special-ctrl-a/e t)
+  (setq org-special-ctrl-k t)
 
   ;; Fast navigation
   (setq org-use-speed-commands t)
@@ -315,7 +307,7 @@ Transient Mark mode is on but the region is inactive."
   (setq org-agenda-files (list my/org))
   (setq org-agenda-custom-commands '(("a" "Agenda and all TODOs"
                                       ((agenda "")
-                                       (todo "TODO"))
+                                       (todo))
                                       nil)))
 
   (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
@@ -706,6 +698,11 @@ If eshell is already open and no argument is specified, change to that directory
   :commands gnus
   :config
   (setq gnus-init-file (concat (file-name-as-directory my/org) ".gnus.el")))
+
+(use-package erc
+  :commands erc
+  :custom
+  (erc-nick "vcored"))
 
 (use-package pdf-tools
   :ensure t
