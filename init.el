@@ -17,7 +17,7 @@
 (when window-system
   (set-face-attribute 'default nil           :family "Iosevka"  :height 130)
   (set-face-attribute 'fixed-pitch nil       :family "Iosevka"  :height 130)
-  (set-face-attribute 'variable-pitch nil    :family "PT Serif" :height 1.23))
+  (set-face-attribute 'variable-pitch nil    :family "PT Serif" :height 1.15))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
@@ -249,16 +249,7 @@ Transient Mark mode is on but the region is inactive."
 
 ;; org-mode
 (use-package org
-  :bind*
-  (("C-c a" . org-agenda)
-   ("C-c i" . org-my-index)
-   ("C-c l" . org-store-link)
-   ;; Dont allow minor modes (such as visual-line-mode) to rebind special org-mode keys
-   (:map org-mode-map
-         ("C-e" . org-end-of-line)
-         ("C-a" . org-beginning-of-line)
-         ("C-k" . org-kill-line)))
-  :config
+  :preface
   (defvar my/org "~/org")
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
 
@@ -270,7 +261,16 @@ Transient Mark mode is on but the region is inactive."
     (interactive)
     (push-mark)
     (find-file my/org-index))
-
+  :bind*
+  (("C-c a" . org-agenda)
+   ("C-c i" . org-my-index)
+   ("C-c l" . org-store-link)
+   ;; Dont allow minor modes (such as visual-line-mode) to rebind special org-mode keys
+   (:map org-mode-map
+         ("C-e" . org-end-of-line)
+         ("C-a" . org-beginning-of-line)
+         ("C-k" . org-kill-line)))
+  :config
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
   (setq org-agenda-start-on-weekday 1)
@@ -307,7 +307,7 @@ Transient Mark mode is on but the region is inactive."
   (setq org-agenda-files (list my/org))
   (setq org-agenda-custom-commands '(("a" "Agenda and all TODOs"
                                       ((agenda "")
-                                       (todo))
+                                       (alltodo ""))
                                       nil)))
 
   (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
@@ -729,8 +729,21 @@ If eshell is already open and no argument is specified, change to that directory
   :config
   (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
 
+(use-package nov
+  :commands nov-bookmark-jump-handler
+  :ensure t
+  :mode ("\\.epub\\'" . nov-mode)
+  :config
+  (setq nov-text-width t)
+  (add-hook 'nov-mode-hook 'visual-line-mode))
+
 (use-package olivetti
   :ensure t
+  :preface
+  (with-eval-after-load 'nov
+    (add-hook 'nov-mode-hook 'olivetti-mode))
+  (with-eval-after-load 'eww
+    (add-hook 'eww-mode-hook 'olivetti-mode))
   :custom
   (olivetti-body-width 0.75)
   (olivetti-enable-visual-line-mode nil))
