@@ -149,7 +149,8 @@
                                (if (region-active-p)
                                    (buffer-substring (region-beginning) (region-end))
                                  (thing-at-point 'word)))))
-  (shell-command (concat "duden " word)))
+  (let ((truncate-lines nil))
+    (shell-command (concat "duden " word))))
 
 (global-set-key (kbd "C-c / d") 'duden)
 
