@@ -142,6 +142,17 @@
 
 ;;; --- Personal custom modes and functions ---
 
+(defun duden (word)
+  "Search for the word definition on duden.de.  Uses github.com/radomirbosak/duden."
+  (interactive
+   (list (read-from-minibuffer "Word: "
+                               (if (region-active-p)
+                                   (filter-buffer-substring (region-beginning) (region-end))
+                                 (thing-at-point 'word)))))
+  (shell-command (concat "duden " word)))
+
+(global-set-key (kbd "C-c / d") 'duden)
+
 (defun spw/exchange-point-and-mark (arg)
   "Exchange point and mark, but reactivate mark a bit less often.
 
@@ -269,7 +280,9 @@ Transient Mark mode is on but the region is inactive."
    (:map org-mode-map
          ("C-e" . org-end-of-line)
          ("C-a" . org-beginning-of-line)
-         ("C-k" . org-kill-line)))
+         ("C-k" . org-kill-line)
+         ("C-c C-/" . org-sparse-tree)
+         ("C-c /"   . nil))) ;; Some important keybindings on C-c /
   :config
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
@@ -657,7 +670,7 @@ If eshell is already open and no argument is specified, change to that directory
 (use-package magit :ensure t)
 (use-package webpaste
   :ensure t
-  :bind ("C-c / p" . webpaste-paste-buffer-or-region)
+  :bind* ("C-c / p" . webpaste-paste-buffer-or-region)
   :config
   (setq webpaste-provider-priority '("dpaste.org" "dpaste.com")))
 
@@ -750,7 +763,7 @@ If eshell is already open and no argument is specified, change to that directory
 
 (use-package google-this
   :ensure t
-  :bind (("C-c / g" . google-this)))
+  :bind* (("C-c / g" . google-this)))
 
 
 ;;; --- Some final nuances ---
