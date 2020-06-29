@@ -145,9 +145,9 @@
 (defun duden (word)
   "Search for the word definition on duden.de.  Uses github.com/radomirbosak/duden."
   (interactive
-   (list (read-from-minibuffer "Word: "
+   (list (read-from-minibuffer "$ duden "
                                (if (region-active-p)
-                                   (filter-buffer-substring (region-beginning) (region-end))
+                                   (buffer-substring (region-beginning) (region-end))
                                  (thing-at-point 'word)))))
   (shell-command (concat "duden " word)))
 
