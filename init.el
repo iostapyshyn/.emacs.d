@@ -311,9 +311,8 @@ Transient Mark mode is on but the region is inactive."
         org-link-shell-confirm-function nil
         org-export-use-babel nil)
 
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
-        ;; imagemagick can preview tikz
-        org-preview-latex-default-process 'imagemagick)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.0)
+        org-preview-latex-default-process 'dvisvgm)
 
   ;; (setq org-pretty-entities t)
   (setq org-agenda-follow-mode t)
@@ -723,7 +722,11 @@ If eshell is already open and no argument is specified, change to that directory
   (pdf-loader-install)
   :config
   (setq-default pdf-view-display-size 'fit-page)
-  (setq pdf-view-use-scaling t)
+
+  ;; Fix blurriness on retina
+  (setq pdf-view-use-scaling t
+        pdf-view-use-imagemagick nil)
+
   (setq pdf-annot-activate-created-annotations t)
   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
   (define-key pdf-view-mode-map (kbd "h") 'pdf-annot-add-highlight-markup-annotation)
