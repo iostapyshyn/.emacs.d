@@ -245,7 +245,7 @@ Transient Mark mode is on but the region is inactive."
 ;;; --- PACKAGES ---
 
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
@@ -647,7 +647,6 @@ If eshell is already open and no argument is specified, change to that directory
 ;; I don't use snippets but this is used by company-lsp for function arguments
 (use-package yasnippet
   :ensure t
-  :after company-lsp
   :config
   (yas-global-mode))
 
