@@ -24,7 +24,10 @@
 (push '(menu-bar-lines . (if (or (eq window-system 'ns) (eq window-system 'mac)) 1 0)) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
-(push '(fullscreen . fullboth) default-frame-alist)
+(push '(fullscreen . fullscreen) default-frame-alist)
+
+;; Disable pixel-by-pixel scrolling, since it's extremely choppy.
+(setq mac-mouse-wheel-smooth-scroll nil)
 
 (provide 'early-init)
 ;;; early-init.el ends here
