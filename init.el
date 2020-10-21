@@ -143,7 +143,7 @@
 ;;; --- Personal custom modes and functions ---
 
 (defun duden (word)
-  "Search for the word definition on duden.de.  Uses github.com/radomirbosak/duden."
+  "Search for the WORD definition on duden.de.  Requires github.com/radomirbosak/duden."
   (interactive
    (list (read-from-minibuffer "$ duden "
                                (if (region-active-p)
