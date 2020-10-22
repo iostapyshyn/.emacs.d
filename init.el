@@ -738,6 +738,13 @@ If eshell is already open and no argument is specified, change to that directory
   (define-key pdf-outline-buffer-mode-map (kbd "RET") 'pdf-outline-follow-link-and-quit)
   (define-key pdf-outline-buffer-mode-map (kbd "M-RET") 'pdf-outline-follow-link))
 
+(use-package pdf-view-restore
+  :ensure t
+  :after pdf-tools
+  :hook (pdf-view-mode . pdf-view-restore-mode)
+  :config
+  (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
+
 (use-package nov
   :commands nov-bookmark-jump-handler
   :ensure t
