@@ -706,11 +706,6 @@ If eshell is already open and no argument is specified, change to that directory
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
-(use-package gnus
-  :commands gnus
-  :config
-  (setq gnus-init-file (concat (file-name-as-directory my/org) ".gnus.el")))
-
 (use-package erc
   :commands erc
   :custom
