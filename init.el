@@ -181,8 +181,8 @@ Transient Mark mode is on but the region is inactive."
                                                mode-line-position " "
                                                mode-line-buffer-identification)
                                          (list '(vc-mode vc-mode)
-                                               " %[%m%] "
-                                               (format-time-string "│%H:%M%p│")
+                                               " [%[%m%]] "
+                                               (format-time-string "|%H:%M|")
                                                " ")))))
 
 ;; Compilation window should be rather small
@@ -476,37 +476,46 @@ If the input is empty, select the previous history element instead."
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
 
-  (use-package modus-operandi-theme
+  ;; (use-package modus-operandi-theme
+  ;;   :ensure t
+  ;;   :demand t
+  ;;   :config
+  ;;   (setq modus-operandi-theme-slanted-constructs t)
+  ;;   (setq modus-operandi-theme-distinct-org-blocks t))
+
+  ;; (use-package modus-vivendi-theme
+  ;;   :ensure t
+  ;;   :demand t
+  ;;   :config
+  ;;   (setq modus-vivendi-theme-slanted-constructs t)
+  ;;   (setq modus-vivendi-theme-distinct-org-blocks t))
+
+  ;; (defvar current-theme nil)
+  ;; (defun synchronize-theme ()
+  ;;   "Set theme depending on the time of the day."
+  ;;   (let* ((hour
+  ;;           (string-to-number
+  ;;            (substring (current-time-string) 11 13))) ; extract the hour
+  ;;          (now
+  ;;           (if (and (>= hour 6) (<= hour 17)) ; if the hour is between 6 and 17
+  ;;               'modus-operandi ; use light
+  ;;             'modus-vivendi)))
+  ;;     (if (equal now current-theme)
+  ;;         nil
+  ;;       (setq current-theme now)
+  ;;       (load-theme now t))))
+
+  ;; ;; Run synchronize-theme now and repeat every 30 minutes
+  ;; (run-at-time nil (* 30 60) 'synchronize-theme)
+
+  (use-package base16-theme
     :ensure t
     :demand t
     :config
-    (setq modus-operandi-theme-slanted-constructs t)
-    (setq modus-operandi-theme-distinct-org-blocks t))
-
-  (use-package modus-vivendi-theme
-    :ensure t
-    :demand t
-    :config
-    (setq modus-vivendi-theme-slanted-constructs t)
-    (setq modus-vivendi-theme-distinct-org-blocks t))
-
-  (defvar current-theme nil)
-  (defun synchronize-theme ()
-    "Set theme depending on the time of the day."
-    (let* ((hour
-            (string-to-number
-             (substring (current-time-string) 11 13))) ; extract the hour
-           (now
-            (if (and (>= hour 6) (<= hour 17)) ; if the hour is between 6 and 17
-                'modus-operandi ; use light
-              'modus-vivendi)))
-      (if (equal now current-theme)
-          nil
-        (setq current-theme now)
-        (load-theme now t))))
-
-  ;; Run synchronize-theme now and repeat every 30 minutes
-  (run-at-time nil (* 30 60) 'synchronize-theme))
+    (load-theme 'base16-tomorrow-night t)
+    ;; Box around the mode-line for better visibility
+    (set-face-attribute 'mode-line          nil :box '(:line-width 1 :color "#b4b7b4" :style nil))
+    (set-face-attribute 'mode-line-inactive nil :box '(:line-width 1 :color "#282a2e" :style nil))))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -688,6 +697,8 @@ If eshell is already open and no argument is specified, change to that directory
   :config
   (setq TeX-auto-save t)
   (TeX-global-PDF-mode 1)
+
+  (setq-default TeX-engine 'xetex)
 
   ;; Use pdf-tools to open PDF files
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
