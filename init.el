@@ -75,8 +75,8 @@
 (dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
   (add-hook hook
             (lambda ()
-              (electric-pair-local-mode 0)
-              (setq show-paren-style 'expression))))
+              ;; (setq show-paren-style 'expression)
+              (electric-pair-local-mode 0))))
 
 ;; Identation settings:
 (setq c-default-style "k&r")
@@ -330,7 +330,9 @@ Transient Mark mode is on but the region is inactive."
 
 (use-package python
   :bind (:map python-mode-map
-              ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t)))))
+              ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t))))
+  :config
+  (setq python-shell-interpreter "python3"))
 
 ;; dired
 (use-package dired
@@ -584,9 +586,6 @@ If eshell is already open and no argument is specified, change to that directory
   (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
   (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n)
   (setq vterm-kill-buffer-on-exit t))
-
-(use-package deadgrep
-  :ensure t)
 
 (use-package company
   :demand t
