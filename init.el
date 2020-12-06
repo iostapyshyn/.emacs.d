@@ -520,7 +520,8 @@ If the input is empty, select the previous history element instead."
     :demand t
     :config
     (setq doom-rouge-padded-modeline 2)
-    (load-theme 'doom-rouge t)))
+    (load-theme 'doom-rouge t)
+    (doom-themes-org-config)))
 
 (use-package rainbow-delimiters
   :ensure t
