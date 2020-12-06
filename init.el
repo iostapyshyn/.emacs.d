@@ -181,9 +181,8 @@ Transient Mark mode is on but the region is inactive."
                                                mode-line-position " "
                                                mode-line-buffer-identification)
                                          (list '(vc-mode vc-mode)
-                                               " [%[%m%]] "
-                                               (format-time-string "|%H:%M|")
-                                               " ")))))
+                                               " "
+                                               mode-line-modes)))))
 
 ;; Compilation window should be rather small
 (setq compilation-window-height 10)
@@ -258,6 +257,12 @@ Transient Mark mode is on but the region is inactive."
 (require 'bind-key) ;; :bind requirement
 
 (use-package dash :ensure t)
+
+(use-package minions
+  :ensure t
+  :demand t
+  :config
+  (minions-mode 1))
 
 ;; org-mode
 (use-package org
@@ -510,14 +515,12 @@ If the input is empty, select the previous history element instead."
   ;; ;; Run synchronize-theme now and repeat every 30 minutes
   ;; (run-at-time nil (* 30 60) 'synchronize-theme)
 
-  (use-package base16-theme
+  (use-package doom-themes
     :ensure t
     :demand t
     :config
-    (load-theme 'base16-tomorrow-night t)
-    ;; Box around the mode-line for better visibility
-    (set-face-attribute 'mode-line          nil :box '(:line-width 1 :color "#b4b7b4" :style nil))
-    (set-face-attribute 'mode-line-inactive nil :box '(:line-width 1 :color "#282a2e" :style nil))))
+    (setq doom-rouge-padded-modeline 2)
+    (load-theme 'doom-rouge t)))
 
 (use-package rainbow-delimiters
   :ensure t
