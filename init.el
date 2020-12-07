@@ -591,7 +591,7 @@ If eshell is already open and no argument is specified, change to that directory
             (switch-to-buffer "vterm")
           (kill-buffer "vterm")
           (vterm))
-        (vterm)))
+      (vterm)))
   :config
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f)
