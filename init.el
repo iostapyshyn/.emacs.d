@@ -112,7 +112,9 @@
   (add-hook 'calc-mode-hook (lambda ()
                               (require 'calc-math)
                               (calc-radians-mode)))
-  (setq-default calc-multiplication-has-precedence nil))
+  (setq-default calc-multiplication-has-precedence nil
+                calc-simplify-mode 'none))
+
 
 ;; German postfix input method:
 ;; C-\ to enable: ae -> ä
