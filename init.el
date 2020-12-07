@@ -339,6 +339,12 @@ Transient Mark mode is on but the region is inactive."
   :config
   (setq python-shell-interpreter "python3"))
 
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
+
 ;; dired
 (use-package dired
   :custom
