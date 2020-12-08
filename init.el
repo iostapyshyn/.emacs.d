@@ -242,6 +242,9 @@ Transient Mark mode is on but the region is inactive."
                               (interactive)
                               (other-window -1)))))
 
+(defun parent-directory (path)
+  (file-name-directory (directory-file-name path)))
+
 
 ;;; --- PACKAGES ---
 
@@ -550,7 +553,10 @@ If the input is empty, select the previous history element instead."
   :bind* (("<f8>" . neotree-toggle))
   :config
   (setq neo-theme 'ascii)
-  (setq neo-smart-open t))
+  (setq neo-smart-open t)
+  (define-key neotree-mode-map (kbd "P")
+    (lambda ()
+      (interactive) (neotree-dir (parent-directory neo-buffer--start-node)))))
 
 (use-package eshell
   :bind ("<s-return>" . eshell-open-with-directory)
