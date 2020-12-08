@@ -348,7 +348,10 @@ Transient Mark mode is on but the region is inactive."
   :ensure t
   :defer t
   :init
-  (advice-add 'python-mode :before 'elpy-enable))
+  (advice-add 'python-mode :before 'elpy-enable)
+  :config
+  (setq elpy-rpc-python-command "/usr/local/bin/python3"
+))
 
 ;; dired
 (use-package dired
@@ -535,7 +538,7 @@ If the input is empty, select the previous history element instead."
     :ensure t
     :demand t
     :config
-    (setq doom-rouge-padded-modeline 2)
+    (setq doom-themes-padded-modeline 2)
     (load-theme 'doom-rouge t)
     (doom-themes-org-config)
 
