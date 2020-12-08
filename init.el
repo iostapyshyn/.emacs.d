@@ -523,13 +523,21 @@ If the input is empty, select the previous history element instead."
   ;; ;; Run synchronize-theme now and repeat every 30 minutes
   ;; (run-at-time nil (* 30 60) 'synchronize-theme)
 
+  (use-package all-the-icons
+    :ensure t
+    :config
+    (setq all-the-icons-scale-factor 1.0))
+
   (use-package doom-themes
     :ensure t
     :demand t
     :config
     (setq doom-rouge-padded-modeline 2)
     (load-theme 'doom-rouge t)
-    (doom-themes-org-config)))
+    (doom-themes-org-config)
+
+    (when (require 'all-the-icons nil 'noerror)
+      (doom-themes-neotree-config))))
 
 (use-package rainbow-delimiters
   :ensure t
