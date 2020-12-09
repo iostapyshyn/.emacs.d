@@ -737,7 +737,9 @@ If eshell is already open and no argument is specified, change to that directory
 
   ;; Update PDF buffers after successful LaTeX runs
   (add-hook 'TeX-after-compilation-finished-functions
-            #'TeX-revert-document-buffer))
+            #'TeX-revert-document-buffer)
+
+  (setq preview-scale-function 1.0))
 
 ;; Rust
 (use-package rust-mode
