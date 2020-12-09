@@ -112,8 +112,7 @@
   (add-hook 'calc-mode-hook (lambda ()
                               (require 'calc-math)
                               (calc-radians-mode)))
-  (setq-default calc-multiplication-has-precedence nil
-                calc-simplify-mode 'none))
+  (setq-default calc-multiplication-has-precedence nil))
 
 
 ;; German postfix input method:
