@@ -496,12 +496,13 @@ If the input is empty, select the previous history element instead."
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
 
-  ;; (use-package modus-operandi-theme
-  ;;   :ensure t
-  ;;   :demand t
-  ;;   :config
-  ;;   (setq modus-operandi-theme-slanted-constructs t)
-  ;;   (setq modus-operandi-theme-distinct-org-blocks t))
+  (use-package modus-operandi-theme
+    :ensure t
+    :demand t
+    :config
+    (setq modus-operandi-theme-slanted-constructs t)
+    (setq modus-operandi-theme-distinct-org-blocks t)
+    (load-theme 'modus-operandi t))
 
   ;; (use-package modus-vivendi-theme
   ;;   :ensure t
@@ -528,21 +529,22 @@ If the input is empty, select the previous history element instead."
   ;; ;; Run synchronize-theme now and repeat every 30 minutes
   ;; (run-at-time nil (* 30 60) 'synchronize-theme)
 
+  ;; (use-package doom-themes
+  ;;   :ensure t
+  ;;   :demand t
+  ;;   :config
+  ;;   (setq doom-themes-padded-modeline 2)
+  ;;   (load-theme 'doom-rouge t)
+  ;;   (doom-themes-org-config)
+
+  ;; (when (require 'all-the-icons nil 'noerror)
+  ;;   (doom-themes-neotree-config))))
+
   (use-package all-the-icons
     :ensure t
     :config
-    (setq all-the-icons-scale-factor 1.0))
+    (setq all-the-icons-scale-factor 1.0)))
 
-  (use-package doom-themes
-    :ensure t
-    :demand t
-    :config
-    (setq doom-themes-padded-modeline 2)
-    (load-theme 'doom-rouge t)
-    (doom-themes-org-config)
-
-    (when (require 'all-the-icons nil 'noerror)
-      (doom-themes-neotree-config))))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -554,7 +556,9 @@ If the input is empty, select the previous history element instead."
   :ensure t
   :bind* (("<f8>" . neotree-toggle))
   :config
-  (setq neo-theme 'ascii)
+  (setq neo-theme (if (require 'all-the-icons nil 'noerror)
+                      'icons
+                    'ascii))
   (setq neo-smart-open t)
   (define-key neotree-mode-map (kbd "P")
     (lambda ()
