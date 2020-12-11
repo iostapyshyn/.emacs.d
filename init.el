@@ -611,11 +611,6 @@ If eshell is already open and no argument is specified, change to that directory
   :bind ("C-c ! !" . flycheck-mode)
   :init (global-flycheck-mode))
 
-(use-package octave
-  :mode ("\\.m\\'" . octave-mode)
-  :config
-  (setf octave-block-offset 4))
-
 ;; web-mode
 (use-package web-mode
   :ensure t
