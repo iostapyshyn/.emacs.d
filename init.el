@@ -446,6 +446,7 @@ If the input is empty, select the previous history element instead."
   (setq ivy-display-style 'fancy)
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-use-virtual-buffers nil)
+  (setq ivy-use-selectable-prompt t)
   (setq enable-recursive-minibuffers t)
   (add-to-list 'ivy-preferred-re-builders '(ivy--regex-or-literal . "none"))
   (setq ivy-re-builders-alist
