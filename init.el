@@ -631,16 +631,12 @@ If eshell is already open and no argument is specified, change to that directory
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
-(use-package js2-mode
-  :ensure t
-  :mode "\\.js\\'")
-
 ;; Language Server Protocol
 (use-package lsp-mode
   :ensure t
   :hook
   ((rust-mode ;; c-mode c++-mode objc-mode python-mode
-    js2-mode) . lsp-deferred)
+    js-mode) . lsp-deferred)
   :custom
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
