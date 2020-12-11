@@ -496,55 +496,30 @@ If the input is empty, select the previous history element instead."
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
 
-  (use-package modus-operandi-theme
-    :ensure t
-    :demand t
-    :config
-    (setq modus-operandi-theme-slanted-constructs t)
-    (setq modus-operandi-theme-distinct-org-blocks t)
-    (load-theme 'modus-operandi t))
-
-  ;; (use-package modus-vivendi-theme
-  ;;   :ensure t
-  ;;   :demand t
-  ;;   :config
-  ;;   (setq modus-vivendi-theme-slanted-constructs t)
-  ;;   (setq modus-vivendi-theme-distinct-org-blocks t))
-
-  ;; (defvar current-theme nil)
-  ;; (defun synchronize-theme ()
-  ;;   "Set theme depending on the time of the day."
-  ;;   (let* ((hour
-  ;;           (string-to-number
-  ;;            (substring (current-time-string) 11 13))) ; extract the hour
-  ;;          (now
-  ;;           (if (and (>= hour 6) (<= hour 17)) ; if the hour is between 6 and 17
-  ;;               'modus-operandi ; use light
-  ;;             'modus-vivendi)))
-  ;;     (if (equal now current-theme)
-  ;;         nil
-  ;;       (setq current-theme now)
-  ;;       (load-theme now t))))
-
-  ;; ;; Run synchronize-theme now and repeat every 30 minutes
-  ;; (run-at-time nil (* 30 60) 'synchronize-theme)
-
-  ;; (use-package doom-themes
-  ;;   :ensure t
-  ;;   :demand t
-  ;;   :config
-  ;;   (setq doom-themes-padded-modeline 2)
-  ;;   (load-theme 'doom-rouge t)
-  ;;   (doom-themes-org-config)
-
-  ;; (when (require 'all-the-icons nil 'noerror)
-  ;;   (doom-themes-neotree-config))))
-
   (use-package all-the-icons
     :ensure t
     :config
-    (setq all-the-icons-scale-factor 1.0)))
+    (setq all-the-icons-scale-factor 1.0))
 
+  (use-package modus-themes
+    :ensure t
+    :init
+    (setq modus-themes-slanted-constructs t
+          modus-themes-completions 'opinionated
+          modus-themes-scale-headings t
+          modus-themes-fringes nil
+          modus-themes-org-blocks 'rainbow
+          modus-themes-headings '((t . section-no-bold))))
+
+  (use-package circadian
+    :ensure t
+    :demand t
+    :config
+    (setq calendar-latitude 48.7
+          calendar-longitude 26.6)
+    (setq circadian-themes '((:sunrise . modus-operandi)
+                             (:sunset  . modus-vivendi)))
+    (circadian-setup)))
 
 (use-package rainbow-delimiters
   :ensure t
