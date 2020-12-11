@@ -1,0 +1,6 @@
+[submodule "embark"]
+	path = embark
+	url = https://github.com/oantolin/embark.git
+[submodule "emacs-livedown"]
+	path = emacs-livedown
+	url = https://github.com/shime/emacs-livedown.git
