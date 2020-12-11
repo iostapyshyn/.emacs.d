@@ -345,6 +345,7 @@ Transient Mark mode is on but the region is inactive."
   (setq python-shell-completion-native-enable t)
   (setq python-shell-interpreter "python3"))
 
+;; Replaced for LSP
 ;; (use-package elpy
 ;;   :ensure t
 ;;   :defer t
