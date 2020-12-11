@@ -342,16 +342,16 @@ Transient Mark mode is on but the region is inactive."
   :bind (:map python-mode-map
               ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t))))
   :config
-  (setq python-shell-completion-native-enable nil)
+  (setq python-shell-completion-native-enable t)
   (setq python-shell-interpreter "python3"))
 
-(use-package elpy
-  :ensure t
-  :defer t
-  :init
-  (advice-add 'python-mode :before 'elpy-enable)
-  :config
-  (setq elpy-rpc-python-command "/usr/local/bin/python3"))
+;; (use-package elpy
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (advice-add 'python-mode :before 'elpy-enable)
+;;   :config
+;;   (setq elpy-rpc-python-command "/usr/local/bin/python3"))
 
 ;; dired
 (use-package dired
