@@ -53,6 +53,7 @@
 
 (global-subword-mode)
 
+(add-hook 'help-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'superword-mode)
 
