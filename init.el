@@ -545,7 +545,7 @@ If the input is empty, select the previous history element instead."
                       'icons
                     'ascii))
   (setq neo-smart-open t)
-  (define-key neotree-mode-map (kbd "P")
+  (define-key neotree-mode-map (kbd "^")
     (lambda ()
       (interactive) (neotree-dir (parent-directory neo-buffer--start-node)))))
 
