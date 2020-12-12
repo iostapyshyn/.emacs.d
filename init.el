@@ -444,7 +444,7 @@ If the input is empty, select the previous history element instead."
   :config
   (ivy-mode 1)
   (setq ivy-display-style 'fancy)
-  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-count-format "[%d/%d] ")
   (setq ivy-use-virtual-buffers nil)
   (setq ivy-use-selectable-prompt t)
   (setq enable-recursive-minibuffers t)
@@ -669,7 +669,6 @@ If eshell is already open and no argument is specified, change to that directory
   :ensure t
   :custom
   (projectile-switch-project-action #'projectile-find-file)
-  (projectile-completion-system 'ivy)
   :config
   (projectile-mode 1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
