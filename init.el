@@ -394,12 +394,12 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (reverse-im-mode t))
 
-;; M-x history ;; Replaced with prescient
-(use-package smex
+;; M-x history
+(use-package amx
   :ensure t
   :demand t
   :config
-  (smex-initialize))
+  (amx-mode))
 
 ;; Better undo
 (use-package undo-tree
@@ -461,7 +461,7 @@ If the input is empty, select the previous history element instead."
 (use-package counsel
   :ensure t
   :demand t
-  :after ivy smex
+  :after ivy
   :config
   (global-set-key [remap recentf-open-files] 'counsel-recentf)
   (counsel-mode 1))
