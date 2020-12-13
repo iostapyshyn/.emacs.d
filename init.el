@@ -243,6 +243,7 @@ Transient Mark mode is on but the region is inactive."
                               (other-window -1)))))
 
 (defun parent-directory (path)
+  "Return parent directory of PATH."
   (file-name-directory (directory-file-name path)))
 
 
