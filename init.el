@@ -151,8 +151,10 @@
                                (if (region-active-p)
                                    (buffer-substring (region-beginning) (region-end))
                                  (thing-at-point 'word)))))
-  (let ((truncate-lines nil))
-    (shell-command (concat "duden " word))))
+  (let ((bufname "*Duden Output*"))
+    (async-shell-command (concat "duden " word) bufname)
+    (with-current-buffer bufname
+      (turn-on-visual-line-mode))))
 
 (global-set-key (kbd "C-c / d") 'duden)
 
