@@ -15,9 +15,9 @@
 
 ;; My preferred fonts
 (when window-system
-  (set-face-attribute 'default nil           :family "Iosevka"      :height 130)
-  (set-face-attribute 'fixed-pitch nil       :family "Iosevka Slab" :height 130)
-  (set-face-attribute 'variable-pitch nil    :family "PT Serif"     :height 1.15))
+  (set-face-attribute 'default nil        :family "Iosevka"      :height 130)
+  (set-face-attribute 'fixed-pitch nil    :family "Iosevka Slab" :height 130)
+  (set-face-attribute 'variable-pitch nil :family "PT Serif"     :height 1.15))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
@@ -109,12 +109,7 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 ;; Calc
-(with-eval-after-load 'calc
-  (add-hook 'calc-mode-hook (lambda ()
-                              (require 'calc-math)
-                              (calc-radians-mode)))
-  (setq-default calc-multiplication-has-precedence nil))
-
+(setq-default calc-multiplication-has-precedence nil)
 
 ;; German postfix input method:
 ;; C-\ to enable: ae -> ä
