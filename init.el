@@ -8,8 +8,6 @@
     (when (file-exists-p early-init-file)
       (load-file early-init-file))))
 
-;; (setq load-prefer-newer t) ;; this was causing some errors
-
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
@@ -70,14 +68,12 @@
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
-;; Highlight the whole expression in lisp modes
-;; And disable electric-pair-mode
-(make-variable-buffer-local 'show-paren-style)
-(dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
-  (add-hook hook
-            (lambda ()
-              ;; (setq show-paren-style 'expression)
-              (electric-pair-local-mode 0))))
+;; ;; disable electric-pair-mode for lisp
+;; (make-variable-buffer-local 'show-paren-style)
+;; (dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
+;;   (add-hook hook
+;;             (lambda ()
+;;               (electric-pair-local-mode 0))))
 
 ;; Identation settings:
 (setq c-default-style "k&r")
@@ -385,7 +381,7 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :demand t
   :custom
-  (reverse-im-input-methods '("russian-computer" "ukrainian-computer" "german"))
+  (reverse-im-input-methods '("ukrainian-computer" "german"))
   :config
   (reverse-im-mode t))
 

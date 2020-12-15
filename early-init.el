@@ -29,5 +29,8 @@
 ;; Disable pixel-by-pixel scrolling, since it's extremely choppy.
 (setq mac-mouse-wheel-smooth-scroll nil)
 
+;; Prefer newer versions of elisp files
+(setq load-prefer-newer t)
+
 (provide 'early-init)
 ;;; early-init.el ends here
