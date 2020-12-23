@@ -228,12 +228,12 @@ Transient Mark mode is on but the region is inactive."
   :lighter nil
   :keymap `((,(kbd "C-,") . previous-buffer)
             (,(kbd "C-.") . next-buffer)
-            (,(kbd "C->") . (lambda ()
+            (,(kbd "s-,") . (lambda ()
                               (interactive)
-                              (other-window +1)))
-            (,(kbd "C-<") . (lambda ()
+                              (other-window -1)))
+            (,(kbd "s-.") . (lambda ()
                               (interactive)
-                              (other-window -1)))))
+                              (other-window +1)))))
 
 (defun parent-directory (path)
   "Return parent directory of PATH."
@@ -532,6 +532,11 @@ If the input is empty, select the previous history element instead."
                       'icons
                     'ascii))
   (setq neo-smart-open t)
+  ;; Close on enter
+  (add-hook 'neo-enter-hook
+            (lambda (type &rest trailing)
+              (if (equal type 'file)
+                  (neotree-hide))))
   (define-key neotree-mode-map (kbd "^")
     (lambda ()
       (interactive) (neotree-dir (parent-directory neo-buffer--start-node)))))
