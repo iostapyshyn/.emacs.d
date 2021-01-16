@@ -337,7 +337,10 @@ Transient Mark mode is on but the region is inactive."
               ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t))))
   :config
   (setq python-shell-completion-native-enable t)
-  (setq python-shell-interpreter "python3"))
+  (setq python-shell-interpreter "python3")
+  (when (executable-find "ipython")
+    (setq python-shell-interpreter "ipython"
+          python-shell-interpreter-args "--simple-prompt -i")))
 
 ;; Replaced for LSP
 ;; (use-package elpy
