@@ -528,6 +528,24 @@ If the input is empty, select the previous history element instead."
   :hook ((emacs-lisp-mode
           lisp-mode) . rainbow-delimiters-mode))
 
+;; Neotree - navigation tree
+(use-package neotree
+  :ensure t
+  :bind* (("<f8>" . neotree-toggle))
+  :config
+  (setq neo-theme (if (require 'all-the-icons nil 'noerror)
+                      'icons
+                    'ascii))
+  (setq neo-smart-open t)
+  ;; Close on enter
+  (add-hook 'neo-enter-hook
+            (lambda (type &rest trailing)
+              (if (equal type 'file)
+                  (neotree-hide))))
+  (define-key neotree-mode-map (kbd "^")
+    (lambda ()
+      (interactive) (neotree-dir (parent-directory neo-buffer--start-node)))))
+
 (use-package eshell
   :bind ("<s-return>" . eshell-open-with-directory)
   :config
