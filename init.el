@@ -650,12 +650,6 @@ If eshell is already open and no argument is specified, change to that directory
   :custom
   (lsp-ui-doc-enable nil)) ; Disable giant hovering pop-up boxes.
 
-(use-package company-lsp
-  :after lsp-mode company
-  :ensure t
-  :config
-  (add-to-list 'company-backends 'company-lsp))
-
 ;; I don't use snippets but this is used by company-lsp for function arguments
 (use-package yasnippet
   :ensure t
