@@ -13,7 +13,10 @@
 
 ;; My preferred fonts
 (when window-system
-  (set-face-attribute 'default nil        :family "Iosevka"      :height 130)
+  (set-face-attribute 'default nil
+                      :family "Iosevka"
+                      :weight 'semilight
+                      :height 130)
   (set-face-attribute 'fixed-pitch nil    :family "Iosevka Slab" :height 130)
   (set-face-attribute 'variable-pitch nil :family "PT Serif"     :height 1.15))
 
