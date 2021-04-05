@@ -571,6 +571,7 @@ If eshell is already open and no argument is specified, change to that directory
   :ensure t
   :bind* (("<f7>" . vterm))
   :config
+  (add-hook 'vterm-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f)
   (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
