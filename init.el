@@ -587,16 +587,7 @@ If eshell is already open and no argument is specified, change to that directory
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :bind* (("<f7>" . vterm-open))
-  :init
-  (defun vterm-open ()
-    (interactive)
-    (if (get-buffer "vterm")
-        (if (get-buffer-process "vterm")
-            (switch-to-buffer "vterm")
-          (kill-buffer "vterm")
-          (vterm))
-      (vterm)))
+  :bind* (("<f7>" . vterm))
   :config
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
   (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f)
