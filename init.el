@@ -180,18 +180,18 @@ Transient Mark mode is on but the region is inactive."
                                                mode-line-modes)))))
 
 ;; Compilation window should be rather small
-(setq compilation-window-height 10)
-(defun my/compilation-hook ()
-  "Set compilation window height."
-  (when (not (get-buffer-window "*compilation*"))
-    (save-selected-window
-      (save-excursion
-        (let* ((w (split-window-vertically))
-               (h (window-height w)))
-          (select-window w)
-          (switch-to-buffer "*compilation*")
-          (shrink-window (- h compilation-window-height)))))))
-(add-hook 'compilation-mode-hook 'my/compilation-hook)
+;; (setq compilation-window-height 10)
+;; (defun my/compilation-hook ()
+;;   "Set compilation window height."
+;;   (when (not (get-buffer-window "*compilation*"))
+;;     (save-selected-window
+;;       (save-excursion
+;;         (let* ((w (split-window-vertically))
+;;                (h (window-height w)))
+;;           (select-window w)
+;;           (switch-to-buffer "*compilation*")
+;;           (shrink-window (- h compilation-window-height)))))))
+;; (add-hook 'compilation-mode-hook 'my/compilation-hook)
 (make-variable-buffer-local 'compile-command)
 (global-set-key [(f5)] 'compile)
 (global-set-key [(f6)] 'recompile)
@@ -228,12 +228,9 @@ Transient Mark mode is on but the region is inactive."
   :lighter nil
   :keymap `((,(kbd "C-,") . previous-buffer)
             (,(kbd "C-.") . next-buffer)
-            (,(kbd "s-,") . (lambda ()
-                              (interactive)
-                              (other-window -1)))
-            (,(kbd "s-.") . (lambda ()
-                              (interactive)
-                              (other-window +1)))))
+            (,(kbd "M-o") . other-window)))
+
+(windmove-default-keybindings)
 
 (defun parent-directory (path)
   "Return parent directory of PATH."
@@ -408,6 +405,10 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :config
   (which-key-mode))
+
+;; (use-package ace-window
+;;   :ensure t
+;;   :bind (("M-o" . ace-window)))
 
 (use-package swiper
   :ensure t
