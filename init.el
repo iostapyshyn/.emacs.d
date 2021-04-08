@@ -111,9 +111,9 @@
 ;; C-\ to enable: ae -> ä
 ;; Is buffer-local
 (setq default-input-method 'german-postfix)
-(add-hook 'text-mode-hook
-          (lambda ()
-            (activate-input-method default-input-method)))
+;; (add-hook 'text-mode-hook
+;;           (lambda ()
+;;             (activate-input-method default-input-method)))
 
 ;; My org files may contain bookmarks. They fail to open non-interactively:
 (defadvice bookmark-jump (before bookmarks-load activate)
