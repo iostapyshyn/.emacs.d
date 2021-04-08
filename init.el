@@ -227,8 +227,9 @@ Transient Mark mode is on but the region is inactive."
   :init-value t ;; On by default
   :lighter nil
   :keymap `((,(kbd "C-,") . previous-buffer)
-            (,(kbd "C-.") . next-buffer)
-            (,(kbd "M-o") . other-window)))
+            (,(kbd "C-.") . next-buffer)))
+
+(global-set-key (kbd "M-o") 'other-window)
 
 (windmove-default-keybindings)
 
@@ -540,6 +541,10 @@ If the input is empty, select the previous history element instead."
               (setq eshell-review-quick-commands nil)
               (setq eshell-smart-space-goes-to-end t)
               (eshell-smart-initialize)))
+
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (company-mode 0)))
 
   ;; Pressing <s-return> twice will open eshell and cd into prev.
   ;; buffer directory.
