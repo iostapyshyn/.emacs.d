@@ -513,7 +513,7 @@ If the input is empty, select the previous history element instead."
           modus-themes-scale-headings t
           modus-themes-fringes nil
           modus-themes-org-blocks 'rainbow
-          modus-themes-headings '((t . section-no-bold))))
+          modus-themes-headings '((t . no-bold))))
 
   (use-package circadian
     :ensure t
