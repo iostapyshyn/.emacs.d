@@ -124,7 +124,8 @@
 (when (or (eq window-system 'ns) (eq window-system 'mac))
   (setq mac-command-modifier 'super
         mac-option-modifier 'meta
-        mac-right-option-modifier nil))
+        mac-right-option-modifier nil)
+  (mac-auto-operator-composition-mode 1))
 
 (add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
 
