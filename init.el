@@ -542,10 +542,6 @@ If the input is empty, select the previous history element instead."
               (setq eshell-smart-space-goes-to-end t)
               (eshell-smart-initialize)))
 
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (company-mode 0)))
-
   ;; Pressing <s-return> twice will open eshell and cd into prev.
   ;; buffer directory.
 
@@ -588,7 +584,9 @@ If eshell is already open and no argument is specified, change to that directory
   (add-hook 'after-init-hook 'global-company-mode)
   (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-  (define-key company-active-map (kbd "SPC") nil))
+  (define-key company-active-map (kbd "SPC") nil)
+  ;; disable company for shells (causes lags on remotes)
+  (setq company-global-modes '(not eshell-mode shell-mode)))
 
 (use-package flycheck
   :demand t
