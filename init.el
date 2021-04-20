@@ -730,19 +730,10 @@ If eshell is already open and no argument is specified, change to that directory
   :config
   (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
 
-(use-package nov
-  :commands nov-bookmark-jump-handler
-  :ensure t
-  :mode ("\\.epub\\'" . nov-mode)
-  :config
-  (setq nov-text-width t)
-  (add-hook 'nov-mode-hook 'visual-line-mode))
-
 (use-package olivetti
+  :disabled t
   :ensure t
   :preface
-  (with-eval-after-load 'nov
-    (add-hook 'nov-mode-hook 'olivetti-mode))
   (with-eval-after-load 'eww
     (add-hook 'eww-mode-hook 'olivetti-mode))
   :custom
