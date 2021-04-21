@@ -423,8 +423,8 @@ the buffer. Disable flyspell-mode otherwise."
                ("C-r" . swiper-C-r)))
   :config
   ;; No regex magic for swiper
-  (add-to-list 'ivy-re-builders-alist '(swiper-isearch          . ivy--regex-or-literal))
-  (add-to-list 'ivy-re-builders-alist '(swiper-isearch-backward . ivy--regex-or-literal))
+  ;; (add-to-list 'ivy-re-builders-alist '(swiper-isearch          . ivy--regex-or-literal))
+  ;; (add-to-list 'ivy-re-builders-alist '(swiper-isearch-backward . ivy--regex-or-literal))
 
   (defun swiper-C-r (&optional arg)
     "Move cursor vertically down ARG candidates.
