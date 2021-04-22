@@ -152,6 +152,10 @@
 
 (global-set-key (kbd "C-c / d") 'duden)
 
+(setq eww-search-prefix "https://lite.duckduckgo.com/html/?q=")
+
+(global-set-key (kbd "C-c / e") 'eww)
+
 (defun spw/exchange-point-and-mark (arg)
   "Exchange point and mark, but reactivate mark a bit less often.
 
