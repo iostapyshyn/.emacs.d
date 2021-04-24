@@ -268,6 +268,19 @@ Transient Mark mode is on but the region is inactive."
   :config
   (minions-mode 1))
 
+(use-package project
+  :config
+  ;; Credit to github.com/karthink for this .project detection snippet below
+  (setq project-local-identifier ".project")
+  (cl-defmethod project-root ((project (head local)))
+    (cdr project))
+  (defun project-try-local (dir)
+    "Determine if DIR is a non-VC project.
+DIR must include a .project file to be considered a project."
+    (if-let ((root (locate-dominating-file dir project-local-identifier)))
+        (cons 'local root)))
+  (add-hook 'project-find-functions 'project-try-local))
+
 ;; org-mode
 (use-package org
   :preface
@@ -645,18 +658,11 @@ If eshell is already open and no argument is specified, change to that directory
 (use-package cmake-mode :ensure t)
 (use-package glsl-mode :ensure t)
 
-;; Projectile
-(use-package projectile
-  :demand t
-  :ensure t
-  :custom
-  (projectile-switch-project-action #'projectile-find-file)
-  :config
-  (projectile-mode 1)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-
 ;; Magit
-(use-package magit :ensure t)
+(use-package magit
+  :ensure t
+  :bind* ("C-c / m" . magit))
+
 (use-package webpaste
   :ensure t
   :bind* ("C-c / p" . webpaste-paste-buffer-or-region)
