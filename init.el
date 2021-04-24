@@ -269,6 +269,7 @@ Transient Mark mode is on but the region is inactive."
   (minions-mode 1))
 
 (use-package project
+  :bind-keymap* ("C-x p" . project-prefix-map)
   :config
   ;; Credit to github.com/karthink for this .project detection snippet below
   (setq project-local-identifier ".project")
