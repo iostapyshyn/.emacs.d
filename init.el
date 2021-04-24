@@ -186,7 +186,7 @@ Transient Mark mode is on but the region is inactive."
                                                " "
                                                mode-line-modes)))))
 
-(make-variable-buffer-local 'compile-command)
+;;(make-variable-buffer-local 'compile-command)
 (defun compile-maybe-project ()
   "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
   (interactive)
