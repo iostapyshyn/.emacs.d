@@ -226,8 +226,8 @@ Transient Mark mode is on but the region is inactive."
   :global t
   :init-value t ;; On by default
   :lighter nil
-  :keymap `((,(kbd "C-,") . previous-buffer)
-            (,(kbd "C-.") . next-buffer)
+  :keymap `((,(kbd "s-,") . previous-buffer)
+            (,(kbd "s-.") . next-buffer)
             (,(kbd "s-o") . other-window)))
 
 (windmove-default-keybindings)
