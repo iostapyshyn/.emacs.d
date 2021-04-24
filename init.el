@@ -661,8 +661,7 @@ If eshell is already open and no argument is specified, change to that directory
 
 ;; Magit
 (use-package magit
-  :ensure t
-  :bind* ("C-c / m" . magit))
+  :ensure t)
 
 (use-package webpaste
   :ensure t
