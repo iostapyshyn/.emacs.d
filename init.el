@@ -186,22 +186,15 @@ Transient Mark mode is on but the region is inactive."
                                                " "
                                                mode-line-modes)))))
 
-;; Compilation window should be rather small
-;; (setq compilation-window-height 10)
-;; (defun my/compilation-hook ()
-;;   "Set compilation window height."
-;;   (when (not (get-buffer-window "*compilation*"))
-;;     (save-selected-window
-;;       (save-excursion
-;;         (let* ((w (split-window-vertically))
-;;                (h (window-height w)))
-;;           (select-window w)
-;;           (switch-to-buffer "*compilation*")
-;;           (shrink-window (- h compilation-window-height)))))))
-;; (add-hook 'compilation-mode-hook 'my/compilation-hook)
 (make-variable-buffer-local 'compile-command)
-(global-set-key [(f5)] 'compile)
-(global-set-key [(f6)] 'recompile)
+(defun compile-maybe-project ()
+  "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
+  (interactive)
+  (if (project-current nil)
+      (call-interactively 'project-compile)
+    (call-interactively 'compile)))
+
+(global-set-key (kbd "C-x c") 'compile-maybe-project)
 
 (defun c-switch-source-header ()
   "Switch to a header/source file with the same name as current if present in the directory."
