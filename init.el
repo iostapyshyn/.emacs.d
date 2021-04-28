@@ -233,6 +233,8 @@ Transient Mark mode is on but the region is inactive."
 
 (windmove-default-keybindings)
 
+(global-set-key (kbd "C-h M") 'man)
+
 (defun parent-directory (path)
   "Return parent directory of PATH."
   (file-name-directory (directory-file-name path)))
@@ -513,11 +515,6 @@ If the input is empty, select the previous history element instead."
   (defadvice load-theme (after run-after-load-theme-hook activate)
     "Run `after-load-theme-hook'."
     (run-hooks 'after-load-theme-hook))
-
-  (use-package all-the-icons
-    :ensure t
-    :config
-    (setq all-the-icons-scale-factor 1.0))
 
   (use-package modus-themes
     :ensure t
