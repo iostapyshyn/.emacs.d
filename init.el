@@ -502,39 +502,40 @@ If the input is empty, select the previous history element instead."
 
 
 ;; Color theme
-(when (window-system)
-  (setq custom-safe-themes t)
+(setq custom-safe-themes t)
 
-  (defadvice load-theme (before theme-dont-propagate activate)
-    "Discard all themes before loading new."
-    (mapc #'disable-theme custom-enabled-themes))
+(defadvice load-theme (before theme-dont-propagate activate)
+  "Discard all themes before loading new."
+  (mapc #'disable-theme custom-enabled-themes))
 
-  (defvar after-load-theme-hook nil
-    "Hook run after a color theme is loaded using `load-theme'.")
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
 
-  (defadvice load-theme (after run-after-load-theme-hook activate)
-    "Run `after-load-theme-hook'."
-    (run-hooks 'after-load-theme-hook))
+(defadvice load-theme (after run-after-load-theme-hook activate)
+  "Run `after-load-theme-hook'."
+  (run-hooks 'after-load-theme-hook))
 
-  (use-package modus-themes
-    :ensure t
-    :init
-    (setq modus-themes-slanted-constructs t
-          modus-themes-completions 'opinionated
-          modus-themes-scale-headings t
-          modus-themes-fringes nil
-          modus-themes-org-blocks 'rainbow
-          modus-themes-headings '((t . no-bold))))
+(use-package modus-themes
+  :ensure t
+  :init
+  (setq modus-themes-slanted-constructs t
+        modus-themes-completions 'opinionated
+        modus-themes-scale-headings t
+        modus-themes-fringes nil
+        modus-themes-org-blocks 'rainbow
+        modus-themes-headings '((t . no-bold))))
 
-  (use-package circadian
-    :ensure t
-    :demand t
-    :config
-    (setq calendar-latitude 48.7
-          calendar-longitude 26.6)
-    (setq circadian-themes '((:sunrise . modus-operandi)
-                             (:sunset  . modus-vivendi)))
-    (circadian-setup)))
+(if (window-system)
+    (use-package circadian
+      :ensure t
+      :demand t
+      :config
+      (setq calendar-latitude 48.7
+            calendar-longitude 26.6)
+      (setq circadian-themes '((:sunrise . modus-operandi)
+                               (:sunset  . modus-vivendi)))
+      (circadian-setup))
+  (load-theme 'modus-vivendi t))
 
 (use-package rainbow-delimiters
   :ensure t
