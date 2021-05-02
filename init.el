@@ -283,10 +283,14 @@ DIR must include a .project file to be considered a project."
   (defvar my/org "~/org")
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
 
+  ;; Don't show index on recent files
+  (with-eval-after-load 'recentf
+    (add-to-list 'recentf-exclude (expand-file-name my/org-index)))
+
   (defun org-my-index ()
     (interactive)
     (push-mark)
-    (dired my/org))
+    (find-file my/org-index))
   :bind*
   (("C-c a" . org-agenda)
    ("C-c i" . org-my-index)
