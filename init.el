@@ -302,10 +302,10 @@ DIR must include a .project file to be considered a project."
   ;; (setq-default org-display-custom-times t)
   ;; (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
 
-  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%-12t% s%b")
-                                   (todo   . " %i %-12:c%b")
-                                   (tags   . " %i %-12:c%b")
-                                   (search . " %i %-12:c%b")))
+  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%-12t% s")
+                                   (todo   . " %i %-12:c")
+                                   (tags   . " %i %-12:c")
+                                   (search . " %i %-12:c")))
 
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
