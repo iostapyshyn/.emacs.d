@@ -283,14 +283,10 @@ DIR must include a .project file to be considered a project."
   (defvar my/org "~/org")
   (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
 
-  ;; Don't show index on recent files
-  (with-eval-after-load 'recentf
-    (add-to-list 'recentf-exclude (expand-file-name my/org-index)))
-
   (defun org-my-index ()
     (interactive)
     (push-mark)
-    (find-file my/org-index))
+    (dired my/org))
   :bind*
   (("C-c a" . org-agenda)
    ("C-c i" . org-my-index)
@@ -303,8 +299,14 @@ DIR must include a .project file to be considered a project."
          ("C-c C-/" . org-sparse-tree)
          ("C-c /"   . nil))) ;; Some important keybindings on C-c /
   :config
-  (setq-default org-display-custom-times t)
-  (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+  ;; (setq-default org-display-custom-times t)
+  ;; (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+
+  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%-12t% s%b")
+                                   (todo   . " %i %-12:c%b")
+                                   (tags   . " %i %-12:c%b")
+                                   (search . " %i %-12:c%b")))
+
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
 
@@ -344,7 +346,8 @@ DIR must include a .project file to be considered a project."
   (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
-  (setq org-return-follows-link t))
+  (setq org-return-follows-link t)
+  (setq org-startup-indented t))
 
 (use-package python
   :bind (:map python-mode-map
@@ -523,7 +526,7 @@ If the input is empty, select the previous history element instead."
         modus-themes-scale-headings t
         modus-themes-fringes nil
         modus-themes-org-blocks 'rainbow
-        modus-themes-headings '((t . no-bold))))
+        modus-themes-headings '((t . nil))))
 
 (if (window-system)
     (use-package circadian
