@@ -374,6 +374,7 @@ DIR must include a .project file to be considered a project."
 
 ;; dired
 (use-package dired
+  :bind* ("C-x C-d" . dired)
   :custom
   (dired-dwim-target t)
   (dired-recursive-copies 'top)
