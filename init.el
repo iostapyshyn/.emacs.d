@@ -569,7 +569,6 @@ was called last time.")
 
   (defun eshell-open-with-directory (&optional arg)
     "Opens eshell, but saves buffer directory in a variable `eshell-saved-directory'.
-See `eshell-cd-saved-directory'.
 
 If eshell is already open and no argument is specified, change to that directory.
 "
