@@ -489,7 +489,7 @@ If the input is empty, select the previous history element instead."
 
 (use-package avy
   :ensure t
-  :bind* (("C-c SPC" . avy-goto-char-timer)))
+  :bind* (("C-c SPC" . avy-goto-char-2)))
 
 (use-package expand-region
   :ensure t
