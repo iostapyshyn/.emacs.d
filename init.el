@@ -157,6 +157,18 @@
 
 (global-set-key (kbd "C-c / e") 'eww)
 
+(defun eww-man7-index ()
+  "Opens the list of man7.org pages in EWW."
+  (interactive)
+  (pop-to-buffer
+   (get-buffer-create "*eww-man7.org*"))
+  (let ((index "https://man7.org/linux/man-pages/dir_all_alphabetic.html")
+        (cur (plist-get eww-data :url)))
+    (unless (equal cur index)
+      (eww-mode) ;; forces to load in the current buffer
+      (eww index))))
+(global-set-key (kbd "C-c / m") 'eww-man7-index)
+
 (defun spw/exchange-point-and-mark (arg)
   "Exchange point and mark, but reactivate mark a bit less often.
 
