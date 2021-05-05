@@ -128,8 +128,8 @@
   (setq mac-frame-tabbing nil))
 
 ;; Ligatures
-;; (when (eq window-system 'mac)
-;;   (mac-auto-operator-composition-mode 1))
+(when (eq window-system 'mac)
+  (mac-auto-operator-composition-mode 1))
 
 (add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
 
