@@ -1,4 +1,4 @@
-;;; early-init.el --- Emacs early init
+;;; early-init.el --- Emacs early init              -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
