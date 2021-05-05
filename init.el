@@ -163,7 +163,7 @@
   (pop-to-buffer
    (get-buffer-create "*eww-man7.org*"))
   (let ((index "https://man7.org/linux/man-pages/dir_all_alphabetic.html")
-        (cur (plist-get eww-data :url)))
+        (cur (and (boundp 'eww-data) (plist-get eww-data :url))))
     (unless (equal cur index)
       (eww-mode) ;; forces to load in the current buffer
       (eww index))))
