@@ -42,6 +42,9 @@
 ;; Ask permission before killing emacs.
 (setq confirm-kill-emacs 'yes-or-no-p)
 
+;; Enable all disabled commands
+(setq disabled-command-function nil)
+
 ;; No wrapping, truncate lines
 (setq-default truncate-lines t)
 (setq column-number-mode t)
