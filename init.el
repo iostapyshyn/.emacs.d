@@ -411,7 +411,15 @@ new EWW buffer."
           (eww url (if arg 4 nil)))))))
 
 (use-package isearch
+  :bind (:map isearch-mode-map
+              ("<C-return>" . isearch-done-other-end))
   :config
+  (defun isearch-done-other-end ()
+    "End current search in the opposite side of the match."
+    (interactive)
+    (isearch-done)
+    (when isearch-other-end
+      (goto-char isearch-other-end)))
   (setq search-highlight t)
   (setq search-whitespace-regexp ".*?")
   (setq isearch-lax-whitespace t)
