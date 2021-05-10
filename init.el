@@ -231,8 +231,6 @@ Transient Mark mode is on but the region is inactive."
             (,(kbd "C-.") . next-buffer)
             (,(kbd "C-;") . other-window)))
 
-(windmove-default-keybindings)
-
 (global-set-key (kbd "C-h M") 'man)
 
 (defun parent-directory (path)
