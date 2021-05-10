@@ -419,7 +419,7 @@ new EWW buffer."
   (setq isearch-lazy-highlight t)
   (setq isearch-lazy-count t)
   (setq lazy-count-prefix-format nil)
-  (setq lazy-count-suffix-format " (%s/%s)")
+  (setq lazy-count-suffix-format " [%s/%s]")
   (setq isearch-yank-on-move 'shift)
   (setq isearch-allow-scroll 'unlimited))
 
