@@ -157,22 +157,6 @@
 
 (global-set-key (kbd "C-c / d") 'duden)
 
-(setq eww-search-prefix "https://lite.duckduckgo.com/html/?q=")
-
-(global-set-key (kbd "C-c / e") 'eww)
-
-(defun eww-man7-index ()
-  "Opens the list of man7.org pages in EWW."
-  (interactive)
-  (pop-to-buffer
-   (get-buffer-create "*eww-man7.org*"))
-  (let ((index "https://man7.org/linux/man-pages/dir_all_alphabetic.html")
-        (cur (and (boundp 'eww-data) (plist-get eww-data :url))))
-    (unless (equal cur index)
-      (eww-mode) ;; forces to load in the current buffer
-      (eww index))))
-(global-set-key (kbd "C-c / m") 'eww-man7-index)
-
 (defun spw/exchange-point-and-mark (arg)
   "Exchange point and mark, but reactivate mark a bit less often.
 
@@ -387,6 +371,46 @@ DIR must include a .project file to be considered a project."
 ;;   (advice-add 'python-mode :before 'elpy-enable)
 ;;   :config
 ;;   (setq elpy-rpc-python-command "/usr/local/bin/python3"))
+
+(use-package eww
+  :bind (("C-c / e" . eww)
+         ("C-c / m" . eww-man7-index)
+         (:map eww-mode-map
+               ("j" . prot-eww-visit-url-on-page)))
+  :config
+  (setq eww-search-prefix "https://lite.duckduckgo.com/html/?q=")
+
+  (defun eww-man7-index ()
+    "Opens the list of man7.org pages in EWW."
+    (interactive)
+    (pop-to-buffer
+     (get-buffer-create "*eww-man7.org*"))
+    (let ((index "https://man7.org/linux/man-pages/dir_all_alphabetic.html")
+          (cur (and (boundp 'eww-data) (plist-get eww-data :url))))
+      (unless (equal cur index)
+        (eww-mode) ;; forces to load in the current buffer
+        (eww index))))
+
+  (defun prot-eww-visit-url-on-page (&optional arg)
+    "Visit URL from list of links on the page using completion.
+
+With optional prefix ARG (\\[universal-argument]) open URL in a
+new EWW buffer."
+    (interactive "P")
+    (when (derived-mode-p 'eww-mode)
+      (let ((links))
+        (save-excursion
+          (goto-char (point-max))
+          (while (text-property-search-backward 'shr-url nil nil t)
+            (when (and (get-text-property (point) 'shr-url)
+                       (not (get-text-property (point) 'eww-form)))
+              (push (format "%s @ %s"
+                            (button-label (point))
+                            (propertize (get-text-property (point) 'shr-url) 'face 'link))
+                    links))))
+        (let* ((selection (completing-read "Browse URL from page: " links nil t))
+               (url (replace-regexp-in-string ".*@ " "" selection)))
+          (eww url (if arg 4 nil)))))))
 
 ;; dired
 (use-package dired
