@@ -435,7 +435,7 @@ new EWW buffer."
   (require 'dired-x)
   (setq-default dired-omit-files-p t) ; Buffer-local variable
   (setq dired-omit-files "^\\.[^.]\\|^\\.$")
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+  ;; (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   (add-hook 'dired-mode-hook 'dired-omit-mode))
 
 (use-package flyspell
