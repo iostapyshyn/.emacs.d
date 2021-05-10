@@ -410,6 +410,19 @@ new EWW buffer."
                (url (replace-regexp-in-string ".*@ " "" selection)))
           (eww url (if arg 4 nil)))))))
 
+(use-package isearch
+  :config
+  (setq search-highlight t)
+  (setq search-whitespace-regexp ".*?")
+  (setq isearch-lax-whitespace t)
+  (setq isearch-regexp-lax-whitespace nil)
+  (setq isearch-lazy-highlight t)
+  (setq isearch-lazy-count t)
+  (setq lazy-count-prefix-format nil)
+  (setq lazy-count-suffix-format " (%s/%s)")
+  (setq isearch-yank-on-move 'shift)
+  (setq isearch-allow-scroll 'unlimited))
+
 ;; dired
 (use-package dired
   :bind* ("C-x C-d" . dired)
@@ -473,25 +486,25 @@ the buffer. Disable flyspell-mode otherwise."
 ;;   :ensure t
 ;;   :bind (("M-o" . ace-window)))
 
-(use-package swiper
-  :ensure t
-  :bind (("C-s" . swiper-isearch)
-         ("C-r" . swiper-isearch-backward)
-         (:map swiper-map
-               ("C-s" . swiper-C-s)
-               ("C-r" . swiper-C-r)))
-  :config
-  ;; No regex magic for swiper
-  ;; (add-to-list 'ivy-re-builders-alist '(swiper-isearch          . ivy--regex-or-literal))
-  ;; (add-to-list 'ivy-re-builders-alist '(swiper-isearch-backward . ivy--regex-or-literal))
+;; (use-package swiper
+;;   :ensure t
+;;   :bind (("C-s" . swiper-isearch)
+;;          ("C-r" . swiper-isearch-backward)
+;;          (:map swiper-map
+;;                ("C-s" . swiper-C-s)
+;;                ("C-r" . swiper-C-r)))
+;;   :config
+;;   ;; No regex magic for swiper
+;;   ;; (add-to-list 'ivy-re-builders-alist '(swiper-isearch          . ivy--regex-or-literal))
+;;   ;; (add-to-list 'ivy-re-builders-alist '(swiper-isearch-backward . ivy--regex-or-literal))
 
-  (defun swiper-C-r (&optional arg)
-    "Move cursor vertically down ARG candidates.
-If the input is empty, select the previous history element instead."
-    (interactive "p")
-    (if (string= ivy-text "")
-        (ivy-next-history-element 1)
-      (ivy-previous-line arg))))
+;;   (defun swiper-C-r (&optional arg)
+;;     "Move cursor vertically down ARG candidates.
+;; If the input is empty, select the previous history element instead."
+;;     (interactive "p")
+;;     (if (string= ivy-text "")
+;;         (ivy-next-history-element 1)
+;;       (ivy-previous-line arg))))
 
 (use-package ivy
   :ensure t
