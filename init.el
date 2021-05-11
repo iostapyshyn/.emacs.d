@@ -371,8 +371,7 @@ DIR must include a .project file to be considered a project."
 ;;   (setq elpy-rpc-python-command "/usr/local/bin/python3"))
 
 (use-package eww
-  :bind (("C-c / e" . eww)
-         ("C-c / m" . eww-man7-index)
+  :bind (("C-c / m" . eww-man7-index)
          (:map eww-mode-map
                ("j" . prot-eww-visit-url-on-page)))
   :config
