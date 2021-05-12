@@ -463,7 +463,7 @@ the buffer. Disable flyspell-mode otherwise."
                 ("C-c ! n" . flymake-goto-next-error)
                 ("C-c ! p" . flymake-goto-prev-error)
                 ("C-c ! s" . flymake-start)))
-  :hook ((prog-mode latex-mode) . flymake-mode))
+  :hook ((prog-mode LaTeX-mode) . flymake-mode))
 
 ;; Make key-bindings work in other keyboard layouts
 (use-package reverse-im
