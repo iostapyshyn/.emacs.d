@@ -363,15 +363,6 @@ DIR must include a .project file to be considered a project."
     (setq python-shell-interpreter "ipython"
           python-shell-interpreter-args "--simple-prompt -i")))
 
-;; Replaced for LSP
-;; (use-package elpy
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   (advice-add 'python-mode :before 'elpy-enable)
-;;   :config
-;;   (setq elpy-rpc-python-command "/usr/local/bin/python3"))
-
 (use-package eww
   :bind (("C-c / m" . eww-man7-index)
          (:map eww-mode-map
@@ -447,6 +438,10 @@ new EWW buffer."
   ;; (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   (add-hook 'dired-mode-hook 'dired-omit-mode))
 
+(use-package eldoc
+  :config
+  (setq eldoc-echo-area-use-multiline-p nil))
+
 (use-package flyspell
   :bind* ("C-c @" . flyspell-toggle)
   :config
@@ -460,6 +455,15 @@ the buffer. Disable flyspell-mode otherwise."
           (flyspell-prog-mode)
         (flyspell-mode 1))
       (flyspell-buffer))))
+
+(use-package flymake
+  :bind* (("C-c ! !" . flymake-mode)
+          (:map flymake-mode-map
+                ("C-c ! l" . flymake-show-diagnostics-buffer)
+                ("C-c ! n" . flymake-goto-next-error)
+                ("C-c ! p" . flymake-goto-prev-error)
+                ("C-c ! s" . flymake-start)))
+  :hook ((prog-mode latex-mode) . flymake-mode))
 
 ;; Make key-bindings work in other keyboard layouts
 (use-package reverse-im
@@ -665,12 +669,6 @@ If eshell is already open and no argument is specified, change to that directory
   ;; disable company for shells (causes lags on remotes)
   (setq company-global-modes '(not eshell-mode shell-mode)))
 
-(use-package flycheck
-  :demand t
-  :ensure t
-  :bind ("C-c ! !" . flycheck-mode)
-  :init (global-flycheck-mode))
-
 ;; web-mode
 (use-package web-mode
   :ensure t
@@ -688,25 +686,17 @@ If eshell is already open and no argument is specified, change to that directory
   (setq web-mode-code-indent-offset 2))
 
 ;; Language Server Protocol
-(use-package lsp-mode
+(use-package eglot
   :ensure t
-  :hook
-  ((rust-mode ;; c-mode c++-mode objc-mode python-mode
-    js-mode) . lsp-deferred)
-  :custom
-  (lsp-enable-indentation nil)
-  (lsp-enable-on-type-formatting nil)
-  (lsp-rust-server 'rust-analyzer))
+  :config
+  (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
+  (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("clangd"))))
 
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :ensure t
-  :custom
-  (lsp-ui-doc-enable nil)) ; Disable giant hovering pop-up boxes.
-
-;; I don't use snippets but this is used by company-lsp for function arguments
+;; This is used by eglot for function arguments
 (use-package yasnippet
   :ensure t
+  :demand t
   :config
   (yas-global-mode))
 
