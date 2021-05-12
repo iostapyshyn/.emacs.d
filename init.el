@@ -240,18 +240,20 @@ Transient Mark mode is on but the region is inactive."
 
 ;;; --- PACKAGES ---
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(package-initialize)
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
 (eval-when-compile
+  (require 'package)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (package-initialize)
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
   (require 'use-package)
+  (require 'bind-key)
+
   (setq use-package-always-defer t))
-(require 'bind-key) ;; :bind requirement
 
 (use-package dash :ensure t)
 
