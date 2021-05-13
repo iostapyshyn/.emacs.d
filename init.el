@@ -768,12 +768,6 @@ If eshell is already open and no argument is specified, change to that directory
   (setq pdf-view-use-scaling t
         pdf-view-use-imagemagick nil)
 
-  (setq pdf-annot-activate-created-annotations t)
-  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-  (define-key pdf-view-mode-map (kbd "h") 'pdf-annot-add-highlight-markup-annotation)
-  (define-key pdf-view-mode-map (kbd "t") 'pdf-annot-add-text-annotation)
-  (define-key pdf-view-mode-map (kbd "D") 'pdf-annot-delete)
-
   ;; Invert RET behavior
   (require 'pdf-outline)
   (define-key pdf-outline-buffer-mode-map (kbd "RET") 'pdf-outline-follow-link-and-quit)
