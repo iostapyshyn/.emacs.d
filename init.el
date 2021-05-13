@@ -82,7 +82,7 @@
 ;; Identation settings:
 (setq c-default-style "k&r")
 (setq-default indent-tabs-mode nil
-              tab-width 4
+              tab-width 8
               c-basic-offset 4
               css-indent-offset 2
               js-indent-level 2)
