@@ -663,8 +663,8 @@ If eshell is already open and no argument is specified, change to that directory
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode)
-  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "<backtab>") 'company-select-previous-or-abort)
   (define-key company-active-map (kbd "SPC") nil)
   ;; disable company for shells (causes lags on remotes)
   (setq company-global-modes '(not eshell-mode shell-mode)))
