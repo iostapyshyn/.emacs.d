@@ -261,6 +261,7 @@ Transient Mark mode is on but the region is inactive."
   :ensure t
   :demand t
   :config
+  (add-to-list 'minions-direct 'lsp-mode)
   (minions-mode 1))
 
 (use-package project
@@ -699,9 +700,11 @@ If eshell is already open and no argument is specified, change to that directory
   ((rust-mode ;; c-mode c++-mode objc-mode python-mode
     js-mode) . lsp-deferred)
   :custom
+  (lsp-headerline-breadcrumb-enable nil)
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
-  (lsp-rust-server 'rust-analyzer))
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable nil))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
