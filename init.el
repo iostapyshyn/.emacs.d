@@ -336,7 +336,7 @@ DIR must include a .project file to be considered a project."
         org-link-shell-confirm-function nil
         org-export-use-babel nil)
 
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.0)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.25)
         org-preview-latex-default-process 'dvisvgm)
 
   ;; (setq org-pretty-entities t)
