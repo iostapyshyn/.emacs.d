@@ -799,11 +799,7 @@ If eshell is already open and no argument is specified, change to that directory
   (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
 
 (use-package olivetti
-  :disabled t
   :ensure t
-  :preface
-  (with-eval-after-load 'eww
-    (add-hook 'eww-mode-hook 'olivetti-mode))
   :custom
   (olivetti-body-width 0.75)
   (olivetti-enable-visual-line-mode nil))
