@@ -64,7 +64,6 @@
 
 ;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
-(setq scroll-margin 1)
 
 ;; Parenthesis
 (electric-pair-mode 1)
