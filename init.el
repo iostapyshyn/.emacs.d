@@ -15,7 +15,7 @@
 (when window-system
   (set-face-attribute 'default nil        :family "JetBrains Mono" :height 120)
   (set-face-attribute 'fixed-pitch nil    :family "JetBrains Mono" :height 120)
-  (set-face-attribute 'variable-pitch nil :family "PT Sans"        :height 1.2))
+  (set-face-attribute 'variable-pitch nil :family "PT Sans"        :height 1.1))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
