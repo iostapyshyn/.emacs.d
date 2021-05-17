@@ -383,8 +383,9 @@ DIR must include a .project file to be considered a project."
     (pop-to-buffer
      (get-buffer-create "*eww-man7.org*"))
     (let ((index "https://man7.org/linux/man-pages/dir_all_alphabetic.html")
+          (prefix "https://man7.org/linux/man-pages/")
           (cur (and (boundp 'eww-data) (plist-get eww-data :url))))
-      (unless (equal cur index)
+      (unless (s-starts-with-p prefix cur)
         (eww-mode) ;; forces to load in the current buffer
         (eww index))))
 
