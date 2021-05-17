@@ -267,7 +267,12 @@ Transient Mark mode is on but the region is inactive."
 
 (use-package project
   :bind-keymap* ("C-x p" . project-prefix-map)
+  :bind (:map project-prefix-map
+              ("m" . magit)
+              ("$" . vterm))
   :config
+  (add-to-list 'project-switch-commands '(vterm "Vterm") t)
+  (add-to-list 'project-switch-commands '(magit "Magit") t)
   ;; Credit to github.com/karthink for this .project detection snippet below
   (setq project-local-identifier ".project")
   (cl-defmethod project-root ((project (head local)))
