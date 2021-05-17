@@ -227,7 +227,7 @@ Transient Mark mode is on but the region is inactive."
   :global t
   :init-value t ;; On by default
   :lighter nil
-  :group my-minor
+  :group 'my-minor
   :keymap `((,(kbd "C-,") . previous-buffer)
             (,(kbd "C-.") . next-buffer)
             (,(kbd "C-;") . other-window)))
