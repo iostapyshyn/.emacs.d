@@ -584,7 +584,8 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package modus-themes
   :ensure t
   :init
-  (setq modus-themes-slanted-constructs t
+  (setq modus-themes-mode-line 'borderless
+        modus-themes-slanted-constructs t
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
         modus-themes-fringes nil
