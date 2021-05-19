@@ -195,23 +195,7 @@ Transient Mark mode is on but the region is inactive."
     (call-interactively 'compile)))
 
 (global-set-key (kbd "C-x c") 'compile-maybe-project)
-
-(defun c-switch-source-header ()
-  "Switch to a header/source file with the same name as current if present in the directory."
-  (interactive)
-  (defconst c-extensions '("c" "cpp" "cc" "cxx" "m"))
-  (defconst h-extensions '("h" "hpp" "hh" "hxx"))
-  (let ((extensions (cond ((member (file-name-extension buffer-file-name) c-extensions) h-extensions)
-                          ((member (file-name-extension buffer-file-name) h-extensions) c-extensions))))
-    (dolist (ext extensions)
-      (let ((file-name (concat (file-name-sans-extension buffer-file-name) "." ext)))
-        (when (file-exists-p file-name)
-          (find-file file-name))))))
-
-(dolist (hook '(c-mode-hook c++-mode-hook objc-mode-hook))
-  (add-hook hook
-            (lambda ()
-              (local-set-key (kbd "C-c h") 'c-switch-source-header))))
+(global-set-key (kbd "C-c h") 'ff-find-other-file)
 
 (defun goto-line-with-line-numbers ()
   "Show line numbers when querying for `goto-line'."
