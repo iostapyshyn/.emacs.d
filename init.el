@@ -58,9 +58,13 @@
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'superword-mode)
 
-;; Highlight the current line (only in X)
 (when window-system
-  (global-hl-line-mode 1))
+  ;; Highlight the current line (only in X)
+  (global-hl-line-mode 1)
+
+  ;; Unbind zoom with mouse wheel
+  (global-unset-key (kbd "C-<wheel-up>"))
+  (global-unset-key (kbd "C-<wheel-down>")))
 
 ;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
