@@ -664,7 +664,10 @@ If eshell is already open and no argument is specified, change to that directory
   (define-key company-active-map (kbd "<backtab>") 'company-select-previous-or-abort)
   (define-key company-active-map (kbd "SPC") nil)
   ;; disable company for shells (causes lags on remotes)
-  (setq company-global-modes '(not eshell-mode shell-mode)))
+  (setq company-global-modes '(not eshell-mode shell-mode))
+  ;; keep case
+  (setq company-dabbrev-ignore-case nil
+        company-dabbrev-downcase nil))
 
 (use-package flycheck
   :demand t
