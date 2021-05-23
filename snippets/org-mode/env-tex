@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: env-latex
+# key: >\
+# --
+\begin{${1:align}}
+$0
+\end{$1}
