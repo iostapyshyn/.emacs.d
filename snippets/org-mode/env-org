@@ -4,4 +4,4 @@
 # --
 #+begin_${1:center}
 $0
-#+end_${1:$(car (split-string yas-text " "))}
+#+end_${1:$(car (split-string yas-text))}
