@@ -713,6 +713,7 @@ If eshell is already open and no argument is specified, change to that directory
 ;; This is used by LSP for function arguments
 (use-package yasnippet
   :ensure t
+  :demand t
   :config
   (yas-global-mode))
 
