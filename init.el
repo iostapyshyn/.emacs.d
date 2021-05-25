@@ -597,8 +597,8 @@ the buffer. Disable flyspell-mode otherwise."
       :ensure t
       :demand t
       :config
-      (setq calendar-latitude 48.7
-            calendar-longitude 26.6)
+      (setq calendar-latitude 52.38
+            calendar-longitude 9.69)
       (setq circadian-themes '((:sunrise . modus-operandi)
                                (:sunset  . modus-vivendi)))
       (circadian-setup))
