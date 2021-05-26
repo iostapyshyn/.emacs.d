@@ -612,15 +612,6 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package eshell
   :bind ("<s-return>" . eshell-open-with-directory)
   :config
-  ;; Plan 9 Smart Shell
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (require 'em-smart)
-              (setq eshell-where-to-jump 'begin)
-              (setq eshell-review-quick-commands nil)
-              (setq eshell-smart-space-goes-to-end t)
-              (eshell-smart-initialize)))
-
   ;; Pressing <s-return> twice will open eshell and cd into prev.
   ;; buffer directory.
 
