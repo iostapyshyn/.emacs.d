@@ -693,7 +693,15 @@ If eshell is already open and no argument is specified, change to that directory
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
   (lsp-modeline-code-actions-enable nil)
-  (lsp-modeline-diagnostics-enable nil))
+  (lsp-modeline-diagnostics-enable nil)
+  :config
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection
+                                     'lsp-clients--clangd-command)
+                    :major-modes '(c-mode c++-mode objc-mode)
+                    :priority -1
+                    :remote? t
+                    :server-id 'clangd-remote)))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
