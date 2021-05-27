@@ -44,6 +44,7 @@
 
 ;; Enable all disabled commands
 (setq disabled-command-function nil)
+(setq enable-remote-dir-locals t)
 
 ;; No wrapping, truncate lines
 (setq-default truncate-lines t)
