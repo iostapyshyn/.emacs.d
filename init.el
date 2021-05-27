@@ -687,8 +687,7 @@ If eshell is already open and no argument is specified, change to that directory
 (use-package lsp-mode
   :ensure t
   :hook
-  ((rust-mode ;; c-mode c++-mode objc-mode python-mode
-    js-mode) . lsp-deferred)
+  ((rust-mode) . lsp-deferred)
   :custom
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-enable-indentation nil)
