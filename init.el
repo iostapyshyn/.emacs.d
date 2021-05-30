@@ -636,7 +636,8 @@ If eshell is already open and no argument is specified, change to that directory
 
   (defun eshell/lcd (&optional dir)
     (setq dir (or dir "~"))
-    (if (and (file-remote-p default-directory)
+    (if (and (stringp dir)
+             (file-remote-p default-directory)
              (file-name-absolute-p dir))
         (with-parsed-tramp-file-name default-directory nil
           (let* ((local-home (expand-file-name "~"))
