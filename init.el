@@ -623,8 +623,7 @@ was called last time.")
   (defun eshell-open-with-directory (&optional arg)
     "Opens eshell, but saves buffer directory in a variable `eshell-saved-directory'.
 
-If eshell is already open and no argument is specified, change to that directory.
-"
+If eshell is already open and no argument is specified, change to that directory."
     (interactive "P")
     (if (and (derived-mode-p 'eshell-mode) (not arg) eshell-saved-directory)
         (progn
