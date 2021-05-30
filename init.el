@@ -60,8 +60,8 @@
 (add-hook 'text-mode-hook 'superword-mode)
 
 (when window-system
-  ;; Highlight the current line (only in X)
-  (global-hl-line-mode 1)
+  ;; ;; Highlight the current line (only in X)
+  ;; (global-hl-line-mode 1)
 
   ;; Unbind zoom with mouse wheel
   (global-unset-key (kbd "C-<wheel-up>"))
