@@ -632,7 +632,18 @@ If eshell is already open and no argument is specified, change to that directory
       (setq eshell-saved-directory default-directory)
       (eshell arg)
       (unless (equal default-directory eshell-saved-directory)
-        (where-is 'eshell-open-with-directory)))))
+        (where-is 'eshell-open-with-directory))))
+
+  (defun eshell/lcd (&optional dir)
+    (setq dir (or dir "~"))
+    (if (and (file-remote-p default-directory)
+             (file-name-absolute-p dir))
+        (with-parsed-tramp-file-name default-directory nil
+          (let* ((local-home (expand-file-name "~"))
+                 (dir (replace-regexp-in-string (regexp-quote local-home) "~" dir)))
+            (setf (cl-struct-slot-value 'tramp-file-name 'localname v) dir)
+            (eshell/cd (tramp-make-tramp-file-name v))))
+      (eshell/cd dir))))
 
 ;; Better terminal emulator
 (use-package vterm
