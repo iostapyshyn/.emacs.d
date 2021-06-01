@@ -634,6 +634,13 @@ If eshell is already open and no argument is specified, change to that directory
       (unless (equal default-directory eshell-saved-directory)
         (where-is 'eshell-open-with-directory))))
 
+  (defun eshell/last-remote (&optional _indices)
+    (if-let ((base (file-remote-p default-directory)))
+        base
+      (seq-some 'file-remote-p (ring-elements eshell-last-dir-ring))))
+  (require 'esh-var)
+  (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
+
   (defun eshell/lcd (&optional dir)
     (setq dir (or dir "~"))
     (if (and (stringp dir)
