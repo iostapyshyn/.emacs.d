@@ -1,3 +1,4 @@
 alias ls ls -la $*
 alias ff find-file $1
 alias cd lcd $1
+alias clear clear t
