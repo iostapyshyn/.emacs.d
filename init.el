@@ -15,7 +15,7 @@
 (when window-system
   (set-face-attribute 'default nil        :family "JetBrains Mono" :height 120)
   (set-face-attribute 'fixed-pitch nil    :family "JetBrains Mono" :height 120)
-  (set-face-attribute 'variable-pitch nil :family "PT Serif"       :height 1.2))
+  (set-face-attribute 'variable-pitch nil :family "PT Sans"        :height 1.2))
 
 ;; No startup splash screen
 (setq inhibit-startup-message t
@@ -635,9 +635,12 @@ If eshell is already open and no argument is specified, change to that directory
         (where-is 'eshell-open-with-directory))))
 
   (defun eshell/last-remote (&optional _indices)
-    (if-let ((base (file-remote-p default-directory)))
-        base
-      (seq-some 'file-remote-p (ring-elements eshell-last-dir-ring))))
+    (when-let ((r (if-let ((base (file-remote-p default-directory)))
+                      base
+                    (seq-some 'file-remote-p (ring-elements eshell-last-dir-ring)))))
+      ;; remove the trailing semicolon, helps to multi-hop
+      ;; i.e. cd $r|sudo::
+      (replace-regexp-in-string ":\\'" "" r)))
   (require 'esh-var)
   (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
 
