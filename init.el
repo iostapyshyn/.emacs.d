@@ -286,10 +286,10 @@ DIR must include a .project file to be considered a project."
   (with-eval-after-load 'recentf
     (add-to-list 'recentf-exclude (expand-file-name my/org-index)))
 
-  (defun org-my-index ()
-    (interactive)
+  (defun org-my-index (&optional arg)
+    (interactive "P")
     (push-mark)
-    (find-file my/org-index))
+    (find-file (if arg my/org my/org-index)))
   :bind*
   (("C-c a" . org-agenda)
    ("C-c i" . org-my-index)
