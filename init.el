@@ -187,9 +187,11 @@ Transient Mark mode is on but the region is inactive."
                                                mode-line-frame-identification
                                                mode-line-position " "
                                                mode-line-buffer-identification)
-                                         (list '(vc-mode vc-mode)
+                                         (list mode-line-misc-info
+                                               '(vc-mode vc-mode)
                                                " "
                                                mode-line-modes)))))
+(which-function-mode)
 
 ;;(make-variable-buffer-local 'compile-command)
 (defun compile-maybe-project ()
