@@ -191,6 +191,8 @@ Transient Mark mode is on but the region is inactive."
                                                '(vc-mode vc-mode)
                                                " "
                                                mode-line-modes)))))
+
+(setq which-func-unknown "…")
 (which-function-mode)
 
 ;;(make-variable-buffer-local 'compile-command)
