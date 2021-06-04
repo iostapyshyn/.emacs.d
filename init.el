@@ -574,11 +574,13 @@ the buffer. Disable flyspell-mode otherwise."
 (defadvice load-theme (after run-after-load-theme-hook activate)
   "Run `after-load-theme-hook'."
   (run-hooks 'after-load-theme-hook))
+(global-set-key (kbd "C-c t t") 'load-theme)
 
 (use-package modus-themes
   :ensure t
-  :init
-  (setq modus-themes-mode-line 'borderless
+  :bind ("C-c t m" . modus-themes-toggle)
+  :config
+  (setq modus-themes-mode-line 'accented
         modus-themes-slanted-constructs t
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
