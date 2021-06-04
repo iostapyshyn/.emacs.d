@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: env-latex
-# key: >\
+# key: \>
 # --
 \begin{${1:align}}
 $0

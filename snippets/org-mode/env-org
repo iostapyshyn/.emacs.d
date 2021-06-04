@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: env-org
-# key: >#
+# key: #>
 # --
 #+begin_${1:center}
 $0

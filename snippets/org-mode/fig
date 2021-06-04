@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: fig
-# key: >fig
+# key: fig>
 # --
 #+caption: ${1:caption}
 #+attr_latex: ${2:scale=0.75}
