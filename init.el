@@ -600,6 +600,12 @@ the buffer. Disable flyspell-mode otherwise."
       (circadian-setup))
   (load-theme 'modus-vivendi t))
 
+(use-package kaolin-themes
+  :ensure t
+  :config
+  (setq kaolin-themes-italic-comments t)
+  (setq kaolin-themes-distinct-parentheses t))
+
 (use-package rainbow-delimiters
   :ensure t
   :hook ((emacs-lisp-mode
