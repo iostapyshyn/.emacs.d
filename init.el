@@ -199,11 +199,12 @@ Transient Mark mode is on but the region is inactive."
 (defun compile-maybe-project ()
   "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
   (interactive)
-  (if (project-current nil)
+  (if (and (fboundp 'project-current)
+           (project-current nil))
       (call-interactively 'project-compile)
     (call-interactively 'compile)))
 
-(global-set-key (kbd "C-x c") 'compile-maybe-project)
+(global-set-key (kbd "C-c C-x") 'compile-maybe-project)
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
 
 (defun goto-line-with-line-numbers ()
