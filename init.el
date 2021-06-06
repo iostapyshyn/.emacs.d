@@ -83,11 +83,15 @@
 ;;             (lambda ()
 ;;               (electric-pair-local-mode 0))))
 
-;; Identation settings:
-(setq c-default-style "k&r")
+;; Indentation settings:
+(eval-after-load "cc-styles"
+  '(progn
+     ;; Use 4 spaces indentation instead of 5 for k&r
+     (setf (cdr (assoc 'c-basic-offset (assoc "k&r" c-style-alist))) 4)
+     (setq c-default-style "k&r")))
+
 (setq-default indent-tabs-mode nil
               tab-width 8
-              c-basic-offset 4
               css-indent-offset 2
               js-indent-level 2)
 
