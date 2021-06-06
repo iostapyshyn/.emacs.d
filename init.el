@@ -562,6 +562,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 
 ;; Color theme
+(setq x-underline-at-descent-line t)
 (setq custom-safe-themes t)
 
 (defadvice load-theme (before theme-dont-propagate activate)
@@ -588,17 +589,20 @@ the buffer. Disable flyspell-mode otherwise."
         modus-themes-org-blocks 'rainbow
         modus-themes-headings '((t . nil))))
 
-(if (window-system)
-    (use-package circadian
-      :ensure t
-      :demand t
-      :config
-      (setq calendar-latitude 52.38
-            calendar-longitude 9.69)
-      (setq circadian-themes '((:sunrise . modus-operandi)
-                               (:sunset  . modus-vivendi)))
-      (circadian-setup))
-  (load-theme 'modus-vivendi t))
+(use-package gruvbox-theme
+  :demand t
+  :load-path "emacs-theme-gruvbox")
+
+(when (window-system)
+  (use-package circadian
+    :ensure t
+    :demand t
+    :config
+    (setq calendar-latitude 52.38
+          calendar-longitude 9.69)
+    (setq circadian-themes '((:sunrise . gruvbox-light-hard)
+                             (:sunset  . gruvbox-dark-hard)))
+    (circadian-setup)))
 
 (use-package kaolin-themes
   :ensure t
