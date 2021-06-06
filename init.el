@@ -498,6 +498,47 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (which-key-mode))
 
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+
+(use-package corfu
+  :ensure t
+  :init
+  (corfu-global-mode))
+
+(use-package orderless
+  :ensure t
+  :init
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (partial-completion))))))
+
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
+
+(use-package consult
+  :ensure t
+  :bind (("C-c s"                               . consult-line)
+         ("M-s g"                               . consult-grep)
+         ("M-s G"                               . consult-ripgrep)
+         ([remap switch-to-buffer]              . consult-buffer)
+         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+         ([remap recentf-open-files]            . consult-recent-file)
+         ([remap bookmark-jump]                 . consult-bookmark)
+         ([remap load-theme]                    . consult-theme)
+         ([remap goto-line]                     . consult-goto-line)
+         ([remap man]                           . consult-man)
+         ([remap yank-pop]                      . consult-yank-pop)
+         ([remap imenu]                         . consult-imenu)))
+
+(use-package embark
+  :ensure t
+  :bind (:map vertico-map ("C-o" . embark-act)))
+
 ;; (use-package ace-window
 ;;   :ensure t
 ;;   :bind (("M-o" . ace-window)))
