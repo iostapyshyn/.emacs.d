@@ -210,6 +210,7 @@ Transient Mark mode is on but the region is inactive."
 
 (global-set-key (kbd "C-c C-x") 'compile-maybe-project)
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
+(global-set-key (kbd "C-c C-.") 'imenu)
 
 (defun goto-line-with-line-numbers ()
   "Show line numbers when querying for `goto-line'."
