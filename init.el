@@ -566,7 +566,6 @@ the buffer. Disable flyspell-mode otherwise."
 
 
 ;; Color theme
-(setq x-underline-at-descent-line t)
 (setq custom-safe-themes t)
 
 (defadvice load-theme (before theme-dont-propagate activate)
