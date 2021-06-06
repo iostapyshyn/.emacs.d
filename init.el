@@ -525,7 +525,7 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind (("C-c s"                               . consult-line)
          ("M-s g"                               . consult-grep)
-         ("M-s G"                               . consult-ripgrep)
+         ("M-s r"                               . consult-ripgrep)
          ([remap switch-to-buffer]              . consult-buffer)
          ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
          ([remap recentf-open-files]            . consult-recent-file)
