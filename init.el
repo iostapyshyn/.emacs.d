@@ -48,6 +48,7 @@
 
 ;; No wrapping, truncate lines
 (setq-default truncate-lines t)
+(setq-default fill-column 90)
 (setq column-number-mode t)
 
 (setq sentence-end-double-space nil)
@@ -56,7 +57,7 @@
 (global-subword-mode)
 
 (add-hook 'help-mode-hook 'turn-on-visual-line-mode)
-(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+(add-hook 'text-mode-hook 'auto-fill-mode)
 (add-hook 'text-mode-hook 'superword-mode)
 
 (when window-system
