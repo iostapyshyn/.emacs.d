@@ -480,19 +480,16 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (reverse-im-mode t))
 
-;; M-x history
-(use-package amx
-  :ensure t
-  :demand t
-  :config
-  (amx-mode))
-
 ;; Better undo
 (use-package undo-tree
   :ensure t
   :demand t
   :config
   (global-undo-tree-mode))
+
+(use-package savehist
+  :init
+  (savehist-mode))
 
 ;; Key hints
 (use-package which-key
