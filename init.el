@@ -142,7 +142,7 @@
 (add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
 
 ;; Remove trailing whitespaces on save.
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 
 ;;; --- Personal custom modes and functions ---
@@ -672,6 +672,10 @@ If eshell is already open and no argument is specified, change to that directory
   (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
   (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n)
   (setq vterm-kill-buffer-on-exit t))
+
+(use-package ws-butler
+  :ensure t
+  :hook (prog-mode . ws-butler-mode))
 
 (use-package company
   :demand t
