@@ -315,7 +315,7 @@ DIR must include a .project file to be considered a project."
   (setq calendar-week-start-day 1)
 
   ;; Leave a line between closed headings
-  (setq org-cycle-separator-lines 1)
+  ;; (setq org-cycle-separator-lines 1)
 
   ;; C-a/C-e stops before tags
   (setq org-special-ctrl-a/e t)
