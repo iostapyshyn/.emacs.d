@@ -505,45 +505,6 @@ the buffer. Disable flyspell-mode otherwise."
 ;;   :ensure t
 ;;   :bind (("M-o" . ace-window)))
 
-(use-package swiper
-  :ensure t
-  :bind* (("C-c s" . swiper-isearch)
-          ("C-c r" . swiper-isearch-backward))
-  :config
-  (add-to-list 'ivy-re-builders-alist '(swiper-isearch          . ivy--regex-or-literal))
-  (add-to-list 'ivy-re-builders-alist '(swiper-isearch-backward . ivy--regex-or-literal)))
-
-(use-package ivy
-  :ensure t
-  :demand t
-  :bind
-  (:map ivy-minibuffer-map ; bind in the ivy buffer
-        ("RET"      . ivy-alt-done)
-        ("C-f"      . ivy-immediate-done)
-        ("M-<down>" . ivy-next-history-element)
-        ("M-<up>"   . ivy-previous-history-element))
-  :config
-  (ivy-mode 1)
-  (setq ivy-display-style 'fancy)
-  (setq ivy-count-format "[%d/%d] ")
-  (setq ivy-use-virtual-buffers nil)
-  (setq ivy-use-selectable-prompt t)
-  (setq enable-recursive-minibuffers t)
-  (add-to-list 'ivy-preferred-re-builders '(ivy--regex-or-literal . "none"))
-  (setq ivy-re-builders-alist
-        '((t . ivy--regex-plus))))
-
-(use-package ivy-hydra
-  :ensure t)
-
-(use-package counsel
-  :ensure t
-  :demand t
-  :after ivy
-  :config
-  (global-set-key [remap recentf-open-files] 'counsel-recentf)
-  (counsel-mode 1))
-
 (use-package avy
   :ensure t
   :bind* (("C-c SPC" . avy-goto-char-2)))
