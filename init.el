@@ -534,7 +534,12 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap goto-line]                     . consult-goto-line)
          ([remap man]                           . consult-man)
          ([remap yank-pop]                      . consult-yank-pop)
-         ([remap imenu]                         . consult-imenu)))
+         ([remap imenu]                         . consult-imenu))
+  :config
+  (setq consult-project-root-function
+        (lambda ()
+          (when-let (project (project-current))
+            (project-root project)))))
 
 (use-package embark
   :ensure t
