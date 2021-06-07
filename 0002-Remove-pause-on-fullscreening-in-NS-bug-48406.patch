@@ -1,0 +1,151 @@
+From 1425b3c3ecc440e62506e800b270b9896c86e537 Mon Sep 17 00:00:00 2001
+From: Alan Third <alan@idiocy.org>
+Date: Sat, 5 Jun 2021 14:38:17 +0100
+Subject: [PATCH v2] Remove pause on fullscreening in NS (bug#48406)
+
+* src/nsterm.m (ns_make_frame_visible):
+(ns_set_parent_frame):
+([EmacsView windowWillEnterFullScreen:]):
+([EmacsView windowDidEnterFullScreen:]):
+([EmacsView windowWillExitFullScreen:]):
+([EmacsView initFrameFromEmacs:]): Remove references to
+in_fullscreen_transition.
+([EmacsView toggleFullScreen:]): Remove calls to removed methods.
+([EmacsView inFullScreenTransition]):
+([EmacsView waitFullScreenTransition]): Remove Methods.
+* src/nsterm.h (EmacsView): Remove defintions of removed methods, and
+the in_fullscreen_transition variable.
+---
+ src/nsterm.h |  3 ---
+ src/nsterm.m | 37 ++-----------------------------------
+ 2 files changed, 2 insertions(+), 38 deletions(-)
+
+diff --git a/src/nsterm.h b/src/nsterm.h
+index 0596f3f3c1..e7ea907569 100644
+--- a/src/nsterm.h
++++ b/src/nsterm.h
+@@ -443,7 +443,6 @@ #define NS_DRAW_TO_BUFFER 1
+    int maximized_width, maximized_height;
+    NSWindow *nonfs_window;
+    BOOL fs_is_native;
+-   BOOL in_fullscreen_transition;
+ #ifdef NS_DRAW_TO_BUFFER
+    EmacsSurface *surface;
+ #endif
+@@ -475,8 +474,6 @@ #define NS_DRAW_TO_BUFFER 1
+ - (void) toggleFullScreen: (id) sender;
+ - (BOOL) fsIsNative;
+ - (BOOL) isFullscreen;
+-- (BOOL) inFullScreenTransition;
+-- (void) waitFullScreenTransition;
+ #if defined (NS_IMPL_COCOA) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
+ - (void) updateCollectionBehavior;
+ #endif
+diff --git a/src/nsterm.m b/src/nsterm.m
+index f6168243a4..838c14d5ab 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -1640,8 +1640,6 @@ -(void)remove
+          fullscreen also.  So skip handleFS as this will print an error.  */
+       if ([view fsIsNative] && [view isFullscreen])
+         {
+-          // maybe it is not necessary to wait
+-          [view waitFullScreenTransition];
+           return;
+         }
+ 
+@@ -2057,11 +2055,7 @@ so some key presses (TAB) are swallowed by the system.  */
+ #if defined (NS_IMPL_COCOA) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
+           // child frame must not be in fullscreen
+           if ([view fsIsNative] && [view isFullscreen])
+-            {
+-              // in case child is going fullscreen
+-              [view waitFullScreenTransition];
+-              [view toggleFullScreen:child];
+-            }
++            [view toggleFullScreen:child];
+           NSTRACE ("child setCollectionBehavior:NSWindowCollectionBehaviorFullScreenAuxiliary");
+           [child setCollectionBehavior:NSWindowCollectionBehaviorFullScreenAuxiliary];
+ #endif
+@@ -7489,7 +7483,6 @@ - (instancetype) initFrameFromEmacs: (struct frame *)f
+ #endif
+     fs_is_native = ns_use_native_fullscreen;
+ #endif
+-  in_fullscreen_transition = NO;
+ 
+   maximized_width = maximized_height = -1;
+   nonfs_window = nil;
+@@ -7862,7 +7855,6 @@ - (NSApplicationPresentationOptions)window:(NSWindow *)window
+ - (void)windowWillEnterFullScreen:(NSNotification *)notification
+ {
+   NSTRACE ("[EmacsView windowWillEnterFullScreen:]");
+-  in_fullscreen_transition = YES;
+   [self windowWillEnterFullScreen];
+ }
+ - (void)windowWillEnterFullScreen /* provided for direct calls */
+@@ -7875,7 +7867,6 @@ - (void)windowDidEnterFullScreen:(NSNotification *)notification
+ {
+   NSTRACE ("[EmacsView windowDidEnterFullScreen:]");
+   [self windowDidEnterFullScreen];
+-  in_fullscreen_transition = NO;
+ }
+ 
+ - (void)windowDidEnterFullScreen /* provided for direct calls */
+@@ -7914,7 +7905,6 @@ - (void)windowDidEnterFullScreen /* provided for direct calls */
+ - (void)windowWillExitFullScreen:(NSNotification *)notification
+ {
+   NSTRACE ("[EmacsView windowWillExitFullScreen:]");
+-  in_fullscreen_transition = YES;
+   [self windowWillExitFullScreen];
+ }
+ 
+@@ -7934,7 +7924,6 @@ - (void)windowDidExitFullScreen:(NSNotification *)notification
+ {
+   NSTRACE ("[EmacsView windowDidExitFullScreen:]");
+   [self windowDidExitFullScreen];
+-  in_fullscreen_transition = NO;
+ }
+ 
+ - (void)windowDidExitFullScreen /* provided for direct calls */
+@@ -7963,22 +7952,6 @@ - (void)windowDidExitFullScreen /* provided for direct calls */
+     [[self window] performZoom:self];
+ }
+ 
+-- (BOOL)inFullScreenTransition
+-{
+-  return in_fullscreen_transition;
+-}
+-
+-- (void)waitFullScreenTransition
+-{
+-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
+-  while ([self inFullScreenTransition])
+-    {
+-      NSTRACE ("wait for fullscreen");
+-      wait_reading_process_output (0, 300000000, 0, 1, Qnil, NULL, 0);
+-    }
+-#endif
+-}
+-
+ - (BOOL)fsIsNative
+ {
+   return fs_is_native;
+@@ -8058,14 +8031,8 @@ - (void)toggleFullScreen: (id)sender
+ #if defined (NS_IMPL_COCOA) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
+ #if MAC_OS_X_VERSION_MIN_REQUIRED < 1070
+       if ([[self window] respondsToSelector: @selector(toggleFullScreen:)])
+-        {
+-#endif
+-          [[self window] toggleFullScreen:sender];
+-          // wait for fullscreen animation complete (bug#28496)
+-          [self waitFullScreenTransition];
+-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1070
+-        }
+ #endif
++        [[self window] toggleFullScreen:sender];
+ #endif
+       return;
+     }
+-- 
+2.29.2
+
