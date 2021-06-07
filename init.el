@@ -530,6 +530,7 @@ the buffer. Disable flyspell-mode otherwise."
          ("M-s r"                               . consult-ripgrep)
          ([remap switch-to-buffer]              . consult-buffer)
          ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+         ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
          ([remap recentf-open-files]            . consult-recent-file)
          ([remap bookmark-jump]                 . consult-bookmark)
          ([remap load-theme]                    . consult-theme)
