@@ -240,7 +240,7 @@ Transient Mark mode is on but the region is inactive."
   (file-name-directory (directory-file-name path)))
 
 
-;;; --- PACKAGES ---
+;;; --- Packages ---
 
 (eval-when-compile
   (require 'package)
@@ -490,16 +490,24 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (global-undo-tree-mode))
 
-(use-package savehist
-  :init
-  (savehist-mode))
-
 ;; Key hints
 (use-package which-key
   :ensure t
   :demand t
   :config
   (which-key-mode))
+
+
+;;; --- Completion ---
+
+(setq enable-recursive-minibuffers t)
+(setq minibuffer-prompt-properties
+      '(read-only t cursor-intangible t face minibuffer-prompt))
+(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+(use-package savehist
+  :init
+  (savehist-mode))
 
 (use-package vertico
   :ensure t
@@ -516,7 +524,8 @@ the buffer. Disable flyspell-mode otherwise."
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+        completion-category-overrides '((file (styles . (partial-completion)))))
+  (add-to-list 'orderless-matching-styles 'orderless-strict-initialism))
 
 (use-package marginalia
   :ensure t
@@ -573,7 +582,7 @@ the buffer. Disable flyspell-mode otherwise."
     (exec-path-from-shell-initialize)))
 
 
-;; Color theme
+;;; --- Color theme ---
 (setq custom-safe-themes t)
 
 (defadvice load-theme (before theme-dont-propagate activate)
