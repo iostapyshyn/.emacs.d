@@ -293,7 +293,7 @@ DIR must include a .project file to be considered a project."
 
   ;; Don't show index on recent files
   (with-eval-after-load 'recentf
-    (add-to-list 'recentf-exclude (expand-file-name my/org-index)))
+    (add-to-list 'recentf-exclude (regexp-quote (expand-file-name my/org-index))))
 
   (defun org-my-index (&optional arg)
     (interactive "P")
