@@ -133,6 +133,8 @@
   "Load bookmarks file before trying to jump non-interactively."
   (bookmark-maybe-load-default-file)
   (advice-remove 'bookmarks-load 'bookmark-jump))
+(with-eval-after-load "bookmark"
+  (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-file))))
 
 ;; Keys on mac
 (when (or (eq window-system 'ns) (eq window-system 'mac))
