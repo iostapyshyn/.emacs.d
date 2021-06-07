@@ -592,7 +592,7 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (setq modus-themes-mode-line 'accented
+  (setq modus-themes-mode-line nil
         modus-themes-slanted-constructs t
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
@@ -604,22 +604,17 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :load-path "emacs-theme-gruvbox")
 
-(when (window-system)
-  (use-package circadian
-    :ensure t
-    :demand t
-    :config
-    (setq calendar-latitude 52.38
-          calendar-longitude 9.69)
-    (setq circadian-themes '((:sunrise . gruvbox-light-hard)
-                             (:sunset  . gruvbox-dark-hard)))
-    (circadian-setup)))
-
-(use-package kaolin-themes
-  :ensure t
-  :config
-  (setq kaolin-themes-italic-comments t)
-  (setq kaolin-themes-distinct-parentheses t))
+(if (window-system)
+    (use-package circadian
+      :ensure t
+      :demand t
+      :config
+      (setq calendar-latitude 52.38
+            calendar-longitude 9.69)
+      (setq circadian-themes '((:sunrise . gruvbox-light-hard)
+                               (:sunset  . gruvbox-dark-hard)))
+      (circadian-setup))
+  (load-theme 'modus-vivendi t))
 
 (use-package rainbow-delimiters
   :ensure t
