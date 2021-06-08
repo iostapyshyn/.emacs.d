@@ -515,10 +515,11 @@ the buffer. Disable flyspell-mode otherwise."
   :init
   (vertico-mode))
 
-(use-package corfu
-  :ensure t
-  :init
-  (corfu-global-mode))
+;; (use-package corfu
+;;   :ensure t
+;;   :hook (eval-expression-minibuffer-setup . corfu-mode)
+;;   :init
+;;   (corfu-global-mode))
 
 (use-package orderless
   :ensure t
@@ -548,6 +549,8 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap man]                           . consult-man)
          ([remap yank-pop]                      . consult-yank-pop)
          ([remap imenu]                         . consult-imenu))
+  :init
+  (setq completion-in-region-function 'consult-completion-in-region)
   :config
   (setq consult-project-root-function
         (lambda ()
