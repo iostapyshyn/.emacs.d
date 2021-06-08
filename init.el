@@ -700,6 +700,12 @@ If eshell is already open and no argument is specified, change to that directory
   :demand t
   :ensure t
   :config
+  ;; To suppress orderless when using company-capf
+  (define-advice company-capf
+      (:around (orig-fun &rest args) set-completion-styles)
+    (let ((completion-styles '(basic partial-completion)))
+      (apply orig-fun args)))
+
   (add-hook 'after-init-hook 'global-company-mode)
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
   (define-key company-active-map (kbd "<backtab>") 'company-select-previous-or-abort)
