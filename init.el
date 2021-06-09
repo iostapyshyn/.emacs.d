@@ -617,17 +617,17 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :load-path "emacs-theme-gruvbox")
 
-(if (window-system)
-    (use-package circadian
-      :ensure t
-      :demand t
-      :config
-      (setq calendar-latitude 52.38
-            calendar-longitude 9.69)
-      (setq circadian-themes '((:sunrise . gruvbox-light-hard)
-                               (:sunset  . gruvbox-dark-hard)))
-      (circadian-setup))
-  (load-theme 'modus-vivendi t))
+(if (not (window-system))
+    (load-theme 'modus-vivendi t)
+  (use-package circadian
+    :ensure t
+    :demand t
+    :config
+    (setq calendar-latitude 52.38
+          calendar-longitude 9.69)
+    (setq circadian-themes '((:sunrise . modus-operandi)
+                             (:sunset  . modus-vivendi)))
+    (circadian-setup)))
 
 (use-package rainbow-delimiters
   :ensure t
