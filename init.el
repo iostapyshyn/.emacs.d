@@ -38,6 +38,7 @@
 
 ;; Zap up to char instead of zap to char
 (global-set-key (kbd "M-z")             'zap-up-to-char)
+(global-set-key (kbd "M-Z")             'zap-to-char)
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
 (global-set-key (kbd "ESC M-DEL")       'backward-kill-sexp) ;; for terminal
 
