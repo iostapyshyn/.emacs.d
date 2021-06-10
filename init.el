@@ -573,10 +573,6 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind (("C-=" . er/expand-region)))
 
-(use-package goto-chg
-  :ensure t
-  :bind (("C-z" . goto-last-change)))
-
 ;; Get environment variables
 (use-package exec-path-from-shell
   :ensure t
@@ -635,7 +631,7 @@ the buffer. Disable flyspell-mode otherwise."
           lisp-mode) . rainbow-delimiters-mode))
 
 (use-package eshell
-  :bind ("<s-return>" . eshell-open-with-directory)
+  :bind* ("C-z" . eshell-open-with-directory)
   :config
   ;; Pressing <s-return> twice will open eshell and cd into prev.
   ;; buffer directory.
@@ -683,7 +679,7 @@ If eshell is already open and no argument is specified, change to that directory
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :bind* (("C-$" . vterm))
+  :bind* ("C-c C-z" . vterm)
   :config
   (add-hook 'vterm-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
