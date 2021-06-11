@@ -634,9 +634,8 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package eshell
   :bind* ("C-z" . eshell-open-with-directory)
   :config
-  ;; Pressing <s-return> twice will open eshell and cd into prev.
+  ;; Pressing C-z twice will open eshell and cd into prev.
   ;; buffer directory.
-
   (defvar eshell-saved-directory "~"
     "Default directory of the buffer in which `eshell-open-with-directory'
 was called last time.")
