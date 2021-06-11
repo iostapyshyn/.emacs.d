@@ -566,6 +566,11 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind (:map vertico-map ("C-o" . embark-act)))
 
+(use-package embark-consult
+  :ensure t
+  :demand t
+  :after (consult embark))
+
 ;; (use-package ace-window
 ;;   :ensure t
 ;;   :bind (("M-o" . ace-window)))
