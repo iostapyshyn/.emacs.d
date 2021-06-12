@@ -31,6 +31,8 @@
 (prefer-coding-system 'utf-8)
 (setq-default buffer-file-coding-system 'utf-8-auto-unix)
 
+(setq epa-pinentry-mode 'loopback)
+
 ;; Error bell and y/n confirmation
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
