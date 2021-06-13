@@ -557,7 +557,7 @@ the buffer. Disable flyspell-mode otherwise."
   (setq completion-in-region-function 'consult-completion-in-region)
   :config
   (consult-customize
-   consult-ripgrep consult-git-grep consult-grep consult-bookmark consult-recent-file
+   consult-bookmark consult-recent-file
    consult--source-file consult--source-project-file consult--source-bookmark
    :preview-key (kbd "M-o"))
   (setq consult-project-root-function
