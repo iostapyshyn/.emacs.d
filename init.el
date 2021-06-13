@@ -469,15 +469,23 @@ the buffer. Disable flyspell-mode otherwise."
         (flyspell-mode 1))
       (flyspell-buffer))))
 
-(use-package flymake
-  :disabled t
-  :bind* (("C-c ! !" . flymake-mode)
-          (:map flymake-mode-map
-                ("C-c ! l" . flymake-show-diagnostics-buffer)
-                ("C-c ! n" . flymake-goto-next-error)
-                ("C-c ! p" . flymake-goto-prev-error)
-                ("C-c ! s" . flymake-start)))
-  :hook ((prog-mode LaTeX-mode) . flymake-mode))
+;; (use-package flymake
+;;   :bind* (("C-c ! !" . flymake-mode)
+;;           (:map flymake-mode-map
+;;                 ("C-c ! l" . flymake-show-diagnostics-buffer)
+;;                 ("C-c ! n" . flymake-goto-next-error)
+;;                 ("C-c ! p" . flymake-goto-prev-error)
+;;                 ("C-c ! s" . flymake-start)))
+;;   :hook ((prog-mode LaTeX-mode) . flymake-mode))
+
+;; (use-package flymake-diagnostic-at-point
+;;   :ensure t
+;;   :after flymake
+;;   :hook (flymake-mode . flymake-diagnostic-at-point-mode)
+;;   :config
+;;   (setq flymake-diagnostic-at-point-display-diagnostic-function
+;;         'flymake-diagnostic-at-point-display-minibuffer)
+;;   (setq flymake-diagnostic-at-point-error-prefix ""))
 
 ;; Make key-bindings work in other keyboard layouts
 (use-package reverse-im
