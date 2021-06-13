@@ -206,6 +206,7 @@ Transient Mark mode is on but the region is inactive."
 (setq which-func-unknown "…")
 (which-function-mode)
 
+(setq compilation-scroll-output 'first-error)
 ;;(make-variable-buffer-local 'compile-command)
 (defun compile-maybe-project ()
   "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
@@ -215,7 +216,7 @@ Transient Mark mode is on but the region is inactive."
       (call-interactively 'project-compile)
     (call-interactively 'compile)))
 
-(global-set-key (kbd "C-c C-x") 'compile-maybe-project)
+(global-set-key (kbd "C-c c") 'compile-maybe-project)
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
 (global-set-key (kbd "C-c C-.") 'imenu)
 
