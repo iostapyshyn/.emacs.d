@@ -757,6 +757,7 @@ If eshell is already open and no argument is specified, change to that directory
   (lsp-enable-on-type-formatting nil)
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
+  (lsp-clients-clangd-args '("--header-insertion=never"))
   :config
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-tramp-connection
