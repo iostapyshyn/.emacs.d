@@ -6,9 +6,11 @@
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
 
+(setq read-process-output-max (* 4 1024 1024))
+
 (add-hook 'emacs-startup-hook
   (lambda ()
-    (setq gc-cons-threshold (* 16 1024 1024) ; 16mb
+    (setq gc-cons-threshold (* 64 1024 1024) ; 64mb
           gc-cons-percentage 0.1)))
 
 ;; Emacs consults file-name-handler-alist every time a file is read
