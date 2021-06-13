@@ -746,6 +746,10 @@ If eshell is already open and no argument is specified, change to that directory
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
+(use-package ggtags
+  :config
+  (setq ggtags-enable-navigation-keys nil))
+
 ;; Language Server Protocol
 (use-package lsp-mode
   :ensure t
