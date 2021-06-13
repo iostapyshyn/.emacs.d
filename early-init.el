@@ -23,7 +23,8 @@
     (setq file-name-handler-alist tmp--file-name-handler-alist)))
 
 ;; Appearance
-(push '(menu-bar-lines . (if (or (eq window-system 'ns) (eq window-system 'mac)) 1 0)) default-frame-alist)
+(unless (member window-system '(ns mac))
+  (push '(menu-bar-lines . 0) default-frame-alist))
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
 (push '(fullscreen . fullscreen) default-frame-alist)
