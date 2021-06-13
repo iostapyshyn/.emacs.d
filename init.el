@@ -691,7 +691,7 @@ If eshell is already open and no argument is specified, change to that directory
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :bind* ("C-c C-z" . vterm)
+  :bind* ("C-c z" . vterm)
   :config
   (add-hook 'vterm-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
   (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
