@@ -69,6 +69,9 @@
   ;; ;; Highlight the current line (only in X)
   ;; (global-hl-line-mode 1)
 
+  ;; Disable pixel-by-pixel scrolling on mac port
+  (setq mac-mouse-wheel-smooth-scroll nil)
+
   ;; Unbind zoom with mouse wheel
   (global-unset-key (kbd "C-<wheel-up>"))
   (global-unset-key (kbd "C-<wheel-down>")))
