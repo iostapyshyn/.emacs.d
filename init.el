@@ -72,6 +72,10 @@
   ;; Disable pixel-by-pixel scrolling on mac port
   (setq mac-mouse-wheel-smooth-scroll nil)
 
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+  (setq mouse-wheel-progressive-speed nil)
+  (setq mouse-wheel-follow-mouse 't)
+
   ;; Unbind zoom with mouse wheel
   (global-unset-key (kbd "C-<wheel-up>"))
   (global-unset-key (kbd "C-<wheel-down>")))
