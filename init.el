@@ -818,12 +818,6 @@ If eshell is already open and no argument is specified, change to that directory
 (use-package magit
   :ensure t)
 
-(use-package webpaste
-  :ensure t
-  :bind* ("C-c / p" . webpaste-paste-buffer-or-region)
-  :config
-  (setq webpaste-provider-priority '("dpaste.org" "dpaste.com")))
-
 (use-package markdown-mode
   :ensure t)
 
