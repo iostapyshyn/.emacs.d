@@ -245,6 +245,9 @@ Transient Mark mode is on but the region is inactive."
             (,(kbd "C-.") . next-buffer)
             (,(kbd "C-;") . other-window)))
 
+(setq tab-bar-show nil)
+(setq tab-bar-tab-name-function 'tab-bar-tab-name-all)
+
 (global-set-key (kbd "C-h M") 'man)
 
 (defun parent-directory (path)
