@@ -321,6 +321,13 @@ DIR must include a .project file to be considered a project."
   ;; (setq-default org-display-custom-times t)
   ;; (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
 
+  (defun my/org-sync ()
+    (interactive)
+    (async-shell-command "./.git-sync" "*Org Sync*"))
+
+  (add-to-list 'safe-local-variable-values
+               '(eval . (add-hook 'after-save-hook 'my/org-sync nil t)))
+
   (setq org-agenda-prefix-format '((agenda . " %i %-12:c%-12t% s")
                                    (todo   . " %i %-12:c")
                                    (tags   . " %i %-12:c")
