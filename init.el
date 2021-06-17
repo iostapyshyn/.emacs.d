@@ -893,9 +893,15 @@ If eshell is already open and no argument is specified, change to that directory
   :ensure t
   :bind* (("C-c / g" . google-this)))
 
-(use-package gist
+(use-package sprunge
   :ensure t
-  :bind* (("C-c / p" . gist-region-or-buffer)))
+  :bind* (("C-c / p" . sprunge-dwim))
+  :config
+  (defun sprunge-dwim ()
+    (interactive)
+    (if (region-active-p)
+        (sprunge-region)
+      (sprunge-buffer))))
 
 
 ;;; --- Some final nuances ---
