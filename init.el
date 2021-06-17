@@ -343,6 +343,8 @@ DIR must include a .project file to be considered a project."
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
 
+  (setq org-clock-mode-line-total 'today)
+
   ;; Leave a line between closed headings
   ;; (setq org-cycle-separator-lines 1)
 
