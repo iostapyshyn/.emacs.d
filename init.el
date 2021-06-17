@@ -893,6 +893,10 @@ If eshell is already open and no argument is specified, change to that directory
   :ensure t
   :bind* (("C-c / g" . google-this)))
 
+(use-package gist
+  :ensure t
+  :bind* (("C-c / p" . gist-region-or-buffer)))
+
 
 ;;; --- Some final nuances ---
 
