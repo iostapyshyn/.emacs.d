@@ -644,7 +644,10 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package gruvbox-theme
   :demand t
-  :load-path "emacs-theme-gruvbox")
+  :load-path "site-lisp/emacs-theme-gruvbox"
+  :init
+  (use-package autothemer
+    :ensure t))
 
 (if (not (window-system))
     (load-theme 'modus-vivendi t)
@@ -820,7 +823,7 @@ If eshell is already open and no argument is specified, change to that directory
 ;; $ npm install -g livedown
 (use-package livedown
   :commands livedown-preview
-  :load-path "emacs-livedown/")
+  :load-path "site-lisp/emacs-livedown")
 
 (use-package tex
   :ensure auctex

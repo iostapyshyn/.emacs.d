@@ -1,6 +1,6 @@
-[submodule "emacs-livedown"]
-	path = emacs-livedown
+[submodule "site-lisp/emacs-livedown"]
+	path = site-lisp/emacs-livedown
 	url = https://github.com/shime/emacs-livedown.git
-[submodule "emacs-theme-gruvbox"]
-	path = emacs-theme-gruvbox
-	url = git@github.com:iostapyshyn/emacs-theme-gruvbox.git
+[submodule "site-lisp/emacs-theme-gruvbox"]
+	path = site-lisp/emacs-theme-gruvbox
+	url = https://github.com/iostapyshyn/emacs-theme-gruvbox.git
