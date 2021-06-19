@@ -14,7 +14,7 @@
 ;; My preferred fonts
 (when window-system
   (set-face-attribute 'default nil        :family "Iosevka"    :height 120 :width 'expanded)
-  (set-face-attribute 'fixed-pitch nil    :family 'unspecified :inherit 'default)
+  (set-face-attribute 'fixed-pitch nil    :family "Iosevka"    :height 120 :width 'expanded)
   (set-face-attribute 'variable-pitch nil :family "Sans Serif" :height 1.1))
 
 ;; No startup splash screen
