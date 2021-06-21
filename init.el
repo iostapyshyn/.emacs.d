@@ -172,9 +172,11 @@
                                (if (region-active-p)
                                    (buffer-substring (region-beginning) (region-end))
                                  (thing-at-point 'word)))))
-  (let ((bufname "*Duden Output*"))
-    (async-shell-command (concat "duden " word) bufname)
-    (with-current-buffer bufname
+  (let* ((buffer "*Duden Output*")
+         (buffer-name-function (lambda (_) buffer))
+         (compilation-buffer-name-function buffer-name-function))
+    (compile (concat "duden " word))
+    (with-current-buffer buffer
       (turn-on-visual-line-mode))))
 
 (global-set-key (kbd "C-c / d") 'duden)
