@@ -339,6 +339,7 @@ DIR must include a .project file to be considered a project."
   (setq calendar-week-start-day 1)
 
   (setq org-clock-mode-line-total 'today)
+  (setq org-duration-format (quote h:mm))
 
   ;; Leave a line between closed headings
   ;; (setq org-cycle-separator-lines 1)
