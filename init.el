@@ -578,6 +578,9 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap imenu]                         . consult-imenu))
   :init
   (setq completion-in-region-function 'consult-completion-in-region)
+  (add-hook 'gud-mode-hook
+            (lambda ()
+              (setq-local completion-in-region-function 'completion--in-region)))
   :config
   (consult-customize
    consult-bookmark consult-recent-file
@@ -745,7 +748,7 @@ If eshell is already open and no argument is specified, change to that directory
   ;; (define-key company-active-map (kbd "<backtab>") 'company-select-previous-or-abort)
   ;; (define-key company-active-map (kbd "SPC") nil)
   ;; disable company for shells (causes lags on remotes)
-  (setq company-global-modes '(not eshell-mode shell-mode))
+  (setq company-global-modes '(not eshell-mode shell-mode gud-mode))
   ;; keep case
   (setq company-dabbrev-ignore-case nil
         company-dabbrev-downcase nil))
