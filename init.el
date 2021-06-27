@@ -459,6 +459,7 @@ new EWW buffer."
   (dired-recursive-copies 'top)
   (dired-recursive-deletes 'top)
   (dired-listing-switches "-alh")
+  (dired-auto-revert-buffer t)
   :config
   (require 'dired-x)
   (setq-default dired-omit-files-p t) ; Buffer-local variable
