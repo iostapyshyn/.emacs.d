@@ -674,7 +674,7 @@ the buffer. Disable flyspell-mode otherwise."
           lisp-mode) . rainbow-delimiters-mode))
 
 (use-package eshell
-  :bind* ("C-z" . eshell-open-with-directory)
+  ;; :bind ("C-z" . eshell-open-with-directory)
   :config
   ;; Pressing C-z twice will open eshell and cd into prev.
   ;; buffer directory.
@@ -704,30 +704,30 @@ If eshell is already open and no argument is specified, change to that directory
       ;; i.e. cd $r|sudo::
       (replace-regexp-in-string ":\\'" "" r)))
   (require 'esh-var)
-  (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
-
-  (defun eshell/lcd (&optional dir)
-    (setq dir (or dir "~"))
-    (if (and (stringp dir)
-             (file-remote-p default-directory)
-             (file-name-absolute-p dir))
-        (with-parsed-tramp-file-name default-directory nil
-          (let* ((local-home (expand-file-name "~"))
-                 (dir (replace-regexp-in-string (regexp-quote local-home) "~" dir)))
-            (setf (cl-struct-slot-value 'tramp-file-name 'localname v) dir)
-            (eshell/cd (tramp-make-tramp-file-name v))))
-      (eshell/cd dir))))
+  (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote)))
 
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :bind* ("C-c z" . vterm)
+  :bind* (("C-z" . vterm) ;; better candidate for C-z?
+          (:map vterm-mode-map
+                ("C-c TAB"   . vterm-insert-saved-directory)
+                ("C-c C-x"   . vterm-send-C-x)
+                ("C-c C-z"   . vterm-send-C-z) ;; !!
+                ("M-<left>"  . vterm-send-M-b)
+                ("M-<right>" . vterm-send-M-f)
+                ("M-p"       . vterm-send-C-p)
+                ("M-n"       . vterm-send-C-n)))
   :config
-  (add-hook 'vterm-mode-hook (lambda () (setq-local global-hl-line-mode nil)))
-  (define-key vterm-mode-map (kbd "<M-left>") 'vterm-send-M-b)
-  (define-key vterm-mode-map (kbd "<M-right>") 'vterm-send-M-f)
-  (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
-  (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n)
+  (define-advice vterm
+      (:before (&optional _arg) save-directory)
+    (setq vterm-saved-directory default-directory))
+
+  (defun vterm-insert-saved-directory ()
+    (interactive)
+    (when (bound-and-true-p vterm-saved-directory)
+        (vterm-insert vterm-saved-directory)))
+
   (setq vterm-kill-buffer-on-exit t))
 
 (use-package ws-butler
