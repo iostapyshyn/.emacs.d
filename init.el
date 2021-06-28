@@ -286,7 +286,7 @@ Transient Mark mode is on but the region is inactive."
   :bind-keymap* ("C-x p" . project-prefix-map)
   :bind (:map project-prefix-map
               ("m" . magit)
-              ("$" . vterm))
+              ("z" . vterm))
   :config
   (add-to-list 'project-switch-commands '(vterm "Vterm") t)
   (add-to-list 'project-switch-commands '(magit "Magit") t)
@@ -674,7 +674,7 @@ the buffer. Disable flyspell-mode otherwise."
           lisp-mode) . rainbow-delimiters-mode))
 
 (use-package eshell
-  ;; :bind ("C-z" . eshell-open-with-directory)
+  :bind ("C-z" . eshell-open-with-directory)
   :config
   ;; Pressing C-z twice will open eshell and cd into prev.
   ;; buffer directory.
@@ -709,11 +709,10 @@ If eshell is already open and no argument is specified, change to that directory
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :bind* (("C-z" . vterm) ;; better candidate for C-z?
+  :bind* (("C-x C-z" . vterm)
           (:map vterm-mode-map
                 ("C-c TAB"   . vterm-insert-saved-directory)
                 ("C-c C-x"   . vterm-send-C-x)
-                ("C-c C-z"   . vterm-send-C-z) ;; !!
                 ("M-<left>"  . vterm-send-M-b)
                 ("M-<right>" . vterm-send-M-f)
                 ("M-p"       . vterm-send-C-p)
@@ -745,9 +744,6 @@ If eshell is already open and no argument is specified, change to that directory
       (apply orig-fun args)))
 
   (add-hook 'after-init-hook 'global-company-mode)
-  ;; (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-  ;; (define-key company-active-map (kbd "<backtab>") 'company-select-previous-or-abort)
-  ;; (define-key company-active-map (kbd "SPC") nil)
   ;; disable company for shells (causes lags on remotes)
   (setq company-global-modes '(not eshell-mode shell-mode gud-mode))
   ;; keep case
