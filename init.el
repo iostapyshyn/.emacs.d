@@ -601,9 +601,9 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :after (consult embark))
 
-;; (use-package ace-window
-;;   :ensure t
-;;   :bind (("M-o" . ace-window)))
+(use-package ace-window
+  :ensure t
+  :bind (("M-o" . ace-window)))
 
 (use-package avy
   :ensure t
