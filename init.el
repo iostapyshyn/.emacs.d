@@ -11,8 +11,14 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
-;; My preferred fonts
+;; Frame appearance
 (when window-system
+  (set-frame-parameter nil 'fullscreen 'fullscreen)
+  (unless (member window-system '(ns mac))
+    (menu-bar-mode -1))
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
   (set-face-attribute 'default nil        :family "Iosevka"    :height 120 :width 'expanded)
   (set-face-attribute 'fixed-pitch nil    :family "Iosevka"    :height 120 :width 'expanded)
   (set-face-attribute 'variable-pitch nil :family "Sans Serif" :height 1.1))

@@ -22,13 +22,6 @@
   (lambda ()
     (setq file-name-handler-alist tmp--file-name-handler-alist)))
 
-;; Appearance
-(unless (member window-system '(ns mac))
-  (push '(menu-bar-lines . 0) default-frame-alist))
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
-(push '(fullscreen . fullscreen) default-frame-alist)
-
 ;; Prefer newer versions of elisp files
 (setq load-prefer-newer t)
 
