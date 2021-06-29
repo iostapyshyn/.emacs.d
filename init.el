@@ -713,7 +713,8 @@ If eshell is already open and no argument is specified, change to that directory
   (require 'esh-var)
   (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
 
-  (setq eshell-destroy-buffer-when-process-dies t))
+  (setq eshell-destroy-buffer-when-process-dies t)
+  (defalias 'eshell/v 'eshell-exec-visual))
 
 ;; Better terminal emulator
 (use-package vterm
