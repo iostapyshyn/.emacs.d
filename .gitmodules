@@ -4,3 +4,6 @@
 [submodule "site-lisp/emacs-theme-gruvbox"]
 	path = site-lisp/emacs-theme-gruvbox
 	url = https://github.com/iostapyshyn/emacs-theme-gruvbox.git
+[submodule "site-lisp/eshell-vterm"]
+	path = site-lisp/eshell-vterm
+	url = https://github.com/iostapyshyn/eshell-vterm.git

@@ -704,7 +704,9 @@ If eshell is already open and no argument is specified, change to that directory
       ;; i.e. cd $r|sudo::
       (replace-regexp-in-string ":\\'" "" r)))
   (require 'esh-var)
-  (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote)))
+  (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
+
+  (setq eshell-destroy-buffer-when-process-dies t))
 
 ;; Better terminal emulator
 (use-package vterm
@@ -725,9 +727,16 @@ If eshell is already open and no argument is specified, change to that directory
   (defun vterm-insert-saved-directory ()
     (interactive)
     (when (bound-and-true-p vterm-saved-directory)
-        (vterm-insert vterm-saved-directory)))
+      (vterm-insert vterm-saved-directory)))
 
   (setq vterm-kill-buffer-on-exit t))
+
+(use-package eshell-vterm
+  :load-path "site-lisp/eshell-vterm"
+  :demand t
+  :after eshell
+  :config
+  (eshell-vterm-mode))
 
 (use-package ws-butler
   :ensure t
