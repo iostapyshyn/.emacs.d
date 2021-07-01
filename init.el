@@ -188,19 +188,6 @@
 
 (global-set-key (kbd "C-c / d") 'duden)
 
-(defun spw/exchange-point-and-mark (arg)
-  "Exchange point and mark, but reactivate mark a bit less often.
-
-Specifically, invert the meaning of ARG in the case where
-Transient Mark mode is on but the region is inactive."
-  (interactive "P")
-  (exchange-point-and-mark
-   (if (and transient-mark-mode (not mark-active))
-       (not arg)
-     arg)))
-
-(global-set-key [remap exchange-point-and-mark] 'spw/exchange-point-and-mark)
-
 (defun mode-line-render (left right)
   "Return a string of `window-width' length containing LEFT, and RIGHT aligned respectively."
   (let* ((available-width (- (window-total-width) (+ (length (format-mode-line left)) (length (format-mode-line right))))))
