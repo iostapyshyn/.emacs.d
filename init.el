@@ -12,14 +12,13 @@
 ;; (load custom-file) ;; Customize is not used
 
 ;; Frame appearance
+(add-to-list 'default-frame-alist '(fullscreen . fullscreen))
 (unless (member window-system '(ns mac))
   (menu-bar-mode -1))
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
 (when window-system
-  (set-frame-parameter nil 'fullscreen 'fullscreen)
-
   (set-face-attribute 'default        nil :family "Iosevka"    :height 120 :width 'expanded)
   (set-face-attribute 'fixed-pitch    nil :family "Iosevka"    :height 120 :width 'expanded)
   (set-face-attribute 'variable-pitch nil :family "Sans Serif" :height 1.1))
