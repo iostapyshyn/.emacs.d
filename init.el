@@ -459,7 +459,7 @@ new EWW buffer."
   (require 'dired-x)
   (setq-default dired-omit-files-p t) ; Buffer-local variable
   (setq dired-omit-files "^\\.[^.]\\|^\\.$")
-  ;; (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   (add-hook 'dired-mode-hook 'dired-omit-mode))
 
 (use-package eldoc
@@ -669,27 +669,19 @@ the buffer. Disable flyspell-mode otherwise."
           lisp-mode) . rainbow-delimiters-mode))
 
 (use-package eshell
-  :bind ("C-z" . eshell-open-with-directory)
+  :bind ("C-z" . eshell)
   :config
-  ;; Pressing C-z twice will open eshell and cd into prev.
-  ;; buffer directory.
-  (defvar eshell-saved-directory "~"
-    "Default directory of the buffer in which `eshell-open-with-directory'
-was called last time.")
+  (define-advice eshell
+      (:before (&optional _arg) save-directory)
+    (setq eshell-saved-directory default-directory))
 
-  (defun eshell-open-with-directory (&optional arg)
-    "Opens eshell, but saves buffer directory in a variable `eshell-saved-directory'.
-
-If eshell is already open and no argument is specified, change to that directory."
-    (interactive "P")
-    (if (and (derived-mode-p 'eshell-mode) (not arg) eshell-saved-directory)
-        (progn
-          (cd eshell-saved-directory)
-          (eshell-reset nil))
-      (setq eshell-saved-directory default-directory)
-      (eshell arg)
-      (unless (equal default-directory eshell-saved-directory)
-        (where-is 'eshell-open-with-directory))))
+  (defun eshell-cd-saved-directory ()
+    (interactive)
+    (when (bound-and-true-p eshell-saved-directory)
+      (cd eshell-saved-directory)
+      (eshell-reset nil)))
+  (require 'esh-mode)
+  (define-key eshell-mode-map (kbd "C-c z") 'eshell-cd-saved-directory)
 
   (defun eshell/last-remote (&optional _indices)
     (when-let ((r (if-let ((base (file-remote-p default-directory)))
@@ -707,14 +699,14 @@ If eshell is already open and no argument is specified, change to that directory
 ;; Better terminal emulator
 (use-package vterm
   :ensure t
-  :bind* (("C-x C-z" . vterm)
-          (:map vterm-mode-map
-                ("C-c TAB"   . vterm-insert-saved-directory)
-                ("C-c C-x"   . vterm-send-C-x)
-                ("M-<left>"  . vterm-send-M-b)
-                ("M-<right>" . vterm-send-M-f)
-                ("M-p"       . vterm-send-C-p)
-                ("M-n"       . vterm-send-C-n)))
+  :bind (("C-x C-z" . vterm)
+         (:map vterm-mode-map
+               ("C-c z"     . vterm-insert-saved-directory)
+               ("C-c C-x"   . vterm-send-C-x)
+               ("M-<left>"  . vterm-send-M-b)
+               ("M-<right>" . vterm-send-M-f)
+               ("M-p"       . vterm-send-C-p)
+               ("M-n"       . vterm-send-C-n)))
   :config
   (define-advice vterm
       (:before (&optional _arg) save-directory)
@@ -723,7 +715,7 @@ If eshell is already open and no argument is specified, change to that directory
   (defun vterm-insert-saved-directory ()
     (interactive)
     (when (bound-and-true-p vterm-saved-directory)
-      (vterm-insert vterm-saved-directory)))
+      (vterm-insert (concat "cd " vterm-saved-directory "\n"))))
 
   (setq vterm-kill-buffer-on-exit t))
 
