@@ -238,7 +238,9 @@
   :group 'my-minor
   :keymap `((,(kbd "C-,") . previous-buffer)
             (,(kbd "C-.") . next-buffer)
-            (,(kbd "C-;") . other-window)))
+            (,(kbd "C-;") . other-window)
+            (,(kbd "C->") . tab-next)
+            (,(kbd "C-<") . tab-previous)))
 
 (setq tab-bar-show nil)
 (setq tab-bar-tab-name-function 'tab-bar-tab-name-all)
