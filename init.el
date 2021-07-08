@@ -95,12 +95,11 @@
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
-;; ;; disable electric-pair-mode for lisp
-;; (make-variable-buffer-local 'show-paren-style)
-;; (dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
-;;   (add-hook hook
-;;             (lambda ()
-;;               (electric-pair-local-mode 0))))
+;; disable electric-pair-mode for lisp
+(dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
+  (add-hook hook
+            (lambda ()
+              (electric-pair-local-mode -1))))
 
 ;; Indentation settings:
 (with-eval-after-load "cc-styles"
@@ -512,6 +511,7 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :demand t
   :config
+  (setq undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
 ;; Key hints
