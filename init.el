@@ -219,7 +219,7 @@
 
 (global-set-key (kbd "C-c c") 'compile-maybe-project)
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
-(global-set-key (kbd "M-g .") 'imenu)
+(global-set-key (kbd "M-g i") 'imenu)
 
 (defun goto-line-with-line-numbers ()
   "Show line numbers when querying for `goto-line'."
@@ -511,7 +511,6 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :demand t
   :config
-  (setq undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
 ;; Key hints
@@ -772,6 +771,13 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package ggtags
   :config
   (setq ggtags-enable-navigation-keys nil))
+
+(use-package dumb-jump
+  :ensure t
+  :config
+  ;; rg must be used for multi-line method signatures:
+  (setq dumb-jump-force-searcher 'rg)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 ;; Language Server Protocol
 (use-package lsp-mode
