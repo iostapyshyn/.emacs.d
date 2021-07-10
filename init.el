@@ -636,7 +636,7 @@ the buffer. Disable flyspell-mode otherwise."
   :bind ("C-c t m" . modus-themes-toggle)
   :config
   (setq modus-themes-mode-line nil
-        modus-themes-slanted-constructs t
+        modus-themes-italic-constructs t
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
         modus-themes-fringes nil
@@ -650,8 +650,7 @@ the buffer. Disable flyspell-mode otherwise."
   (use-package autothemer
     :ensure t))
 
-(if (not (window-system))
-    (load-theme 'modus-vivendi t)
+(when (window-system)
   (use-package circadian
     :ensure t
     :demand t
