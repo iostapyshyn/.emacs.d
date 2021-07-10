@@ -12,7 +12,7 @@
 ;; (load custom-file) ;; Customize is not used
 
 ;; Frame appearance
-(add-to-list 'default-frame-alist '(fullscreen . fullscreen))
+(set-frame-parameter nil 'fullscreen 'fullscreen)
 (unless (member window-system '(ns mac))
   (menu-bar-mode -1))
 (tool-bar-mode -1)
