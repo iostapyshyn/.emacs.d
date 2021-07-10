@@ -558,8 +558,9 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package consult
   :ensure t
-  :bind (("C-c s"                               . consult-line)
+  :bind (("M-s l"                               . consult-line)
          ("M-s g"                               . consult-grep)
+         ("M-s G"                               . consult-git-grep)
          ("M-s r"                               . consult-ripgrep)
          ([remap switch-to-buffer]              . consult-buffer)
          ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
