@@ -576,7 +576,8 @@ the buffer. Disable flyspell-mode otherwise."
   (setq completion-in-region-function 'consult-completion-in-region)
   (add-hook 'gud-mode-hook
             (lambda ()
-              (setq-local completion-in-region-function 'completion--in-region)))
+              (setq-local completion-in-region-function 'completion--in-region)
+              (setq-local completion-styles '(basic partial-completion))))
   :config
   (consult-customize
    consult-bookmark consult-recent-file
