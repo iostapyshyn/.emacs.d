@@ -23,9 +23,7 @@
   (set-face-attribute 'fixed-pitch    nil :family "Iosevka"    :height 120 :width 'expanded)
   (set-face-attribute 'variable-pitch nil :family "Sans Serif" :height 1.1))
 
-;; No startup splash screen
-(setq inhibit-startup-message t
-      inhibit-splash-screen t)
+(setq inhibit-startup-message t)
 
 ;; No backup file polution
 (setq backup-directory-alist
@@ -88,6 +86,7 @@
 
 ;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
+(setq scroll-margin 1)
 
 ;; Parenthesis
 (electric-pair-mode 1)
@@ -143,7 +142,7 @@
 ;;           (lambda ()
 ;;             (activate-input-method default-input-method)))
 
-;; My org files may contain bookmarks. They fail to open non-interactively:
+;; Org files may contain bookmarks. They fail to open non-interactively:
 (defadvice bookmark-jump (before bookmarks-load activate)
   "Load bookmarks file before trying to jump non-interactively."
   (bookmark-maybe-load-default-file)
@@ -158,10 +157,6 @@
         mac-right-option-modifier nil)
   (setq mac-frame-tabbing nil))
 
-;; Ligatures
-(when (eq window-system 'mac)
-  (mac-auto-operator-composition-mode 1))
-
 (add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
 
 ;; Remove trailing whitespaces on save.
@@ -169,7 +164,6 @@
 
 
 ;;; --- Personal custom modes and functions ---
-
 (defun duden (word)
   "Search for the WORD definition on duden.de.  Requires github.com/radomirbosak/duden."
   (interactive
@@ -184,7 +178,7 @@
     (with-current-buffer buffer
       (turn-on-visual-line-mode))))
 
-(global-set-key (kbd "C-c / d") 'duden)
+(global-set-key (kbd "C-c C-SPC d") 'duden)
 
 (defun mode-line-render (left right)
   "Return a string of `window-width' length containing LEFT, and RIGHT aligned respectively."
@@ -221,12 +215,14 @@
 (global-set-key (kbd "C-c h") 'ff-find-other-file)
 (global-set-key (kbd "M-g i") 'imenu)
 
-(defun goto-line-with-line-numbers ()
-  "Show line numbers when querying for `goto-line'."
-  (interactive)
-  (let ((display-line-numbers t))
-    (call-interactively #'goto-line)))
-(global-set-key [remap goto-line] #'goto-line-with-line-numbers)
+;; Obsoleted by consult:
+
+;; (defun goto-line-with-line-numbers ()
+;;   "Show line numbers when querying for `goto-line'."
+;;   (interactive)
+;;   (let ((display-line-numbers t))
+;;     (call-interactively #'goto-line)))
+;; (global-set-key [remap goto-line] #'goto-line-with-line-numbers)
 
 ;; A place to define keybindings which shall not be shadowed:
 (define-minor-mode my-minor-mode
@@ -246,13 +242,8 @@
 
 (global-set-key (kbd "C-h M") 'man)
 
-(defun parent-directory (path)
-  "Return parent directory of PATH."
-  (file-name-directory (directory-file-name path)))
-
 
 ;;; --- Packages ---
-
 (eval-when-compile
   (require 'package)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -284,7 +275,7 @@
   :config
   (add-to-list 'project-switch-commands '(vterm "Vterm") t)
   (add-to-list 'project-switch-commands '(magit "Magit") t)
-  ;; Credit to github.com/karthink for this .project detection snippet below
+  ;; Credit to karthink for this .project detection snippet below
   (setq project-local-identifier ".project")
   (cl-defmethod project-root ((project (head local)))
     (cdr project))
@@ -295,34 +286,22 @@ DIR must include a .project file to be considered a project."
         (cons 'local root)))
   (add-hook 'project-find-functions 'project-try-local))
 
-;; org-mode
+
+;;; --- Org Mode ---
 (use-package org
   :preface
   (defvar my/org "~/org")
-  (defvar my/org-index (concat (file-name-as-directory my/org) "index.org"))
-
-  ;; Don't show index on recent files
-  (with-eval-after-load 'recentf
-    (add-to-list 'recentf-exclude (regexp-quote (expand-file-name my/org-index))))
-
-  (defun org-my-index (&optional arg)
-    (interactive "P")
+  (defun find-my/org ()
+    (interactive)
     (push-mark)
-    (find-file (if arg my/org my/org-index)))
+    (find-file my/org))
   :bind*
   (("C-c a" . org-agenda)
-   ("C-c i" . org-my-index)
-   ("C-c l" . org-store-link)
-   ;; Dont allow minor modes (such as visual-line-mode) to rebind special org-mode keys
-   (:map org-mode-map
-         ("C-e" . org-end-of-line)
-         ("C-a" . org-beginning-of-line)
-         ("C-k" . org-kill-line)
-         ("C-c C-/" . org-sparse-tree)
-         ("C-c /"   . nil))) ;; Some important keybindings on C-c /
+   ("C-c i" . find-my/org)
+   ("C-c l" . org-store-link))
   :config
-  ;; (setq-default org-display-custom-times t)
-  ;; (setq org-time-stamp-custom-formats '("<%A, %e. %B %Y>" . "<%A, %e. %B %Y %H:%M>"))
+  (setq-default org-display-custom-times t)
+  (setq org-time-stamp-custom-formats '("<%a %d %b %Y>" . "<%a %d %b %Y %H:%M>"))
 
   (setq org-agenda-prefix-format '((agenda . " %i %-12:c%-12t% s")
                                    (todo   . " %i %-12:c")
@@ -359,7 +338,6 @@ DIR must include a .project file to be considered a project."
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.25)
         org-preview-latex-default-process 'dvisvgm)
 
-  ;; (setq org-pretty-entities t)
   (setq org-agenda-follow-mode t)
 
   (setq org-agenda-files (list my/org))
@@ -385,7 +363,7 @@ DIR must include a .project file to be considered a project."
           python-shell-interpreter-args "--simple-prompt -i")))
 
 (use-package eww
-  :bind (("C-c / m" . eww-man7-index)
+  :bind (("C-c C-SPC m" . eww-man7-index)
          (:map eww-mode-map
                ("j" . prot-eww-visit-url-on-page)))
   :config
@@ -445,9 +423,7 @@ new EWW buffer."
   (setq isearch-yank-on-move 'shift)
   (setq isearch-allow-scroll 'unlimited))
 
-;; dired
 (use-package dired
-  :bind* ("C-x C-d" . dired)
   :custom
   (dired-dwim-target t)
   (dired-recursive-copies 'top)
@@ -506,14 +482,12 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (reverse-im-mode t))
 
-;; Better undo
 (use-package undo-tree
   :ensure t
   :demand t
   :config
   (global-undo-tree-mode))
 
-;; Key hints
 (use-package which-key
   :ensure t
   :demand t
@@ -522,7 +496,6 @@ the buffer. Disable flyspell-mode otherwise."
 
 
 ;;; --- Completion ---
-
 (setq enable-recursive-minibuffers t)
 (setq minibuffer-prompt-properties
       '(read-only t cursor-intangible t face minibuffer-prompt))
@@ -536,12 +509,6 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :init
   (vertico-mode))
-
-;; (use-package corfu
-;;   :ensure t
-;;   :hook (eval-expression-minibuffer-setup . corfu-mode)
-;;   :init
-;;   (corfu-global-mode))
 
 (use-package orderless
   :ensure t
@@ -569,7 +536,7 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap bookmark-jump]                 . consult-bookmark)
          ([remap load-theme]                    . consult-theme)
          ([remap goto-line]                     . consult-goto-line)
-         ([remap man]                           . consult-man)
+         ;; ([remap man]                           . consult-man)
          ([remap yank-pop]                      . consult-yank-pop)
          ([remap imenu]                         . consult-imenu))
   :init
@@ -582,7 +549,7 @@ the buffer. Disable flyspell-mode otherwise."
   (consult-customize
    consult-bookmark consult-recent-file
    consult--source-file consult--source-project-file consult--source-bookmark
-   :preview-key (kbd "M-o"))
+   :preview-key (kbd "C-o"))
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
@@ -590,20 +557,16 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package embark
   :ensure t
-  :bind (:map vertico-map ("C-o" . embark-act)))
+  :bind (:map vertico-map ("M-o" . embark-act)))
 
 (use-package embark-consult
   :ensure t
   :demand t
   :after (consult embark))
 
-;; (use-package ace-window
-;;   :ensure t
-;;   :bind (("M-o" . ace-window)))
-
 (use-package avy
   :ensure t
-  :bind* (("C-c SPC" . avy-goto-char-2)))
+  :bind (("C-`" . avy-goto-char)))
 
 (use-package expand-region
   :ensure t
@@ -696,7 +659,6 @@ the buffer. Disable flyspell-mode otherwise."
   (setq eshell-destroy-buffer-when-process-dies t)
   (defalias 'eshell/v 'eshell-exec-visual))
 
-;; Better terminal emulator
 (use-package vterm
   :ensure t
   :bind (("C-x C-z" . vterm)
@@ -726,6 +688,7 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (eshell-vterm-mode))
 
+;; Smart trailing whitespace trimming
 (use-package ws-butler
   :ensure t
   :hook (prog-mode . ws-butler-mode))
@@ -753,7 +716,6 @@ the buffer. Disable flyspell-mode otherwise."
   :bind ("C-c ! !" . flycheck-mode)
   :init (global-flycheck-mode))
 
-;; web-mode
 (use-package web-mode
   :ensure t
   :mode ("\\.phtml\\'"
@@ -773,14 +735,6 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (setq ggtags-enable-navigation-keys nil))
 
-(use-package dumb-jump
-  :ensure t
-  :config
-  ;; rg must be used for multi-line method signatures:
-  (setq dumb-jump-force-searcher 'rg)
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
-
-;; Language Server Protocol
 (use-package lsp-mode
   :ensure t
   :hook
@@ -814,12 +768,9 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (yas-global-mode))
 
-;; C/C++/ObjC/GLSL
-
 (use-package cmake-mode :ensure t)
 (use-package glsl-mode :ensure t)
 
-;; Magit
 (use-package magit
   :ensure t)
 
@@ -851,7 +802,6 @@ the buffer. Disable flyspell-mode otherwise."
 
   (setq preview-scale-function 1.0))
 
-;; Rust
 (use-package rust-mode
   :ensure t
   :config
@@ -859,11 +809,6 @@ the buffer. Disable flyspell-mode otherwise."
   (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
-
-(use-package erc
-  :commands erc
-  :custom
-  (erc-nick "vcored"))
 
 (use-package pdf-tools
   :ensure t
@@ -894,13 +839,9 @@ the buffer. Disable flyspell-mode otherwise."
   (olivetti-body-width 80)
   (olivetti-enable-visual-line-mode nil))
 
-(use-package google-this
-  :ensure t
-  :bind* (("C-c / g" . google-this)))
-
 (use-package sprunge
   :ensure t
-  :bind* (("C-c / p" . sprunge-dwim))
+  :bind (("C-c C-SPC p" . sprunge-dwim))
   :config
   (defun sprunge-dwim ()
     (interactive)
@@ -910,7 +851,6 @@ the buffer. Disable flyspell-mode otherwise."
 
 
 ;;; --- Some final nuances ---
-
 ;; Start the server if not running
 (load "server")
 (unless (server-running-p) (server-start))
