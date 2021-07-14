@@ -635,16 +635,15 @@ the buffer. Disable flyspell-mode otherwise."
   :bind ("C-z" . eshell)
   :config
   (define-advice eshell
-      (:before (&optional _arg) save-directory)
-    (setq eshell-saved-directory default-directory))
-
-  (defun eshell-cd-saved-directory ()
-    (interactive)
-    (when (bound-and-true-p eshell-saved-directory)
-      (cd eshell-saved-directory)
-      (eshell-reset nil)))
-  (require 'esh-mode)
-  (define-key eshell-mode-map (kbd "C-c z") 'eshell-cd-saved-directory)
+      (:around (orig-fun &rest args) save-directory)
+    (if (and (derived-mode-p 'eshell-mode)
+             (not (car args))
+             (bound-and-true-p eshell-saved-directory))
+        (progn
+          (cd eshell-saved-directory)
+          (eshell-reset nil))
+      (setq eshell-saved-directory default-directory)
+      (apply orig-fun args)))
 
   (defun eshell/last-remote (&optional _indices)
     (when-let ((r (if-let ((base (file-remote-p default-directory)))
@@ -657,16 +656,16 @@ the buffer. Disable flyspell-mode otherwise."
   (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
 
   (setq eshell-destroy-buffer-when-process-dies t)
-  (defalias 'eshell/v 'eshell-exec-visual))
+  (defalias 'eshell/v 'eshell-exec-visual)
+  (defalias 'eshell/ff 'find-file)
+  (defalias 'eshell/clear 'eshell/clear-scrollback))
 
 (use-package vterm
   :ensure t
   :bind (("C-x C-z" . vterm)
          (:map vterm-mode-map
-               ("C-c z"     . vterm-insert-saved-directory)
+               ("C-c TAB"   . vterm-cd-saved-directory)
                ("C-c C-x"   . vterm-send-C-x)
-               ("M-<left>"  . vterm-send-M-b)
-               ("M-<right>" . vterm-send-M-f)
                ("M-p"       . vterm-send-C-p)
                ("M-n"       . vterm-send-C-n)))
   :config
@@ -674,7 +673,7 @@ the buffer. Disable flyspell-mode otherwise."
       (:before (&optional _arg) save-directory)
     (setq vterm-saved-directory default-directory))
 
-  (defun vterm-insert-saved-directory ()
+  (defun vterm-cd-saved-directory ()
     (interactive)
     (when (bound-and-true-p vterm-saved-directory)
       (vterm-insert (concat "cd " vterm-saved-directory "\n"))))
