@@ -178,7 +178,7 @@
     (with-current-buffer buffer
       (turn-on-visual-line-mode))))
 
-(global-set-key (kbd "C-c C-SPC d") 'duden)
+(global-set-key (kbd "C-c q d") 'duden)
 
 (defun mode-line-render (left right)
   "Return a string of `window-width' length containing LEFT, and RIGHT aligned respectively."
@@ -212,7 +212,7 @@
     (call-interactively 'compile)))
 
 (global-set-key (kbd "C-c c") 'compile-maybe-project)
-(global-set-key (kbd "C-c h") 'ff-find-other-file)
+(global-set-key (kbd "M-g o") 'ff-find-other-file)
 (global-set-key (kbd "M-g i") 'imenu)
 
 ;; Obsoleted by consult:
@@ -363,7 +363,7 @@ DIR must include a .project file to be considered a project."
           python-shell-interpreter-args "--simple-prompt -i")))
 
 (use-package eww
-  :bind (("C-c C-SPC m" . eww-man7-index)
+  :bind (("C-h 7" . eww-man7-index)
          (:map eww-mode-map
                ("j" . prot-eww-visit-url-on-page)))
   :config
@@ -840,7 +840,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package sprunge
   :ensure t
-  :bind (("C-c C-SPC p" . sprunge-dwim))
+  :bind (("C-c q p" . sprunge-dwim))
   :config
   (defun sprunge-dwim ()
     (interactive)
