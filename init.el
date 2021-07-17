@@ -224,22 +224,6 @@
 ;;     (call-interactively #'goto-line)))
 ;; (global-set-key [remap goto-line] #'goto-line-with-line-numbers)
 
-;; A place to define keybindings which shall not be shadowed:
-(define-minor-mode my-minor-mode
-  "A minor mode so that my keybindings won't be shadowed by other major modes."
-  :global t
-  :init-value t ;; On by default
-  :lighter nil
-  :group 'my-minor
-  :keymap `((,(kbd "C-,") . previous-buffer)
-            (,(kbd "C-.") . next-buffer)
-            (,(kbd "C-;") . other-window)
-            (,(kbd "C->") . tab-next)
-            (,(kbd "C-<") . tab-previous)))
-
-(setq tab-bar-show nil)
-(setq tab-bar-tab-name-function 'tab-bar-tab-name-all)
-
 (global-set-key (kbd "C-h M") 'man)
 
 
@@ -259,6 +243,18 @@
   (setq use-package-always-defer t))
 
 (use-package dash :ensure t)
+
+(use-package window
+  :bind* (("C-," . previous-buffer)
+          ("C-." . next-buffer)
+          ("C-;" . other-window)))
+
+(use-package tab-bar
+  :bind* (("C->" . tab-next)
+          ("C-<" . tab-previous))
+  :init
+  (setq tab-bar-show nil)
+  (setq tab-bar-tab-name-function 'tab-bar-tab-name-all))
 
 (use-package minions
   :ensure t
@@ -502,17 +498,20 @@ the buffer. Disable flyspell-mode otherwise."
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 (use-package savehist
-  :init
+  :demand t
+  :config
   (savehist-mode))
 
 (use-package vertico
   :ensure t
-  :init
+  :demand t
+  :config
   (vertico-mode))
 
 (use-package orderless
   :ensure t
-  :init
+  :demand t
+  :config
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion)))))
@@ -520,7 +519,8 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package marginalia
   :ensure t
-  :init
+  :demand t
+  :config
   (marginalia-mode))
 
 (use-package consult
@@ -557,7 +557,14 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package embark
   :ensure t
-  :bind (:map vertico-map ("M-o" . embark-act)))
+  :bind (:map vertico-map ("M-o" . embark-act))
+  :config
+  ;; use which-key for the prompt
+  (setq embark-action-indicator
+        (lambda (map &optional _target)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
   :ensure t
