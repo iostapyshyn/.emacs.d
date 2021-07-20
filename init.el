@@ -607,13 +607,12 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (setq modus-themes-mode-line nil
+  (setq modus-themes-mode-line '(accented)
         modus-themes-italic-constructs t
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
-        modus-themes-fringes nil
-        modus-themes-org-blocks 'rainbow
-        modus-themes-headings '((t . nil))))
+        modus-themes-org-blocks 'tinted-background
+        modus-themes-headings '((t . (no-bold overline background)))))
 
 (use-package gruvbox-theme
   :demand t
