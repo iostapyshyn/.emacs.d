@@ -310,8 +310,8 @@ DIR must include a .project file to be considered a project."
   (setq org-clock-mode-line-total 'today)
   (setq org-duration-format (quote h:mm))
 
-  ;; Leave a line between closed headings
-  ;; (setq org-cycle-separator-lines 1)
+  ;; Don't leave lines between closed headings
+  (setq org-cycle-separator-lines 0)
 
   ;; C-a/C-e stops before tags
   (setq org-special-ctrl-a/e t)
