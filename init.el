@@ -178,12 +178,12 @@
 (global-set-key (kbd "C-c q d") 'duden)
 
 (defun mode-line-render (left right)
-  "Return a string of `window-width' length containing LEFT, and RIGHT aligned respectively."
-  (let* ((available-width
-          (- (window-total-width)
-             (+ (length (format-mode-line left))
-                (length (format-mode-line right))))))
-    (append left (list (format (format "%%%ds" available-width) "")) right)))
+  "Return a mode-line formatted string containing LEFT and RIGHT aligned respectively."
+  (let* ((left (format-mode-line left))
+         (right (format-mode-line right))
+         (space (propertize " " 'display
+                            `(space :align-to (- right ,(string-width right))))))
+    (replace-regexp-in-string "%" "%%" (concat left space right))))
 
 (setq-default mode-line-format '((:eval (mode-line-render
                                          (list " "
@@ -197,8 +197,9 @@
                                                '(vc-mode vc-mode)
                                                " "
                                                mode-line-modes)))))
+(setq mode-line-compact 'long)
 
-(setq which-func-unknown "")
+(setq which-func-unknown "…")
 (which-function-mode)
 
 (setq compilation-scroll-output 'first-error)
