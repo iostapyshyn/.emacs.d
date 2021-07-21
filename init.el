@@ -138,9 +138,6 @@
 ;; C-\ to enable: ae -> ä
 ;; Is buffer-local
 (setq default-input-method 'german-postfix)
-;; (add-hook 'text-mode-hook
-;;           (lambda ()
-;;             (activate-input-method default-input-method)))
 
 ;; Org files may contain bookmarks. They fail to open non-interactively:
 (define-advice bookmark-jump (:before (&rest _r) bookmarks-load)
@@ -182,7 +179,10 @@
 
 (defun mode-line-render (left right)
   "Return a string of `window-width' length containing LEFT, and RIGHT aligned respectively."
-  (let* ((available-width (- (window-total-width) (+ (length (format-mode-line left)) (length (format-mode-line right))))))
+  (let* ((available-width
+          (- (window-total-width)
+             (+ (length (format-mode-line left))
+                (length (format-mode-line right))))))
     (append left (list (format (format "%%%ds" available-width) "")) right)))
 
 (setq-default mode-line-format '((:eval (mode-line-render
@@ -198,7 +198,7 @@
                                                " "
                                                mode-line-modes)))))
 
-(setq which-func-unknown "…")
+(setq which-func-unknown "")
 (which-function-mode)
 
 (setq compilation-scroll-output 'first-error)
