@@ -143,10 +143,10 @@
 ;;             (activate-input-method default-input-method)))
 
 ;; Org files may contain bookmarks. They fail to open non-interactively:
-(defadvice bookmark-jump (before bookmarks-load activate)
+(define-advice bookmark-jump (:before (&rest _r) bookmarks-load)
   "Load bookmarks file before trying to jump non-interactively."
   (bookmark-maybe-load-default-file)
-  (advice-remove 'bookmarks-load 'bookmark-jump))
+  (advice-remove 'bookmark-jump 'bookmark-jump@bookmarks-load))
 (with-eval-after-load "bookmark"
   (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-file))))
 
@@ -591,16 +591,10 @@ the buffer. Disable flyspell-mode otherwise."
 ;;; --- Color theme ---
 (setq custom-safe-themes t)
 
-(defadvice load-theme (before theme-dont-propagate activate)
+(define-advice load-theme (:before (&rest _args) theme-dont-propagate)
   "Discard all themes before loading new."
   (mapc #'disable-theme custom-enabled-themes))
 
-(defvar after-load-theme-hook nil
-  "Hook run after a color theme is loaded using `load-theme'.")
-
-(defadvice load-theme (after run-after-load-theme-hook activate)
-  "Run `after-load-theme-hook'."
-  (run-hooks 'after-load-theme-hook))
 (global-set-key (kbd "C-c t t") 'load-theme)
 
 (use-package modus-themes
