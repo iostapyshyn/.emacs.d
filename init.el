@@ -63,16 +63,10 @@
 (setq sentence-end-double-space nil)
 (setq message-fill-column nil)
 
-(global-subword-mode)
-
 (add-hook 'help-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
-(add-hook 'text-mode-hook 'superword-mode)
 
 (when window-system
-  ;; ;; Highlight the current line (only in X)
-  ;; (global-hl-line-mode 1)
-
   ;; Disable pixel-by-pixel scrolling on mac port
   (setq mac-mouse-wheel-smooth-scroll nil)
 
