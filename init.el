@@ -66,17 +66,10 @@
 (add-hook 'help-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
-(when window-system
-  ;; Disable pixel-by-pixel scrolling on mac port
-  (setq mac-mouse-wheel-smooth-scroll nil)
-
-  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-  (setq mouse-wheel-progressive-speed nil)
-  (setq mouse-wheel-follow-mouse 't)
-
-  ;; Unbind zoom with mouse wheel
-  (global-unset-key (kbd "C-<wheel-up>"))
-  (global-unset-key (kbd "C-<wheel-down>")))
+(setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll)))
+(setq mouse-wheel-progressive-speed nil)
+(setq mouse-wheel-follow-mouse 't)
+(mouse-wheel-mode 1) ; apply settings
 
 ;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
