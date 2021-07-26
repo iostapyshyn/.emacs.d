@@ -176,7 +176,7 @@
   (let* ((left (format-mode-line left))
          (right (format-mode-line right))
          (space (propertize " " 'display
-                            `(space :align-to (- right ,(string-width right))))))
+                            `(space :align-to (- scroll-bar ,(string-width right))))))
     (replace-regexp-in-string "%" "%%" (concat left space right))))
 
 (setq-default mode-line-format '((:eval (mode-line-render
