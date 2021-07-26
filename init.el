@@ -317,6 +317,8 @@ DIR must include a .project file to be considered a project."
 
   (setq org-goto-auto-isearch nil)
 
+  (setq org-fontify-done-headline nil)
+  (setq org-fontify-todo-headline nil)
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
 
@@ -601,7 +603,8 @@ the buffer. Disable flyspell-mode otherwise."
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
         modus-themes-org-blocks 'tinted-background
-        modus-themes-headings '((t . (no-bold overline background)))))
+        modus-themes-headings '((1 . (no-bold overline))
+                                (t . (no-bold)))))
 
 (use-package gruvbox-theme
   :demand t
