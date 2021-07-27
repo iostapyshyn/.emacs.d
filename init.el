@@ -608,7 +608,7 @@ the buffer. Disable flyspell-mode otherwise."
   (use-package autothemer
     :ensure t))
 
-(when (window-system)
+(if (window-system)
   (use-package circadian
     :ensure t
     :demand t
@@ -617,7 +617,8 @@ the buffer. Disable flyspell-mode otherwise."
           calendar-longitude 9.69)
     (setq circadian-themes '((:sunrise . modus-operandi)
                              (:sunset  . modus-vivendi)))
-    (circadian-setup)))
+    (circadian-setup))
+  (load-theme 'modus-vivendi t))
 
 (use-package rainbow-delimiters
   :ensure t
