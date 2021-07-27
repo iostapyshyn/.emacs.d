@@ -11,17 +11,24 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 ;; (load custom-file) ;; Customize is not used
 
-;; Frame appearance
-(set-frame-parameter nil 'fullscreen 'fullscreen)
-(unless (member window-system '(ns mac))
-  (menu-bar-mode -1))
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
 (when window-system
   (set-face-attribute 'default        nil :family "Iosevka Term SS07" :height 120 :width 'expanded)
   (set-face-attribute 'fixed-pitch    nil :family "Iosevka Term Slab" :height 120 :width 'expanded)
-  (set-face-attribute 'variable-pitch nil :height 1.1))
+  (set-face-attribute 'variable-pitch nil :height 1.1)
+
+  ;; Frame appearance
+  (set-frame-parameter nil 'fullscreen 'fullscreen)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll)))
+  (setq mouse-wheel-progressive-speed nil)
+  (setq mouse-wheel-follow-mouse 't)
+  ;; Apply settings:
+  (mouse-wheel-mode 1))
+
+(unless (member window-system '(ns mac))
+  (menu-bar-mode -1))
 
 (setq inhibit-startup-message t)
 
@@ -65,11 +72,6 @@
 
 (add-hook 'help-mode-hook 'turn-on-visual-line-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
-
-(setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll)))
-(setq mouse-wheel-progressive-speed nil)
-(setq mouse-wheel-follow-mouse 't)
-(mouse-wheel-mode 1) ; apply settings
 
 ;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
