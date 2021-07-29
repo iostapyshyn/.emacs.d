@@ -549,14 +549,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package embark
   :ensure t
-  :bind (:map vertico-map ("M-o" . embark-act))
-  :config
-  ;; use which-key for the prompt
-  (setq embark-action-indicator
-        (lambda (map &optional _target)
-          (which-key--show-keymap "Embark" map nil nil 'no-paging)
-          #'which-key--hide-popup-ignore-command)
-        embark-become-indicator embark-action-indicator))
+  :bind ("C-c e" . embark-act))
 
 (use-package embark-consult
   :ensure t
