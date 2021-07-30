@@ -665,6 +665,7 @@ the buffer. Disable flyspell-mode otherwise."
     (when (bound-and-true-p vterm-saved-directory)
       (vterm-insert (concat "cd " vterm-saved-directory "\n"))))
 
+  (setq vterm-max-scrollback 50000)
   (setq vterm-kill-buffer-on-exit t))
 
 (use-package eshell-vterm
