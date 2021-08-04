@@ -12,8 +12,8 @@
 ;; (load custom-file) ;; Customize is not used
 
 (when window-system
-  (set-face-attribute 'default        nil :family "Iosevka Term SS07" :height 120 :width 'expanded)
-  (set-face-attribute 'fixed-pitch    nil :family "Iosevka Term Slab" :height 120 :width 'expanded)
+  (set-face-attribute 'default        nil :family "Iosevka Fixed SS07" :height 120 :width 'expanded)
+  (set-face-attribute 'fixed-pitch    nil :family "Iosevka Fixed Slab" :height 120 :width 'expanded)
   (set-face-attribute 'variable-pitch nil :height 1.1)
 
   ;; Frame appearance
