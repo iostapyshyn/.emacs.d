@@ -592,13 +592,6 @@ the buffer. Disable flyspell-mode otherwise."
         modus-themes-headings '((1 . (no-bold overline))
                                 (t . (no-bold)))))
 
-(use-package gruvbox-theme
-  :demand t
-  :load-path "site-lisp/emacs-theme-gruvbox"
-  :init
-  (use-package autothemer
-    :ensure t))
-
 (if (window-system)
   (use-package circadian
     :ensure t
