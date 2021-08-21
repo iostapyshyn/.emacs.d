@@ -295,6 +295,9 @@ DIR must include a .project file to be considered a project."
   (setq org-agenda-start-on-weekday 1)
   (setq calendar-week-start-day 1)
 
+  ;; Make sure the time stamps are formatted in English across the systems
+  (setq system-time-locale "C")
+
   (setq org-clock-mode-line-total 'today)
   (setq org-duration-format (quote h:mm))
 
