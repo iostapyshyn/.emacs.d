@@ -23,7 +23,7 @@
 
   (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll)))
   (setq mouse-wheel-progressive-speed nil)
-  (setq mouse-wheel-follow-mouse 't)
+  (setq mouse-wheel-follow-mouse t)
   ;; Apply settings:
   (mouse-wheel-mode 1))
 
