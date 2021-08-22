@@ -596,15 +596,15 @@ the buffer. Disable flyspell-mode otherwise."
                                 (t . (no-bold)))))
 
 (if (window-system)
-  (use-package circadian
-    :ensure t
-    :demand t
-    :config
-    (setq calendar-latitude 52.38
-          calendar-longitude 9.69)
-    (setq circadian-themes '((:sunrise . modus-operandi)
-                             (:sunset  . modus-vivendi)))
-    (circadian-setup))
+    (use-package circadian
+      :ensure t
+      :demand t
+      :config
+      (setq calendar-latitude 52.38
+            calendar-longitude 9.69)
+      (setq circadian-themes '((:sunrise . modus-operandi)
+                               (:sunset  . modus-vivendi)))
+      (circadian-setup))
   (load-theme 'modus-vivendi t))
 
 (use-package rainbow-delimiters
