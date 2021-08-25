@@ -4,32 +4,25 @@
 
 ;; Load early-init.el if emacs < 27
 (when (version< emacs-version "27")
-  (let ((early-init-file (concat user-emacs-directory "early-init.el")))
-    (when (file-exists-p early-init-file)
-      (load-file early-init-file))))
+  (let ((early-init-file (concat user-emacs-directory "early-init")))
+    (load early-init-file t)))
 
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; (load custom-file) ;; Customize is not used
+(setq custom-file (concat user-emacs-directory "custom"))
+;; (load custom-file t) ;; Customize is not used
+
+(setq local-init-file (concat user-emacs-directory "local/"
+                              (md5 (system-name))))
+(load local-init-file t)
 
 (when window-system
-  (let ((monospaced   (list :family "Input"
-                            :height 120))
-        (proportional (list :height 1.1)))
-    (apply 'set-face-attribute 'default        nil monospaced)
-    (apply 'set-face-attribute 'fixed-pitch    nil monospaced)
-    (apply 'set-face-attribute 'variable-pitch nil proportional))
+  (when (boundp 'font-monospaced)
+    (apply 'set-face-attribute 'default        nil font-monospaced)
+    (apply 'set-face-attribute 'fixed-pitch    nil font-monospaced))
+  (when (boundp 'font-proportional)
+    (apply 'set-face-attribute 'variable-pitch nil font-proportional))
 
-  ;; Frame appearance
-  ;;(set-frame-parameter nil 'fullscreen 'fullscreen)
-  (set-frame-size nil 160 50)
   (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-
-  (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll)))
-  (setq mouse-wheel-progressive-speed nil)
-  (setq mouse-wheel-follow-mouse t)
-  ;; Apply settings:
-  (mouse-wheel-mode 1))
+  (scroll-bar-mode -1))
 
 (unless (member window-system '(ns mac))
   (menu-bar-mode -1))
