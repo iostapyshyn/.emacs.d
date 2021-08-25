@@ -4,15 +4,15 @@
 
 ;; Load early-init.el if emacs < 27
 (when (version< emacs-version "27")
-  (let ((early-init-file (concat user-emacs-directory "early-init")))
-    (load early-init-file t)))
+  (let ((early-init-file (concat user-emacs-directory "early-init.el")))
+    (load early-init-file t nil t)))
 
-(setq custom-file (concat user-emacs-directory "custom"))
-;; (load custom-file t) ;; Customize is not used
+(setq custom-file (concat user-emacs-directory "custom.el"))
+;; (load custom-file t t t) ;; Customize is not used
 
 (setq local-init-file (concat user-emacs-directory "local/"
-                              (md5 (system-name))))
-(load local-init-file t)
+                              (md5 (system-name)) ".el"))
+(load local-init-file t nil t)
 
 (when window-system
   (when (boundp 'font-monospaced)
