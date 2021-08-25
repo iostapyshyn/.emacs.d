@@ -12,12 +12,16 @@
 ;; (load custom-file) ;; Customize is not used
 
 (when window-system
-  (set-face-attribute 'default        nil :family "Iosevka Fixed SS07" :height 120 :width 'expanded)
-  (set-face-attribute 'fixed-pitch    nil :family "Iosevka Fixed Slab" :height 120 :width 'expanded)
-  (set-face-attribute 'variable-pitch nil :height 1.1)
+  (let ((monospaced   (list :family "Input"
+                            :height 120))
+        (proportional (list :height 1.1)))
+    (apply 'set-face-attribute 'default        nil monospaced)
+    (apply 'set-face-attribute 'fixed-pitch    nil monospaced)
+    (apply 'set-face-attribute 'variable-pitch nil proportional))
 
   ;; Frame appearance
-  (set-frame-parameter nil 'fullscreen 'fullscreen)
+  ;;(set-frame-parameter nil 'fullscreen 'fullscreen)
+  (set-frame-size nil 160 50)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 
