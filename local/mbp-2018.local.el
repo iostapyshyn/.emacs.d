@@ -3,7 +3,7 @@
       font-proportional (list :height 1.1))
 
 (when window-system
-  (set-frame-size nil 160 50)
+  (set-frame-parameter nil 'fullscreen 'fullscreen)
 
   (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll)))
   (setq mouse-wheel-progressive-speed nil)

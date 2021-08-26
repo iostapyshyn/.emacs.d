@@ -11,7 +11,7 @@
 ;; (load custom-file t t t) ;; Customize is not used
 
 (setq local-init-file (concat user-emacs-directory "local/"
-                              (md5 (system-name)) ".el"))
+                              (system-name) ".el"))
 (load local-init-file t nil t)
 
 (when window-system
