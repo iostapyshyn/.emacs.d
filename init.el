@@ -213,6 +213,17 @@
 
 (global-set-key (kbd "C-h M") 'man)
 
+(defun toggle-window-dedicated (&optional window)
+  "Invert the dedicatation of the WINDOW to its buffer."
+  (interactive)
+  (let ((dedicated (not (window-dedicated-p window))))
+    (set-window-dedicated-p window dedicated)
+    (message (if dedicated
+                 "Window is now dedicated to its buffer"
+               "Window is no longer dedicated to its buffer"))))
+
+(global-set-key (kbd "C-c l") 'toggle-window-dedicated)
+
 
 ;;; --- Packages ---
 (eval-when-compile
@@ -278,8 +289,7 @@ DIR must include a .project file to be considered a project."
     (find-file my/org))
   :bind*
   (("C-c a" . org-agenda)
-   ("C-c i" . find-my/org)
-   ("C-c l" . org-store-link))
+   ("C-c i" . find-my/org))
   :config
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%a %d %b %Y>" . "<%a %d %b %Y %H:%M>"))
