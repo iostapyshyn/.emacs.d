@@ -99,26 +99,8 @@
 
 ;; Typed text replaces the selection
 (delete-selection-mode 1)
-
 ;; Don't allow mark commands when the mark is inactive
 (setq mark-even-if-inactive nil)
-
-;; make re-builder not require double escaping
-(setq reb-re-syntax 'string)
-
-;; Recentf
-(recentf-mode 1)
-(setq recentf-max-saved-items 50)
-(setq recentf-exclude '("^/var/folders\\.*"
-                        "COMMIT_EDITMSG\\'"
-                        ".*-autoloads\\.el\\'"
-                        "[/\\]\\.elpa/"
-                        "\\.newsrc\\(\\|\\.eld\\)\\'"))
-
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
-
-;; Calc
-(setq-default calc-multiplication-has-precedence nil)
 
 ;; German postfix input method:
 ;; C-\ to enable: ae -> ä
@@ -139,11 +121,6 @@
         mac-option-modifier 'meta
         mac-right-option-modifier nil)
   (setq mac-frame-tabbing nil))
-
-(add-to-list 'auto-mode-alist '("\\.ino$" . c++-mode))
-
-;; Remove trailing whitespaces on save.
-;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 
 ;;; --- Personal custom modes and functions ---
@@ -189,27 +166,10 @@
 (which-function-mode)
 
 (setq compilation-scroll-output 'first-error)
-;;(make-variable-buffer-local 'compile-command)
-(defun compile-maybe-project ()
-  "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
-  (interactive)
-  (if (and (fboundp 'project-current)
-           (project-current nil))
-      (call-interactively 'project-compile)
-    (call-interactively 'compile)))
+(global-set-key (kbd "C-c c") 'compile)
 
-(global-set-key (kbd "C-c c") 'compile-maybe-project)
 (global-set-key (kbd "M-g o") 'ff-find-other-file)
 (global-set-key (kbd "M-g i") 'imenu)
-
-;; Obsoleted by consult:
-
-;; (defun goto-line-with-line-numbers ()
-;;   "Show line numbers when querying for `goto-line'."
-;;   (interactive)
-;;   (let ((display-line-numbers t))
-;;     (call-interactively #'goto-line)))
-;; (global-set-key [remap goto-line] #'goto-line-with-line-numbers)
 
 (global-set-key (kbd "C-h M") 'man)
 
@@ -222,7 +182,7 @@
                  "Window is now dedicated to its buffer"
                "Window is no longer dedicated to its buffer"))))
 
-(global-set-key (kbd "C-c l") 'toggle-window-dedicated)
+(global-set-key (kbd "C-x C-d") 'toggle-window-dedicated)
 
 
 ;;; --- Packages ---
@@ -261,12 +221,15 @@
 
 (use-package project
   :bind-keymap* ("C-x p" . project-prefix-map)
-  :bind (:map project-prefix-map
-              ("m" . magit)
+  :bind (([remap compile] . compile-maybe-project)
+         :map project-prefix-map
+              ("g" . magit)
               ("z" . vterm))
   :config
-  (add-to-list 'project-switch-commands '(vterm "Vterm") t)
-  (add-to-list 'project-switch-commands '(magit "Magit") t)
+  (setq project-switch-commands '((project-find-file "Find file")
+                                  (project-dired "Dired")
+                                  (vterm "Vterm")
+                                  (magit "Magit")))
   ;; Credit to karthink for this .project detection snippet below
   (setq project-local-identifier ".project")
   (cl-defmethod project-root ((project (head local)))
@@ -276,7 +239,31 @@
 DIR must include a .project file to be considered a project."
     (if-let ((root (locate-dominating-file dir project-local-identifier)))
         (cons 'local root)))
-  (add-hook 'project-find-functions 'project-try-local))
+  (add-hook 'project-find-functions 'project-try-local)
+
+  (defun compile-maybe-project ()
+    "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
+    (interactive)
+    (if (and (fboundp 'project-current)
+             (project-current nil))
+        (call-interactively 'project-compile)
+      (call-interactively 'compile))))
+
+(use-package recentf
+  :demand t
+  :bind ("C-x C-r" . recentf-open-files)
+  :config
+  (recentf-mode 1)
+  (setq recentf-max-saved-items 50)
+  (setq recentf-exclude '("^/var/folders\\.*"
+                          "COMMIT_EDITMSG\\'"
+                          ".*-autoloads\\.el\\'"
+                          "[/\\]\\.elpa/"
+                          "\\.newsrc\\(\\|\\.eld\\)\\'")))
+
+(use-package calc
+  :config
+  (setq-default calc-multiplication-has-precedence nil))
 
 
 ;;; --- Org Mode ---
