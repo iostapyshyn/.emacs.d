@@ -571,6 +571,10 @@ the buffer. Disable flyspell-mode otherwise."
 ;;; --- Color theme ---
 (setq custom-safe-themes t)
 
+(defvar after-load-theme-hook nil "Functions called after loading a theme.")
+(define-advice load-theme (:after (&rest _args) run-after-load-theme-hook)
+  (run-hooks 'after-load-theme-hook))
+
 (define-advice load-theme (:before (&rest _args) theme-dont-propagate)
   "Discard all themes before loading new."
   (mapc #'disable-theme custom-enabled-themes))
