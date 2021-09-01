@@ -1,5 +1,4 @@
-(setq font-monospaced   (list :family "Iosevka Fixed"
-                              :width 'expanded
+(setq font-monospaced   (list :family "Iosevka Custom"
                               :height 120)
       font-proportional (list :height 1.1))
 
