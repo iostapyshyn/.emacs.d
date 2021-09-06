@@ -7,86 +7,58 @@
   (let ((early-init-file (concat user-emacs-directory "early-init.el")))
     (load early-init-file t nil t)))
 
-(setq custom-file (concat user-emacs-directory "custom.el"))
-;; (load custom-file t t t) ;; Customize is not used
+(setq custom-file (concat user-emacs-directory "custom.el")) ; Customize is not used
 
-(setq local-init-file (concat user-emacs-directory "local/"
-                              (system-name) ".el"))
+(setq local-init-file (concat user-emacs-directory "local/" (system-name) ".el"))
 (load local-init-file t nil t)
 
-(when window-system
-  (when (boundp 'font-monospaced)
-    (apply 'set-face-attribute 'default        nil font-monospaced)
-    (apply 'set-face-attribute 'fixed-pitch    nil font-monospaced))
-  (when (boundp 'font-proportional)
-    (apply 'set-face-attribute 'variable-pitch nil font-proportional))
-
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1))
-
-(unless (member window-system '(ns mac))
-  (menu-bar-mode -1))
-
 (setq inhibit-startup-message t)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
 
-;; No backup file polution
+;; No file polution
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; UTF-8 everywhere by default
-(prefer-coding-system 'utf-8)
-(setq-default buffer-file-coding-system 'utf-8-auto-unix)
-
-(setq epa-pinentry-mode 'loopback)
-
-;; Error bell and y/n confirmation
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; Zap up to char instead of zap to char
-(global-set-key (kbd "M-z")             'zap-up-to-char)
-(global-set-key (kbd "M-Z")             'zap-to-char)
-(global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
-(global-set-key (kbd "ESC M-DEL")       'backward-kill-sexp) ;; for terminal
-
-;; Ask permission before killing emacs.
 (setq confirm-kill-emacs 'yes-or-no-p)
-
-;; Enable all disabled commands
-(setq disabled-command-function nil)
-(setq enable-remote-dir-locals t)
-
-;; No wrapping, truncate lines
-(setq-default truncate-lines t)
-(setq-default fill-column 90)
-(setq column-number-mode t)
-
-(setq sentence-end-double-space nil)
-(setq message-fill-column nil)
-
-(add-hook 'help-mode-hook 'turn-on-visual-line-mode)
-(add-hook 'text-mode-hook 'auto-fill-mode)
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
 (setq scroll-margin 1)
 
+;; Text
+(setq sentence-end-double-space nil)
+(setq-default truncate-lines t)
+(setq-default fill-column 90)
+(add-hook 'text-mode-hook 'auto-fill-mode)
+
+;; Region and transient mark
+(setq mark-even-if-inactive nil)
+(delete-selection-mode 1)
+
+;; Disabled features
+(setq disabled-command-function nil)
+(setq enable-remote-dir-locals t)
+
+;; German postfix input method: ae -> ä
+(setq default-input-method 'german-postfix)
+
 ;; Parenthesis
-(electric-pair-mode 1)
 (setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
 (show-paren-mode 1)
+(electric-pair-mode 1)
 
-;; disable electric-pair-mode for lisp
 (dolist (hook '(lisp-mode-hook emacs-lisp-mode-hook))
-  (add-hook hook
-            (lambda ()
-              (electric-pair-local-mode -1))))
+  (add-hook hook (lambda () (electric-pair-local-mode -1))))
 
-;; Indentation settings:
+;; Indentation
 (with-eval-after-load "cc-styles"
   ;; Use 4 spaces indentation instead of 5 for k&r
   (setf (cdr (assoc 'c-basic-offset (assoc "k&r" c-style-alist))) 4)
@@ -96,31 +68,6 @@
               tab-width 8
               css-indent-offset 2
               js-indent-level 2)
-
-;; Typed text replaces the selection
-(delete-selection-mode 1)
-;; Don't allow mark commands when the mark is inactive
-(setq mark-even-if-inactive nil)
-
-;; German postfix input method:
-;; C-\ to enable: ae -> ä
-;; Is buffer-local
-(setq default-input-method 'german-postfix)
-
-;; Org files may contain bookmarks. They fail to open non-interactively:
-(define-advice bookmark-jump (:before (&rest _r) bookmarks-load)
-  "Load bookmarks file before trying to jump non-interactively."
-  (bookmark-maybe-load-default-file)
-  (advice-remove 'bookmark-jump 'bookmark-jump@bookmarks-load))
-(with-eval-after-load "bookmark"
-  (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-file))))
-
-;; Keys on mac
-(when (or (eq window-system 'ns) (eq window-system 'mac))
-  (setq mac-command-modifier 'super
-        mac-option-modifier 'meta
-        mac-right-option-modifier nil)
-  (setq mac-frame-tabbing nil))
 
 
 ;;; --- Personal custom modes and functions ---
@@ -134,11 +81,19 @@
   (let* ((buffer "*Duden Output*")
          (buffer-name-function (lambda (_) buffer))
          (compilation-buffer-name-function buffer-name-function))
-    (compile (concat "duden " word))
+    (compile (concat "duden " word) t)
     (with-current-buffer buffer
       (turn-on-visual-line-mode))))
 
 (global-set-key (kbd "C-c q d") 'duden)
+
+;; Bookmarks in org files may fail to open non-interactively:
+(define-advice bookmark-jump (:before (&rest _r) bookmarks-load)
+  "Load bookmarks file before trying to jump non-interactively."
+  (bookmark-maybe-load-default-file)
+  (advice-remove 'bookmark-jump 'bookmark-jump@bookmarks-load))
+(with-eval-after-load "bookmark"
+  (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-file))))
 
 (defun mode-line-render (left right)
   "Return a mode-line formatted string containing LEFT and RIGHT aligned respectively."
@@ -163,7 +118,14 @@
 (setq mode-line-compact 'long)
 
 (setq which-func-unknown "…")
-(which-function-mode)
+(which-function-mode 1)
+(column-number-mode 1)
+
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
+(global-set-key (kbd "ESC M-DEL")       'backward-kill-sexp) ; for terminal
+
+(global-set-key (kbd "M-z")   'zap-up-to-char)
+(global-set-key (kbd "C-M-z") 'zap-to-char)
 
 (setq compilation-scroll-output 'first-error)
 (global-set-key (kbd "C-c c") 'compile)
@@ -196,9 +158,8 @@
     (package-install 'use-package))
 
   (require 'use-package)
-  (require 'bind-key)
-
-  (setq use-package-always-defer t))
+  (require 'bind-key))
+(setq use-package-always-defer t)
 
 (use-package dash :ensure t)
 
@@ -266,8 +227,18 @@ DIR must include a .project file to be considered a project."
   :config
   (setq-default calc-multiplication-has-precedence nil))
 
+(use-package epg
+  :config
+  (setq epg-pinentry-mode 'loopback))
+
 
-;;; --- Org Mode ---
+;;; --- Org Mode and Calendar ---
+(use-package calendar
+  :config
+  (setq calendar-latitude 52.38
+        calendar-longitude 9.69
+        calendar-week-start-day 1))
+
 (use-package org
   :preface
   (defvar my/org "~/org")
@@ -288,7 +259,6 @@ DIR must include a .project file to be considered a project."
                                    (search . " %i %-12:c")))
 
   (setq org-agenda-start-on-weekday 1)
-  (setq calendar-week-start-day 1)
 
   ;; Make sure the time stamps are formatted in English across the systems
   (setq system-time-locale "C")
@@ -416,7 +386,7 @@ new EWW buffer."
   (dired-auto-revert-buffer t)
   :config
   (require 'dired-x)
-  (setq-default dired-omit-files-p t) ; Buffer-local variable
+  (setq-default dired-omit-files-p t)
   (setq dired-omit-files "^\\.[^.]\\|^\\.$")
   (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   (add-hook 'dired-mode-hook 'dired-omit-mode))
@@ -514,8 +484,7 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package consult
   :ensure t
   :bind (("M-s l"                               . consult-line)
-         ("M-s g"                               . consult-grep)
-         ("M-s G"                               . consult-git-grep)
+         ("M-s g"                               . consult-git-grep)
          ("M-s r"                               . consult-ripgrep)
          ([remap switch-to-buffer]              . consult-buffer)
          ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
@@ -584,6 +553,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package modus-themes
   :ensure t
+  :demand t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
   (setq modus-themes-mode-line '(accented)
@@ -592,19 +562,8 @@ the buffer. Disable flyspell-mode otherwise."
         modus-themes-scale-headings t
         modus-themes-org-blocks 'tinted-background
         modus-themes-headings '((1 . (no-bold overline))
-                                (t . (no-bold)))))
-
-(if (window-system)
-    (use-package circadian
-      :ensure t
-      :demand t
-      :config
-      (setq calendar-latitude 52.38
-            calendar-longitude 9.69)
-      (setq circadian-themes '((:sunrise . modus-operandi)
-                               (:sunset  . modus-vivendi)))
-      (circadian-setup))
-  (load-theme 'modus-vivendi t))
+                                (t . (no-bold))))
+  (load-theme 'modus-operandi t))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -833,8 +792,9 @@ the buffer. Disable flyspell-mode otherwise."
 
 ;;; --- Some final nuances ---
 ;; Start the server if not running
-(load "server")
-(unless (server-running-p) (server-start))
+(require 'server)
+(unless (or (daemonp) (server-running-p))
+  (server-start))
 
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
