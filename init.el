@@ -208,9 +208,10 @@
           ("C-;" . other-window)))
 
 (use-package tab-bar
-  :bind* (("M-`" . tab-next))
+  :bind* (("C-<" . tab-previous)
+          ("C->" . tab-next))
   :config
-  (setq tab-bar-show nil))
+  (setq tab-bar-show t))
 
 (use-package minions
   :ensure t
