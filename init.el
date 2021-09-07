@@ -145,6 +145,7 @@
                "Window is no longer dedicated to its buffer"))))
 
 (global-set-key (kbd "C-x C-d") 'toggle-window-dedicated)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 
 ;;; --- Packages ---
