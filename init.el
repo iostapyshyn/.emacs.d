@@ -69,6 +69,8 @@
               css-indent-offset 2
               js-indent-level 2)
 
+(setq-default cursor-type 'bar)
+
 
 ;;; --- Personal custom modes and functions ---
 (defun duden (word)
@@ -612,6 +614,9 @@ the buffer. Disable flyspell-mode otherwise."
   (define-advice vterm
       (:before (&optional _arg) save-directory)
     (setq vterm-saved-directory default-directory))
+
+  (add-hook 'vterm-mode-hook
+            (lambda () (setq cursor-type 'box)))
 
   (defun vterm-cd-saved-directory ()
     (interactive)
