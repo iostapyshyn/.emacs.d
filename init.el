@@ -172,8 +172,8 @@
           ("C-;" . other-window)))
 
 (use-package tab-bar
-  :bind* (("C-<" . tab-previous)
-          ("C->" . tab-next))
+  :bind* (("M-[" . tab-previous)
+          ("M-]" . tab-next))
   :config
   (setq tab-bar-show t))
 
