@@ -686,6 +686,7 @@ the buffer. Disable flyspell-mode otherwise."
   :hook
   ((rust-mode) . lsp-deferred)
   :custom
+  (lsp-imenu-sort-methods '(position kind name))
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
