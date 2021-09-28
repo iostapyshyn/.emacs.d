@@ -578,7 +578,6 @@ the buffer. Disable flyspell-mode otherwise."
           lisp-mode) . rainbow-delimiters-mode))
 
 (use-package eshell
-  :bind ("C-z" . eshell)
   :config
   (define-advice eshell
       (:around (orig-fun &rest args) save-directory)
