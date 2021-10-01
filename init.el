@@ -611,8 +611,12 @@ the buffer. Disable flyspell-mode otherwise."
          (:map vterm-mode-map
                ("C-c TAB"   . vterm-cd-saved-directory)
                ("C-c C-x"   . vterm-send-C-x)
+               ("C-<up>"    . vterm-copy-mode)
                ("M-p"       . vterm-send-C-p)
-               ("M-n"       . vterm-send-C-n)))
+               ("M-n"       . vterm-send-C-n))
+         (:map vterm-copy-mode-map
+               ("C-<up>"    . vterm-previous-prompt)
+               ("C-<down>"  . vterm-copy-mode)))
   :config
   (define-advice vterm
       (:before (&optional _arg) save-directory)
