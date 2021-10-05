@@ -33,7 +33,6 @@
 (setq scroll-margin 1)
 
 ;; Text
-(setq sentence-end-double-space nil)
 (setq-default truncate-lines t)
 (setq-default fill-column 90)
 (add-hook 'text-mode-hook 'auto-fill-mode)
