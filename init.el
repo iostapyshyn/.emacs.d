@@ -34,7 +34,7 @@
 
 ;; Text
 (setq-default truncate-lines t)
-(setq-default fill-column 90)
+(setq-default fill-column 80)
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
 ;; Region and transient mark
