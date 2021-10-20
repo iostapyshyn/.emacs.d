@@ -634,7 +634,7 @@ the buffer. Disable flyspell-mode otherwise."
   (setq vterm-kill-buffer-on-exit t))
 
 (use-package eshell-vterm
-  :load-path "site-lisp/eshell-vterm"
+  :ensure t
   :demand t
   :after eshell
   :config
