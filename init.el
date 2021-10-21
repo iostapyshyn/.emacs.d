@@ -169,10 +169,6 @@
   :bind* (("C-," . previous-buffer)
           ("C-." . next-buffer)
           ("C-;" . other-window)))
-(use-package windmove
-  :demand t
-  :config
-  (windmove-default-keybindings 'shift))
 
 (use-package tab-bar
   :bind* (("M-[" . tab-previous)
