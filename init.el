@@ -173,7 +173,14 @@ aligned respectively."
 
 (use-package tab-bar
   :bind* (("M-[" . tab-previous)
-          ("M-]" . tab-next)))
+          ("M-]" . tab-next)
+          ("M-o" . tab-bar-select-tab))
+  :config
+  (setq tab-bar-tab-hints nil)
+  (setq tab-bar-close-button-show nil)
+  (setq tab-bar-format '(tab-bar-format-tabs-groups
+                         tab-bar-format-history
+                         tab-bar-separator)))
 
 (use-package minions
   :ensure t
