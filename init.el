@@ -35,7 +35,6 @@
 ;; Text
 (setq-default truncate-lines t)
 (setq-default fill-column 80)
-(add-hook 'text-mode-hook 'auto-fill-mode)
 
 ;; Region and transient mark
 (setq mark-even-if-inactive nil)
@@ -73,7 +72,8 @@
 
 ;;; --- Personal custom modes and functions ---
 (defun duden (word)
-  "Search for the WORD definition on duden.de.  Requires github.com/radomirbosak/duden."
+  "Search for the WORD definition on duden.de.  Requires
+github.com/radomirbosak/duden."
   (interactive
    (list (read-from-minibuffer "$ duden "
                                (if (region-active-p)
@@ -97,7 +97,8 @@
   (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-file))))
 
 (defun mode-line-render (left right)
-  "Return a mode-line formatted string containing LEFT and RIGHT aligned respectively."
+  "Return a mode-line formatted string containing LEFT and RIGHT
+aligned respectively."
   (let* ((left (format-mode-line left))
          (right (format-mode-line right))
          (space (propertize " " 'display
@@ -172,9 +173,7 @@
 
 (use-package tab-bar
   :bind* (("M-[" . tab-previous)
-          ("M-]" . tab-next))
-  :config
-  (setq tab-bar-show t))
+          ("M-]" . tab-next)))
 
 (use-package minions
   :ensure t
@@ -525,11 +524,11 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package avy
   :ensure t
-  :bind (("C-`" . avy-goto-char)))
+  :bind* (("C-`" . avy-goto-char)))
 
 (use-package expand-region
   :ensure t
-  :bind (("C-=" . er/expand-region)))
+  :bind* (("C-=" . er/expand-region)))
 
 ;; Get environment variables
 (use-package exec-path-from-shell
