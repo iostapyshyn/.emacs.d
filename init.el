@@ -166,6 +166,10 @@ aligned respectively."
 
 (use-package dash :ensure t)
 
+(use-package pp
+  :bind* (([remap eval-last-sexp]  . pp-eval-last-sexp)
+          ([remap eval-expression] . pp-eval-expression)))
+
 (use-package window
   :bind* (("C-," . previous-buffer)
           ("C-." . next-buffer)
