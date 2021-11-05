@@ -568,7 +568,7 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (setq modus-themes-mode-line '(accented)
+  (setq modus-themes-mode-line '(accented borderless)
         modus-themes-italic-constructs t
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
