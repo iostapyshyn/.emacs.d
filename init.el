@@ -394,14 +394,12 @@ new EWW buffer."
   (dired-dwim-target t)
   (dired-recursive-copies 'top)
   (dired-recursive-deletes 'top)
-  (dired-listing-switches "-alh")
+  (dired-listing-switches "-Alh")
   (dired-auto-revert-buffer t)
   :config
   (require 'dired-x)
-  (setq-default dired-omit-files-p t)
   (setq dired-omit-files "^\\.[^.]\\|^\\.$")
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook 'dired-omit-mode))
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode))
 
 (use-package eldoc
   :config
