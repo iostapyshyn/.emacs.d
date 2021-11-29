@@ -551,9 +551,9 @@ the buffer. Disable flyspell-mode otherwise."
 ;;; --- Color theme ---
 (setq custom-safe-themes t)
 
-(defvar after-load-theme-hook nil "Functions called after loading a theme.")
-(define-advice load-theme (:after (&rest _args) run-after-load-theme-hook)
-  (run-hooks 'after-load-theme-hook))
+;; (defvar after-load-theme-hook nil "Functions called after loading a theme.")
+;; (define-advice load-theme (:after (&rest _args) run-after-load-theme-hook)
+;;   (run-hooks 'after-load-theme-hook))
 
 (define-advice load-theme (:before (&rest _args) theme-dont-propagate)
   "Discard all themes before loading new."
@@ -566,14 +566,15 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (setq modus-themes-mode-line '(accented borderless)
+  (setq modus-themes-mode-line '(accented borderless padded)
+        modus-themes-mode-line-padding (truncate 4 (frame-scale-factor))
         modus-themes-italic-constructs t
         modus-themes-completions 'opinionated
         modus-themes-scale-headings t
         modus-themes-org-blocks 'tinted-background
         modus-themes-headings '((1 . (no-bold overline))
                                 (t . (no-bold))))
-  (load-theme 'modus-operandi t))
+  (modus-themes-load-operandi))
 
 (use-package rainbow-delimiters
   :ensure t
