@@ -566,14 +566,13 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (setq modus-themes-mode-line '(accented borderless padded)
-        modus-themes-mode-line-padding (truncate 4 (frame-scale-factor))
+  (setq modus-themes-mode-line `(,(truncate 4 (frame-scale-factor)) accented borderless)
         modus-themes-italic-constructs t
         modus-themes-completions 'opinionated
-        modus-themes-scale-headings t
         modus-themes-org-blocks 'tinted-background
-        modus-themes-headings '((1 . (no-bold overline))
-                                (t . (no-bold))))
+        modus-themes-headings '((1 . (1.2 background overline))
+                                (2 . (1.1 background regular))
+                                (t . (1.0 background regular))))
   (modus-themes-load-operandi))
 
 (use-package rainbow-delimiters
