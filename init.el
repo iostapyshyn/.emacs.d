@@ -202,6 +202,7 @@ aligned respectively."
   :config
   (setq project-switch-commands '((project-find-file "Find file")
                                   (project-dired "Dired")
+                                  (project-compile "Compile")
                                   (vterm "Vterm")
                                   (magit "Magit")))
   ;; Credit to karthink for this .project detection snippet below
