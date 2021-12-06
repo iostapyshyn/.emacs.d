@@ -730,7 +730,11 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package glsl-mode :ensure t)
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :config
+  (defun set-commit-fill-column ()
+    (set-fill-column 72))
+  (add-hook 'git-commit-mode-hook #'set-commit-fill-column))
 
 (use-package markdown-mode
   :ensure t)
