@@ -24,9 +24,9 @@
       `((".*" ,temporary-file-directory t)))
 
 (setq visible-bell nil)
-(setq ring-bell-function 'ignore)
-(setq confirm-kill-emacs 'yes-or-no-p)
-(fset 'yes-or-no-p 'y-or-n-p)
+(setq ring-bell-function #'ignore)
+(setq confirm-kill-emacs #'yes-or-no-p)
+(fset 'yes-or-no-p #'y-or-n-p)
 
 ;; Scroll by single lines, not half-screens
 (setq scroll-conservatively most-positive-fixnum)
@@ -86,7 +86,7 @@ github.com/radomirbosak/duden."
     (with-current-buffer buffer
       (turn-on-visual-line-mode))))
 
-(global-set-key (kbd "C-c q d") 'duden)
+(global-set-key (kbd "C-c q d") #'duden)
 
 ;; Bookmarks in org files may fail to open non-interactively:
 (define-advice bookmark-jump (:before (&rest _r) bookmarks-load)
@@ -123,19 +123,19 @@ aligned respectively."
 (which-function-mode 1)
 (column-number-mode 1)
 
-(global-set-key (kbd "C-M-<backspace>") 'backward-kill-sexp)
-(global-set-key (kbd "ESC M-DEL")       'backward-kill-sexp) ; for terminal
+(global-set-key (kbd "C-M-<backspace>") #'backward-kill-sexp)
+(global-set-key (kbd "ESC M-DEL")       #'backward-kill-sexp) ; for terminal
 
-(global-set-key (kbd "M-z")   'zap-up-to-char)
-(global-set-key (kbd "C-M-z") 'zap-to-char)
+(global-set-key (kbd "M-z")   #'zap-up-to-char)
+(global-set-key (kbd "C-M-z") #'zap-to-char)
 
 (setq compilation-scroll-output 'first-error)
-(global-set-key (kbd "C-c c") 'compile)
+(global-set-key (kbd "C-c c") #'compile)
 
-(global-set-key (kbd "M-g o") 'ff-find-other-file)
-(global-set-key (kbd "M-g i") 'imenu)
+(global-set-key (kbd "M-g o") #'ff-find-other-file)
+(global-set-key (kbd "M-g i") #'imenu)
 
-(global-set-key (kbd "C-h M") 'man)
+(global-set-key (kbd "C-h M") #'man)
 
 (defun toggle-window-dedicated (&optional window)
   "Invert the dedicatation of the WINDOW to its buffer."
@@ -146,8 +146,8 @@ aligned respectively."
                  "Window is now dedicated to its buffer"
                "Window is no longer dedicated to its buffer"))))
 
-(global-set-key (kbd "C-x C-d") 'toggle-window-dedicated)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-d") #'toggle-window-dedicated)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 
 
 ;;; --- Packages ---
@@ -190,7 +190,7 @@ aligned respectively."
   :ensure t
   :demand t
   :config
-  (add-to-list 'minions-direct 'lsp-mode)
+  (add-to-list 'minions-direct #'lsp-mode)
   (minions-mode 1))
 
 (use-package project
@@ -214,15 +214,15 @@ aligned respectively."
 DIR must include a .project file to be considered a project."
     (if-let ((root (locate-dominating-file dir project-local-identifier)))
         (cons 'local root)))
-  (add-hook 'project-find-functions 'project-try-local)
+  (add-hook 'project-find-functions #'project-try-local)
 
   (defun compile-maybe-project ()
     "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
     (interactive)
     (if (and (fboundp 'project-current)
              (project-current nil))
-        (call-interactively 'project-compile)
-      (call-interactively 'compile))))
+        (call-interactively #'project-compile)
+      (call-interactively #'compile))))
 
 (use-package recentf
   :demand t
@@ -508,10 +508,10 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap yank-pop]                      . consult-yank-pop)
          ([remap imenu]                         . consult-imenu))
   :init
-  (setq completion-in-region-function 'consult-completion-in-region)
+  (setq completion-in-region-function #'consult-completion-in-region)
   (add-hook 'gud-mode-hook
             (lambda ()
-              (setq-local completion-in-region-function 'completion--in-region)
+              (setq-local completion-in-region-function #'completion--in-region)
               (setq-local completion-styles '(basic partial-completion))))
   :config
   (consult-customize
@@ -560,7 +560,7 @@ the buffer. Disable flyspell-mode otherwise."
   "Discard all themes before loading new."
   (mapc #'disable-theme custom-enabled-themes))
 
-(global-set-key (kbd "C-c t t") 'load-theme)
+(global-set-key (kbd "C-c t t") #'load-theme)
 
 (use-package modus-themes
   :ensure t
@@ -605,9 +605,9 @@ the buffer. Disable flyspell-mode otherwise."
   (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
 
   (setq eshell-destroy-buffer-when-process-dies t)
-  (defalias 'eshell/v 'eshell-exec-visual)
-  (defalias 'eshell/ff 'find-file)
-  (defalias 'eshell/clear 'eshell/clear-scrollback))
+  (defalias 'eshell/v #'eshell-exec-visual)
+  (defalias 'eshell/ff #'find-file)
+  (defalias 'eshell/clear #'eshell/clear-scrollback))
 
 (use-package vterm
   :ensure t
@@ -660,7 +660,7 @@ the buffer. Disable flyspell-mode otherwise."
     (let ((completion-styles '(basic partial-completion)))
       (apply orig-fun args)))
 
-  (add-hook 'after-init-hook 'global-company-mode)
+  (add-hook 'after-init-hook #'global-company-mode)
   ;; disable company for shells (causes lags on remotes)
   (setq company-global-modes '(not eshell-mode shell-mode gud-mode))
   ;; keep case
@@ -768,7 +768,7 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :config
   (setq rust-format-on-save t)
-  (define-key rust-mode-map (kbd "C-c C-c") 'rust-run)
+  (define-key rust-mode-map (kbd "C-c C-c") #'rust-run)
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
@@ -785,8 +785,8 @@ the buffer. Disable flyspell-mode otherwise."
 
   ;; Invert RET behavior
   (require 'pdf-outline)
-  (define-key pdf-outline-buffer-mode-map (kbd "RET") 'pdf-outline-follow-link-and-quit)
-  (define-key pdf-outline-buffer-mode-map (kbd "M-RET") 'pdf-outline-follow-link))
+  (define-key pdf-outline-buffer-mode-map (kbd "RET") #'pdf-outline-follow-link-and-quit)
+  (define-key pdf-outline-buffer-mode-map (kbd "M-RET") #'pdf-outline-follow-link))
 
 (use-package pdf-view-restore
   :ensure t
