@@ -262,6 +262,9 @@ DIR must include a .project file to be considered a project."
   :bind*
   (("C-c a" . org-agenda)
    ("C-c i" . find-my/org))
+  :bind
+  (:map org-mode-map
+        ("C-c C-." . org-time-stamp-inactive))
   :config
   (setq-default org-display-custom-times t)
   (setq org-time-stamp-custom-formats '("<%a %d %b %Y>" . "<%a %d %b %Y %H:%M>"))
