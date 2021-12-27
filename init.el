@@ -149,6 +149,8 @@ aligned respectively."
 (global-set-key (kbd "C-x C-d") #'toggle-window-dedicated)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
+(global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
+
 
 ;;; --- Packages ---
 (eval-when-compile
