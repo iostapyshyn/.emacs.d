@@ -489,7 +489,7 @@ the buffer. Disable flyspell-mode otherwise."
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion)))))
-  (add-to-list 'orderless-matching-styles 'orderless-strict-initialism))
+  (add-to-list 'orderless-matching-styles 'orderless-initialism))
 
 (use-package marginalia
   :ensure t
