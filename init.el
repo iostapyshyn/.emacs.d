@@ -521,8 +521,8 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (consult-customize
    consult-bookmark consult-recent-file
-   consult--source-file consult--source-project-file consult--source-bookmark
-   :preview-key (kbd "C-o"))
+   consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+   :preview-key (kbd "M-."))
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
