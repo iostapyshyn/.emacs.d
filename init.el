@@ -273,8 +273,8 @@ DIR must include a .project file to be considered a project."
   (:map org-mode-map
         ("C-c C-." . org-time-stamp-inactive))
   :config
-  (setq-default org-display-custom-times t)
-  (setq org-time-stamp-custom-formats '("<%a %d %b %Y>" . "<%a %d %b %Y %H:%M>"))
+  ;; (setq-default org-display-custom-times t)
+  ;; (setq org-time-stamp-custom-formats '("<%a %d %b %Y>" . "<%a %d %b %Y %H:%M>"))
 
   (setq org-agenda-prefix-format '((agenda . " %i %-12:c%-12t% s")
                                    (todo   . " %i %-12:c")
