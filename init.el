@@ -123,6 +123,11 @@ aligned respectively."
 (which-function-mode 1)
 (column-number-mode 1)
 
+(dolist (k '("M-<down>" "M-n"))
+  (global-set-key (kbd k) #'scroll-up-line))
+(dolist (k '("M-<up>" "M-p"))
+  (global-set-key (kbd k) #'scroll-down-line))
+
 (global-set-key (kbd "C-M-<backspace>") #'backward-kill-sexp)
 (global-set-key (kbd "ESC M-DEL")       #'backward-kill-sexp) ; for terminal
 
