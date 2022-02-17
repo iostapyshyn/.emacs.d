@@ -579,6 +579,7 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (setq modus-themes-mode-line `(,(truncate 4 (frame-scale-factor)) accented borderless)
         modus-themes-italic-constructs t
+        modus-themes-box-buttons '(flat)
         modus-themes-completions 'opinionated
         modus-themes-org-blocks 'tinted-background
         modus-themes-headings '((1 . (1.2 background overline))
