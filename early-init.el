@@ -8,7 +8,7 @@
 
 (add-hook 'emacs-startup-hook
   (lambda ()
-    (setq gc-cons-threshold (* 64 1024 1024)
+    (setq gc-cons-threshold (* 128 1024 1024)
           gc-cons-percentage 0.1)))
 
 (setq read-process-output-max (* 4 1024 1024))
