@@ -461,6 +461,7 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :demand t
   :config
+  (setq undo-tree-auto-save-history nil)
   (global-undo-tree-mode))
 
 (use-package which-key
