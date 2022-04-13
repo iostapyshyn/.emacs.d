@@ -156,6 +156,26 @@ aligned respectively."
 
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 
+(defun turn-on-indent-tabs-local-mode ()
+  "Turn on `indent-tabs-mode' locally."
+  (interactive)
+  (setq-local indent-tabs-mode t))
+
+(defun comment-use-cpp-syntax ()
+  "Set up newcomment to uss CPP multiline comments."
+  (setq-local comment-start "/* "
+              comment-add 0
+              comment-start-skip "\\(?://+\\|/\\*+\\)\\s *"
+              comment-end-skip "[ 	]*\\(\\s>\\|\\*+/\\)"
+              comment-end " */"))
+
+(with-eval-after-load "asm-mode"
+  (add-hook 'asm-mode-hook #'turn-on-indent-tabs-local-mode)
+  (add-hook 'asm-mode-hook #'comment-use-cpp-syntax)
+  (add-hook 'asm-mode-hook
+            (lambda () ; get rid of really annoying comment behavior
+              (local-unset-key (vector asm-comment-char)))))
+
 
 ;;; --- Packages ---
 (eval-when-compile
