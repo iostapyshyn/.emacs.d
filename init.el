@@ -180,7 +180,12 @@ aligned respectively."
 ;;; --- Packages ---
 (eval-when-compile
   (require 'package)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                           ("melpa" . "https://melpa.org/packages/")))
+  (setq package-archive-priorities '(("gnu" . 20)
+                                     ("nongnu" . 10)
+                                     ("melpa" . 0)))
   (package-initialize)
 
   (unless (package-installed-p 'use-package)
@@ -804,6 +809,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package pdf-tools
   :ensure t
+  :pin "melpa"
   :preface
   (pdf-loader-install)
   :config
