@@ -356,13 +356,7 @@ DIR must include a .project file to be considered a project."
 
 (use-package python
   :bind (:map python-mode-map
-              ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t))))
-  :config
-  (setq python-shell-completion-native-enable t)
-  (setq python-shell-interpreter "python3")
-  (when (executable-find "ipython")
-    (setq python-shell-interpreter "ipython"
-          python-shell-interpreter-args "--simple-prompt -i")))
+              ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t)))))
 
 (use-package eww
   :bind (("C-h 7" . eww-man7-index)
