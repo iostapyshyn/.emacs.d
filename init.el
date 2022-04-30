@@ -801,6 +801,11 @@ the buffer. Disable flyspell-mode otherwise."
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
+(use-package rmsbolt
+  :config
+  ;; Use tool defaults
+  (setq rmsbolt-asm-format nil))
+
 (use-package pdf-tools
   :ensure t
   :pin "melpa"
