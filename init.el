@@ -662,7 +662,7 @@ the buffer. Disable flyspell-mode otherwise."
   (defun vterm-cd-saved-directory ()
     (interactive)
     (when (bound-and-true-p vterm-saved-directory)
-      (vterm-insert (concat "cd " vterm-saved-directory ""))))
+      (vterm-insert (concat "cd " vterm-saved-directory))))
 
   (setq vterm-max-scrollback 50000)
   (setq vterm-timer-delay 0.01)
@@ -755,6 +755,12 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :config
   (yas-global-mode))
+
+(use-package dtrt-indent
+  :ensure t
+  :demand t
+  :config
+  (dtrt-indent-global-mode))
 
 (use-package cmake-mode :ensure t)
 (use-package glsl-mode :ensure t)
