@@ -724,6 +724,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package lsp-mode
   :ensure t
+  :commands lsp-project
   :custom
   (lsp-imenu-sort-methods '(position kind name))
   (lsp-headerline-breadcrumb-enable nil)
@@ -738,7 +739,13 @@ the buffer. Disable flyspell-mode otherwise."
     (memq major-mode (gethash (lsp--suggest-project-root)
                               lsp--auto-start-projects)))
 
-  (defun lsp-auto-start-project (&optional arg)
+  (defun lsp--maybe-auto-start ()
+    (unless (and lsp-mode lsp--buffer-workspaces)
+      (when (and buffer-file-name (lsp--auto-start-project-p))
+        (lsp-deferred))))
+
+  (defun lsp-project (&optional arg)
+    "Start or stop LSP server for the current project."
     ;; Imitate minor mode argument convention
     (interactive (list (or current-prefix-arg 'toggle)))
     (let ((project (lsp--suggest-project-root))
@@ -747,18 +754,17 @@ the buffer. Disable flyspell-mode otherwise."
                     (> (prefix-numeric-value arg) 0))))
       (if enable
           (progn (cl-pushnew major-mode (gethash project lsp--auto-start-projects))
-                 (message "Auto-starting LSP mode for %S buffers in %s" major-mode project))
+                 (message "Auto-starting LSP mode for %S buffers in %s" major-mode project)
+                 (dolist (buffer (buffer-list))
+                   (with-current-buffer buffer
+                     (when (equal project (lsp--suggest-project-root))
+                       (lsp--maybe-auto-start)))))
         (remhash project lsp--auto-start-projects)
-        (message "No longer auto-starting LSP mode for %S buffers in %s" major-mode project))))
-
-  (defun lsp--maybe-auto-start ()
-    (unless lsp-mode
-      (when (and buffer-file-name (lsp--auto-start-project-p))
-        (lsp-deferred))))
+        (message "No longer auto-starting LSP mode for %S buffers in %s" major-mode project)
+        (ignore-errors (call-interactively 'lsp-workspace-shutdown)))))
 
   (add-hook 'find-file-hook #'lsp--maybe-auto-start)
   (add-hook 'after-change-major-mode-hook #'lsp--maybe-auto-start)
-  (add-hook 'lsp-mode-hook #'lsp-auto-start-project)
 
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-tramp-connection
