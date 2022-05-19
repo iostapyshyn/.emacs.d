@@ -513,7 +513,8 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (setq completion-styles '(orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion)))))
+        completion-category-overrides '((file (styles . (partial-completion)))
+                                        (lsp-capf (styles orderless))))
   (add-to-list 'orderless-matching-styles 'orderless-initialism))
 
 (use-package marginalia
@@ -680,22 +681,22 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :hook (prog-mode . ws-butler-mode))
 
-(use-package company
-  :demand t
-  :ensure t
-  :config
-  ;; To suppress orderless when using company-capf
-  (define-advice company-capf
-      (:around (orig-fun &rest args) set-completion-styles)
-    (let ((completion-styles '(basic partial-completion)))
-      (apply orig-fun args)))
+;; (use-package company
+;;   :demand t
+;;   :ensure t
+;;   :config
+;;   ;; To suppress orderless when using company-capf
+;;   (define-advice completion-at-point
+;;       (:around (orig-fun &rest args) set-completion-styles)
+;;     (let ((completion-styles '(basic partial-completion)))
+;;       (apply orig-fun args)))
 
-  (add-hook 'after-init-hook #'global-company-mode)
-  ;; disable company for shells (causes lags on remotes)
-  (setq company-global-modes '(not eshell-mode shell-mode gud-mode))
-  ;; keep case
-  (setq company-dabbrev-ignore-case nil
-        company-dabbrev-downcase nil))
+;;   (add-hook 'after-init-hook #'global-company-mode)
+;;   ;; disable company for shells (causes lags on remotes)
+;;   (setq company-global-modes '(not eshell-mode shell-mode gud-mode))
+;;   ;; keep case
+;;   (setq company-dabbrev-ignore-case nil
+;;         company-dabbrev-downcase nil))
 
 (use-package flycheck
   :demand t
@@ -732,7 +733,10 @@ the buffer. Disable flyspell-mode otherwise."
   (lsp-enable-on-type-formatting nil)
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
-  (lsp-clients-clangd-args '("--header-insertion=never"))
+  (lsp-clients-clangd-args '("--header-insertion=never"
+                             "--limit-references=5000"
+                             "--limit-results=5000"))
+  (lsp-completion-provider :none) ;; Don't use company
   :config
   (setq lsp--auto-start-projects (make-hash-table :test 'equal))
   (defun lsp--auto-start-project-p ()
