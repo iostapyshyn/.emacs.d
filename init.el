@@ -17,6 +17,9 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 
+;; Don't pop up the *Warnings* buffer during native compilation
+(setq native-comp-async-report-warnings-errors 'silent)
+
 ;; No file polution
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
