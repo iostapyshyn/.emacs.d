@@ -729,7 +729,11 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package lsp-mode
   :ensure t
   :commands lsp-project
+  :bind-keymap* ("C-c l" . lsp-command-map)
+  :bind (:map lsp-command-map
+              ("l" . lsp-project))
   :custom
+  (lsp-prefix "C-c l")
   (lsp-imenu-sort-methods '(position kind name))
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-enable-indentation nil)
