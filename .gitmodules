@@ -1,3 +1,6 @@
 [submodule "site-lisp/emacs-livedown"]
 	path = site-lisp/emacs-livedown
 	url = https://github.com/shime/emacs-livedown.git
+[submodule "site-lisp/mensa-mode"]
+	path = site-lisp/mensa-mode
+	url = https://github.com/iostapyshyn/mensa-mode.git

@@ -823,6 +823,10 @@ the buffer. Disable flyspell-mode otherwise."
   :commands livedown-preview
   :load-path "site-lisp/emacs-livedown")
 
+(use-package mensa-mode
+  :commands mensa
+  :load-path "site-lisp/mensa-mode")
+
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . TeX-latex-mode)
