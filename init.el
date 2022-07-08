@@ -179,19 +179,6 @@ aligned respectively."
             (lambda () ; get rid of really annoying comment behavior
               (local-unset-key (vector asm-comment-char)))))
 
-(defun undecorate-on-maximize ()
-  (let* ((p-max (frame-parameter nil 'fullscreen))
-         (p-und (frame-parameter nil 'undecorated))
-         (p-target (cond ((eq p-max 'maximized) t)
-                         ((eq p-max 'fullheight) t)
-                         ((eq p-max 'fullboth) t)
-                         ((eq p-max 'fullscreen) t)
-                         (t nil))))
-    (unless (eq p-und p-target)
-      (set-frame-parameter nil 'undecorated p-target))))
-(when (memq window-system '(x))
-  (add-hook 'window-configuration-change-hook 'undecorate-on-maximize))
-
 
 ;;; --- Packages ---
 (eval-when-compile
