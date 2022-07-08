@@ -452,14 +452,15 @@ the buffer. Disable flyspell-mode otherwise."
         (flyspell-mode 1))
       (flyspell-buffer))))
 
-;; (use-package flymake
-;;   :bind* (("C-c ! !" . flymake-mode)
-;;           (:map flymake-mode-map
-;;                 ("C-c ! l" . flymake-show-diagnostics-buffer)
-;;                 ("C-c ! n" . flymake-goto-next-error)
-;;                 ("C-c ! p" . flymake-goto-prev-error)
-;;                 ("C-c ! s" . flymake-start)))
-;;   :hook ((prog-mode LaTeX-mode) . flymake-mode))
+(use-package flymake
+  :bind* (("C-c ! !" . flymake-mode)
+          (:map flymake-mode-map
+                ("C-c ! l" . flymake-show-buffer-diagnostics)
+                ("C-c ! n" . flymake-goto-next-error)
+                ("C-c ! p" . flymake-goto-prev-error)
+                ("C-c ! b" . flymake-running-backends)
+                ("C-c ! s" . flymake-start)))
+  :hook ((prog-mode LaTeX-mode) . flymake-mode))
 
 ;; (use-package flymake-diagnostic-at-point
 ;;   :ensure t
@@ -469,6 +470,11 @@ the buffer. Disable flyspell-mode otherwise."
 ;;   (setq flymake-diagnostic-at-point-display-diagnostic-function
 ;;         'flymake-diagnostic-at-point-display-minibuffer)
 ;;   (setq flymake-diagnostic-at-point-error-prefix ""))
+
+(use-package flymake-shellcheck
+  :ensure t
+  :after flymake
+  :hook (sh-mode . flymake-shellcheck-load))
 
 ;; Make key-bindings work in other keyboard layouts
 (use-package reverse-im
@@ -528,19 +534,20 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package consult
   :ensure t
-  :bind (("M-s l"                               . consult-line)
-         ("M-s g"                               . consult-git-grep)
-         ("M-s r"                               . consult-ripgrep)
-         ([remap switch-to-buffer]              . consult-buffer)
-         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-         ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
-         ([remap recentf-open-files]            . consult-recent-file)
-         ([remap bookmark-jump]                 . consult-bookmark)
-         ([remap load-theme]                    . consult-theme)
-         ([remap goto-line]                     . consult-goto-line)
-         ;; ([remap man]                           . consult-man)
-         ([remap yank-pop]                      . consult-yank-pop)
-         ([remap imenu]                         . consult-imenu))
+  :bind (("M-s l"                                 . consult-line)
+         ("M-s g"                                 . consult-git-grep)
+         ("M-s r"                                 . consult-ripgrep)
+         ([remap switch-to-buffer]                . consult-buffer)
+         ([remap switch-to-buffer-other-window]   . consult-buffer-other-window)
+         ([remap switch-to-buffer-other-frame]    . consult-buffer-other-frame)
+         ([remap recentf-open-files]              . consult-recent-file)
+         ([remap bookmark-jump]                   . consult-bookmark)
+         ([remap load-theme]                      . consult-theme)
+         ([remap goto-line]                       . consult-goto-line)
+         ;; ([remap man]                          . consult-man)
+         ([remap yank-pop]                        . consult-yank-pop)
+         ([remap imenu]                           . consult-imenu)
+         ([remap flymake-show-buffer-diagnostics] . consult-flymake))
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
   (add-hook 'gud-mode-hook
@@ -704,12 +711,6 @@ the buffer. Disable flyspell-mode otherwise."
 ;;   ;; keep case
 ;;   (setq company-dabbrev-ignore-case nil
 ;;         company-dabbrev-downcase nil))
-
-(use-package flycheck
-  :demand t
-  :ensure t
-  :bind ("C-c ! !" . flycheck-mode)
-  :init (global-flycheck-mode))
 
 (use-package web-mode
   :ensure t
