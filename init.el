@@ -573,10 +573,6 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :after (consult embark))
 
-(use-package avy
-  :ensure t
-  :bind* (("C-`" . avy-goto-char)))
-
 (use-package expand-region
   :ensure t
   :bind* (("C-=" . er/expand-region)))
@@ -593,9 +589,9 @@ the buffer. Disable flyspell-mode otherwise."
 ;;; --- Color theme ---
 (setq custom-safe-themes t)
 
-;; (defvar after-load-theme-hook nil "Functions called after loading a theme.")
-;; (define-advice load-theme (:after (&rest _args) run-after-load-theme-hook)
-;;   (run-hooks 'after-load-theme-hook))
+(defvar after-load-theme-hook nil "Functions called after loading a theme.")
+(define-advice load-theme (:after (&rest _args) run-after-load-theme-hook)
+  (run-hooks 'after-load-theme-hook))
 
 (define-advice load-theme (:before (&rest _args) theme-dont-propagate)
   "Discard all themes before loading new."
@@ -695,23 +691,6 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :hook (prog-mode . ws-butler-mode))
 
-;; (use-package company
-;;   :demand t
-;;   :ensure t
-;;   :config
-;;   ;; To suppress orderless when using company-capf
-;;   (define-advice completion-at-point
-;;       (:around (orig-fun &rest args) set-completion-styles)
-;;     (let ((completion-styles '(basic partial-completion)))
-;;       (apply orig-fun args)))
-
-;;   (add-hook 'after-init-hook #'global-company-mode)
-;;   ;; disable company for shells (causes lags on remotes)
-;;   (setq company-global-modes '(not eshell-mode shell-mode gud-mode))
-;;   ;; keep case
-;;   (setq company-dabbrev-ignore-case nil
-;;         company-dabbrev-downcase nil))
-
 (use-package web-mode
   :ensure t
   :mode ("\\.phtml\\'"
@@ -810,7 +789,6 @@ the buffer. Disable flyspell-mode otherwise."
   (dtrt-indent-global-mode))
 
 (use-package cmake-mode :ensure t)
-(use-package glsl-mode :ensure t)
 
 (use-package magit
   :ensure t
@@ -886,12 +864,6 @@ the buffer. Disable flyspell-mode otherwise."
   :hook (pdf-view-mode . pdf-view-restore-mode)
   :config
   (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
-
-(use-package olivetti
-  :ensure t
-  :custom
-  (olivetti-body-width 80)
-  (olivetti-enable-visual-line-mode nil))
 
 (use-package sprunge
   :ensure t
