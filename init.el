@@ -432,7 +432,8 @@ new EWW buffer."
   :config
   (require 'dired-x)
   (setq dired-omit-files "^\\.[^.]\\|^\\.$")
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode))
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+  (add-hook 'dired-mode-hook 'dired-omit-mode))
 
 (use-package eldoc
   :config
