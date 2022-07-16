@@ -615,7 +615,9 @@ the buffer. Disable flyspell-mode otherwise."
           modus-themes-org-blocks 'tinted-background
           modus-themes-headings '((1 . (1.2 background overline))
                                   (2 . (1.1 background regular))
-                                  (t . (1.0 background regular)))))
+                                  (t . (1.0 background regular)))
+          modus-themes-completions '((matches   . (intense semibold background))
+                                     (selection . (intense semibold)))))
   (modus-themes-load-operandi))
 
 (use-package rainbow-delimiters
