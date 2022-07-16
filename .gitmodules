@@ -4,3 +4,6 @@
 [submodule "site-lisp/mensa-mode"]
 	path = site-lisp/mensa-mode
 	url = https://github.com/iostapyshyn/mensa-mode.git
+[submodule "site-lisp/pdf-tools"]
+	path = site-lisp/pdf-tools
+	url = https://github.com/iostapyshyn/pdf-tools.git
