@@ -807,11 +807,11 @@ the buffer. Disable flyspell-mode otherwise."
 ;; $ npm install -g livedown
 (use-package livedown
   :commands livedown-preview
-  :load-path "site-lisp/emacs-livedown")
+  :load-path "lisp/emacs-livedown")
 
 (use-package mensa-mode
   :commands mensa
-  :load-path "site-lisp/mensa-mode")
+  :load-path "lisp/mensa-mode")
 
 (use-package tex
   :ensure auctex
@@ -845,7 +845,7 @@ the buffer. Disable flyspell-mode otherwise."
   (setq rmsbolt-asm-format nil))
 
 (use-package pdf-tools
-  :load-path "site-lisp/pdf-tools/lisp"
+  :load-path "lisp/pdf-tools/lisp"
   :preface
   (require 'pdf-loader)
   (pdf-loader-install)

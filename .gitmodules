@@ -1,9 +1,9 @@
-[submodule "site-lisp/emacs-livedown"]
-	path = site-lisp/emacs-livedown
+[submodule "lisp/emacs-livedown"]
+	path = lisp/emacs-livedown
 	url = https://github.com/shime/emacs-livedown.git
-[submodule "site-lisp/mensa-mode"]
-	path = site-lisp/mensa-mode
+[submodule "lisp/mensa-mode"]
+	path = lisp/mensa-mode
 	url = https://github.com/iostapyshyn/mensa-mode.git
-[submodule "site-lisp/pdf-tools"]
-	path = site-lisp/pdf-tools
+[submodule "lisp/pdf-tools"]
+	path = lisp/pdf-tools
 	url = https://github.com/iostapyshyn/pdf-tools.git
