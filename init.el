@@ -845,9 +845,9 @@ the buffer. Disable flyspell-mode otherwise."
   (setq rmsbolt-asm-format nil))
 
 (use-package pdf-tools
-  :load-path "lisp/pdf-tools/lisp"
+  :ensure t
+  :pin "melpa"
   :preface
-  (require 'pdf-loader)
   (pdf-loader-install)
   :config
   (setq-default pdf-view-display-size 'fit-page)
