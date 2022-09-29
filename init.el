@@ -472,6 +472,7 @@ the buffer. Disable flyspell-mode otherwise."
 ;;         'flymake-diagnostic-at-point-display-minibuffer)
 ;;   (setq flymake-diagnostic-at-point-error-prefix ""))
 
+;; Already present in Emacs 29:
 (use-package flymake-shellcheck
   :ensure t
   :after flymake
@@ -614,8 +615,8 @@ the buffer. Disable flyspell-mode otherwise."
           modus-themes-box-buttons '(flat)
           modus-themes-org-blocks 'tinted-background
           modus-themes-headings '((1 . (1.2 background overline))
-                                  (2 . (1.1 background regular))
-                                  (t . (1.0 background regular)))
+                                  (2 . (1.1 background medium))
+                                  (t . (1.0 background medium)))
           modus-themes-completions '((matches   . (intense semibold background))
                                      (selection . (intense semibold)))))
   (modus-themes-load-operandi))
@@ -888,7 +889,7 @@ the buffer. Disable flyspell-mode otherwise."
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (message (format "Emacs loaded in %s." (emacs-init-time)))))
+            (message (format "Emacs loaded in %s seconds." (emacs-init-time "%.2f")))))
 
 (provide 'init)
 ;;; init.el ends here
