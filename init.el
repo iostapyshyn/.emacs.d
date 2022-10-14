@@ -656,7 +656,8 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package vterm
   :ensure t
-  :bind (("C-x C-z" . vterm)
+  :bind (("C-z"     . vterm)
+         ("C-x C-z" . vterm)
          (:map vterm-mode-map
                ("C-c TAB"   . vterm-cd-saved-directory)
                ("C-c C-x"   . vterm-send-C-x)
