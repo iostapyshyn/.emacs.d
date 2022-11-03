@@ -612,6 +612,7 @@ the buffer. Disable flyspell-mode otherwise."
          (mode-line-border (truncate 4 frame-scale-factor)))
     (setq modus-themes-mode-line (list mode-line-border 'accented 'borderless)
           modus-themes-italic-constructs t
+          modus-themes-fringes nil
           modus-themes-box-buttons '(flat)
           modus-themes-org-blocks 'tinted-background
           modus-themes-headings '((1 . (1.2 background overline))
