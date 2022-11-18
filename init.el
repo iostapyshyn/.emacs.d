@@ -716,6 +716,13 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (setq ggtags-enable-navigation-keys nil))
 
+(use-package eglot
+  :config
+  (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
+  (add-to-list 'eglot-server-programs
+               '((c-mode c++-mode)
+                 . ("clangd" "--header-insertion=never"))))
+
 (use-package lsp-mode
   :ensure t
   :commands lsp-project
