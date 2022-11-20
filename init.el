@@ -718,6 +718,10 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package eglot
   :config
+  ;; project.el does not resolve symlinks
+  ;; If project root path includes a symlink, jump to definition fails to fire up eglot
+  ;; Another possible workaround: find-file-visit-truename
+  (setq eglot-extend-to-xref t) ;; Workaround, needs a proper fix
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
   (add-to-list 'eglot-server-programs
                '((c-mode c++-mode)
