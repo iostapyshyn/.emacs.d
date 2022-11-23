@@ -26,6 +26,9 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+;; Expand symlinks when visiting file
+(setq find-file-visit-truename t)
+
 (setq visible-bell nil)
 (setq ring-bell-function #'ignore)
 (setq confirm-kill-emacs #'yes-or-no-p)
@@ -718,10 +721,8 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package eglot
   :config
-  ;; project.el does not resolve symlinks
+  ;; project.el does not resolve symlinks:
   ;; If project root path includes a symlink, jump to definition fails to fire up eglot
-  ;; Another possible workaround: find-file-visit-truename
-  (setq eglot-extend-to-xref t) ;; Workaround, needs a proper fix
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
   (add-to-list 'eglot-server-programs
                '((c-mode c++-mode)
