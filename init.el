@@ -182,6 +182,43 @@ aligned respectively."
             (lambda () ; get rid of really annoying comment behavior
               (local-unset-key (vector asm-comment-char)))))
 
+(defun move-back-to-indentation-or-line (arg)
+  "Move point to first non-whitespace character or beginning of the line.
+
+With argument ARG not nil or 1, move forward ARG - 1 lines first.
+If point reaches the beginning or end of buffer, it stops there."
+  (interactive "^p")
+  (or arg (setq arg 1))
+
+  (let ((orig (point)))
+    (if (/= arg 1) ;; Original behaviour of beginning-of-line
+	(let ((line-move-visual nil))
+	  (line-move (1- arg) t)))
+    (back-to-indentation)
+    (when (<= orig (point))
+      (beginning-of-line))))
+
+(defun move-end-of-line-comment (arg)
+  "Move to the last non-comment character or end of the line.
+
+With argument ARG not nil or 1, move forward ARG - 1 lines first.
+If point reaches the beginning or end of buffer, it stops there."
+  (interactive "^p")
+  (or arg (setq arg 1))
+
+  (let ((orig (point)))
+    (if (/= arg 1) ;; Original behaviour of end-of-line
+	(let ((line-move-visual nil))
+	  (line-move (1- arg) t)))
+    (when-let ((comment-start (comment-search-forward (line-end-position) t)))
+      (goto-char comment-start)
+      (skip-chars-backward " \t"))
+    (when (>= orig (point))
+      (end-of-line))))
+
+(global-set-key [remap move-beginning-of-line] #'move-back-to-indentation-or-line)
+(global-set-key [remap move-end-of-line]       #'move-end-of-line-comment)
+
 
 ;;; --- Packages ---
 (eval-when-compile
