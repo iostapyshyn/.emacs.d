@@ -219,6 +219,18 @@ If point reaches the beginning or end of buffer, it stops there."
 (global-set-key [remap move-beginning-of-line] #'move-back-to-indentation-or-line)
 (global-set-key [remap move-end-of-line]       #'move-end-of-line-comment)
 
+(when (and (fboundp 'treesit-available-p) (treesit-available-p))
+  (require 'treesit)
+  (add-to-list 'treesit-extra-load-path (concat user-emacs-directory "tree-sitter-module/dist"))
+  (dolist (lang '(("c" . c)
+                  ("c++" . cpp)))
+    (when-let ((hook (intern (concat (car lang) "-mode-hook")))
+               (ts-mode (intern (concat (car lang) "-ts-mode")))
+               (fn (intern (concat (car lang) "-use-ts"))))
+      (defalias fn (lambda () (when (treesit-ready-p (cdr lang))
+                                (funcall ts-mode))))
+      (add-hook hook fn))))
+
 
 ;;; --- Packages ---
 (eval-when-compile
