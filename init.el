@@ -418,9 +418,7 @@ DIR must include a .project file to be considered a project."
               ("C-c C-c" . (lambda () (interactive) (python-shell-send-buffer t)))))
 
 (use-package eww
-  :bind (("C-h 7" . eww-man7-index)
-         (:map eww-mode-map
-               ("j" . prot-eww-visit-url-on-page)))
+  :bind (("C-h 7" . eww-man7-index))
   :config
   (setq eww-search-prefix "https://lite.duckduckgo.com/html/?q=")
 
