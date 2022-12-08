@@ -432,26 +432,24 @@ DIR must include a .project file to be considered a project."
         (eww-mode) ;; forces to load in the current buffer
         (eww index))))
 
-  (defun prot-eww-visit-url-on-page (&optional arg)
-    "Visit URL from list of links on the page using completion.
+  ;; Show links in imenu
+  (defun eww-mode--imenu ()
+  (when (derived-mode-p 'eww-mode)
+    (let ((links))
+      (save-excursion
+        (goto-char (point-max))
+        (while (text-property-search-backward 'shr-url nil nil t)
+          (when (and (get-text-property (point) 'shr-url)
+                     (not (get-text-property (point) 'eww-form)))
+            (push (cons (format "%s @ %s"
+                                (button-label (point))
+                                (propertize (get-text-property (point) 'shr-url) 'face 'link))
+                        (point))
+                  links))))
+      links)))
 
-With optional prefix ARG (\\[universal-argument]) open URL in a
-new EWW buffer."
-    (interactive "P")
-    (when (derived-mode-p 'eww-mode)
-      (let ((links))
-        (save-excursion
-          (goto-char (point-max))
-          (while (text-property-search-backward 'shr-url nil nil t)
-            (when (and (get-text-property (point) 'shr-url)
-                       (not (get-text-property (point) 'eww-form)))
-              (push (format "%s @ %s"
-                            (button-label (point))
-                            (propertize (get-text-property (point) 'shr-url) 'face 'link))
-                    links))))
-        (let* ((selection (completing-read "Browse URL from page: " links nil t))
-               (url (replace-regexp-in-string ".*@ " "" selection)))
-          (eww url (if arg 4 nil)))))))
+  (add-hook 'eww-mode-hook (lambda ()
+                             (setq imenu-create-index-function #'eww-mode--imenu))))
 
 (use-package isearch
   :bind (:map isearch-mode-map
