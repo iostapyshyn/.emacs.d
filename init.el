@@ -223,6 +223,10 @@ If point reaches the beginning or end of buffer, it stops there."
 (global-set-key [remap move-beginning-of-line] #'move-back-to-indentation-or-line)
 (global-set-key [remap move-end-of-line]       #'move-end-of-line-comment)
 
+(setq my-frame-scale-factor
+      (if (fboundp 'frame-scale-factor)
+          (frame-scale-factor) 1))
+
 ;; (when (and (fboundp 'treesit-available-p) (treesit-available-p))
 ;;   (require 'treesit)
 ;;   (add-to-list 'treesit-extra-load-path (concat user-emacs-directory "tree-sitter-module/dist"))
@@ -596,7 +600,7 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap switch-to-buffer-other-frame]    . consult-buffer-other-frame)
          ([remap recentf-open-files]              . consult-recent-file)
          ([remap bookmark-jump]                   . consult-bookmark)
-         ([remap load-theme]                      . consult-theme)
+         ;; ([remap load-theme]                   . consult-theme)
          ([remap goto-line]                       . consult-goto-line)
          ;; ([remap man]                          . consult-man)
          ([remap yank-pop]                        . consult-yank-pop)
@@ -658,10 +662,7 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (let* ((frame-scale-factor (if (fboundp 'frame-scale-factor)
-                                 (frame-scale-factor)
-                               1))
-         (mode-line-border (truncate 4 frame-scale-factor)))
+  (let ((mode-line-border (truncate 4 my-frame-scale-factor)))
     (setq modus-themes-mode-line (list mode-line-border 'accented 'borderless)
           modus-themes-italic-constructs t
           modus-themes-fringes nil
@@ -672,7 +673,24 @@ the buffer. Disable flyspell-mode otherwise."
                                   (t . (1.0 background medium)))
           modus-themes-completions '((matches   . (intense semibold background))
                                      (selection . (intense semibold)))))
-  (modus-themes-load-operandi))
+  ;; (modus-themes-load-operandi)
+  )
+
+(defun add-mode-line-border ()
+  "Prettify the mode-line by making it wider."
+  (let* ((mode-line-border (truncate 4 my-frame-scale-factor))
+         (box-active   (list :line-width mode-line-border :color (face-attribute 'mode-line          :background)))
+         (box-inactive (list :line-width mode-line-border :color (face-attribute 'mode-line-inactive :background))))
+    (set-face-attribute 'mode-line          nil :box box-active)
+    (set-face-attribute 'mode-line-inactive nil :box box-inactive)))
+
+(add-hook 'after-load-theme-hook #'add-mode-line-border)
+
+(use-package ef-themes
+  :ensure t
+  :demand t
+  :config
+  (load-theme 'ef-day t))
 
 (use-package rainbow-delimiters
   :ensure t
