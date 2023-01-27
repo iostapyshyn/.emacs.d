@@ -676,7 +676,12 @@ the buffer. Disable flyspell-mode otherwise."
   ;; (modus-themes-load-operandi)
   )
 
-(defun add-mode-line-border ()
+(defun theme-set-fill-column-indicator-background ()
+  "Match fill column indicator's background with default one."
+  (let ((bg (face-attribute 'default :background)))
+    (set-face-attribute 'fill-column-indicator nil :background bg)))
+
+(defun theme-add-mode-line-border ()
   "Prettify the mode-line by making it wider."
   (let* ((mode-line-border (truncate 4 my-frame-scale-factor))
          (box-active   (list :line-width mode-line-border :color (face-attribute 'mode-line          :background)))
@@ -684,7 +689,8 @@ the buffer. Disable flyspell-mode otherwise."
     (set-face-attribute 'mode-line          nil :box box-active)
     (set-face-attribute 'mode-line-inactive nil :box box-inactive)))
 
-(add-hook 'after-load-theme-hook #'add-mode-line-border)
+(add-hook 'after-load-theme-hook #'theme-set-fill-column-indicator-background)
+(add-hook 'after-load-theme-hook #'theme-add-mode-line-border)
 
 (use-package ef-themes
   :ensure t
