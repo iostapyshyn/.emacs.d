@@ -678,8 +678,11 @@ the buffer. Disable flyspell-mode otherwise."
 
 (defun theme-set-fill-column-indicator-background ()
   "Match fill column indicator's background with default one."
-  (let ((bg (face-attribute 'default :background)))
-    (set-face-attribute 'fill-column-indicator nil :background bg)))
+  ;; NOTE: On some systems, the indicator is one pixel thin if :height is 1.
+  (set-face-attribute 'fill-column-indicator nil
+                      :background 'unspecified
+                      :height     'unspecified
+                      :inherit    'default))
 
 (defun theme-add-mode-line-border ()
   "Prettify the mode-line by making it wider."
