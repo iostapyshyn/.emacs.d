@@ -657,23 +657,22 @@ the buffer. Disable flyspell-mode otherwise."
 
 (global-set-key (kbd "C-c t t") #'load-theme)
 
-;; (use-package modus-themes
-;;   :ensure t
-;;   :demand t
-;;   :bind ("C-c t m" . modus-themes-toggle)
-;;   :config
-;;   (let ((mode-line-border (truncate 4 my-frame-scale-factor)))
-;;     (setq modus-themes-mode-line (list mode-line-border 'accented 'borderless)
-;;           modus-themes-italic-constructs t
-;;           modus-themes-fringes nil
-;;           modus-themes-box-buttons '(flat)
-;;           modus-themes-org-blocks 'tinted-background
-;;           modus-themes-headings '((1 . (1.2 background overline))
-;;                                   (2 . (1.1 background medium))
-;;                                   (t . (1.0 background medium)))
-;;           modus-themes-completions '((matches   . (intense semibold background))
-;;                                      (selection . (intense semibold)))))
-;;   (modus-themes-load-operandi))
+(use-package modus-themes
+  :ensure t
+  :demand t
+  :bind ("C-c t m" . modus-themes-toggle)
+  :config
+  (let ((mode-line-border (truncate 4 my-frame-scale-factor)))
+    (setq modus-themes-mode-line (list mode-line-border 'accented 'borderless)
+          modus-themes-italic-constructs t
+          modus-themes-fringes nil
+          modus-themes-box-buttons '(flat)
+          modus-themes-org-blocks 'tinted-background
+          modus-themes-headings '((1 . (1.2 background overline))
+                                  (2 . (1.1 background medium))
+                                  (t . (1.0 background medium)))
+          modus-themes-completions '((matches   . (intense semibold background))
+                                     (selection . (intense semibold))))))
 
 (defun theme-fixup-fill-column-indicator ()
   "Match fill column indicator's background with default one."
