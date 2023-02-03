@@ -657,26 +657,25 @@ the buffer. Disable flyspell-mode otherwise."
 
 (global-set-key (kbd "C-c t t") #'load-theme)
 
-(use-package modus-themes
-  :ensure t
-  :demand t
-  :bind ("C-c t m" . modus-themes-toggle)
-  :config
-  (let ((mode-line-border (truncate 4 my-frame-scale-factor)))
-    (setq modus-themes-mode-line (list mode-line-border 'accented 'borderless)
-          modus-themes-italic-constructs t
-          modus-themes-fringes nil
-          modus-themes-box-buttons '(flat)
-          modus-themes-org-blocks 'tinted-background
-          modus-themes-headings '((1 . (1.2 background overline))
-                                  (2 . (1.1 background medium))
-                                  (t . (1.0 background medium)))
-          modus-themes-completions '((matches   . (intense semibold background))
-                                     (selection . (intense semibold)))))
-  ;; (modus-themes-load-operandi)
-  )
+;; (use-package modus-themes
+;;   :ensure t
+;;   :demand t
+;;   :bind ("C-c t m" . modus-themes-toggle)
+;;   :config
+;;   (let ((mode-line-border (truncate 4 my-frame-scale-factor)))
+;;     (setq modus-themes-mode-line (list mode-line-border 'accented 'borderless)
+;;           modus-themes-italic-constructs t
+;;           modus-themes-fringes nil
+;;           modus-themes-box-buttons '(flat)
+;;           modus-themes-org-blocks 'tinted-background
+;;           modus-themes-headings '((1 . (1.2 background overline))
+;;                                   (2 . (1.1 background medium))
+;;                                   (t . (1.0 background medium)))
+;;           modus-themes-completions '((matches   . (intense semibold background))
+;;                                      (selection . (intense semibold)))))
+;;   (modus-themes-load-operandi))
 
-(defun theme-set-fill-column-indicator-background ()
+(defun theme-fixup-fill-column-indicator ()
   "Match fill column indicator's background with default one."
   ;; NOTE: On some systems, the indicator is one pixel thin if :height is 1.
   (set-face-attribute 'fill-column-indicator nil
@@ -684,7 +683,7 @@ the buffer. Disable flyspell-mode otherwise."
                       :height     'unspecified
                       :inherit    'default))
 
-(defun theme-add-mode-line-border ()
+(defun theme-add-mode-line-padding ()
   "Prettify the mode-line by making it wider."
   (let* ((mode-line-border (truncate 4 my-frame-scale-factor))
          (box-active   (list :line-width mode-line-border :color (face-attribute 'mode-line          :background)))
@@ -692,8 +691,8 @@ the buffer. Disable flyspell-mode otherwise."
     (set-face-attribute 'mode-line          nil :box box-active)
     (set-face-attribute 'mode-line-inactive nil :box box-inactive)))
 
-(add-hook 'after-load-theme-hook #'theme-set-fill-column-indicator-background)
-(add-hook 'after-load-theme-hook #'theme-add-mode-line-border)
+(add-hook 'after-load-theme-hook #'theme-fixup-fill-column-indicator)
+(add-hook 'after-load-theme-hook #'theme-add-mode-line-padding)
 
 (use-package ef-themes
   :ensure t
