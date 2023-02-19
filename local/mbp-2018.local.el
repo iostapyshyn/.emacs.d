@@ -4,8 +4,8 @@
       "/usr/local/opt/libgccjit/lib/gcc/12"
       "/usr/local/opt/gcc/lib/gcc/12/gcc/x86_64-apple-darwin21/12") ":"))
 
-(set-face-attribute 'default        nil :family "Iosevka Simple" :width 'expanded :height 120)
-(set-face-attribute 'fixed-pitch    nil :family "Iosevka Simple" :width 'expanded :height 120)
+(set-face-attribute 'default        nil :family "Iosevka Term" :width 'expanded :height 120)
+(set-face-attribute 'fixed-pitch    nil :family "Iosevka Term" :width 'expanded :height 120)
 (set-face-attribute 'variable-pitch nil :height 1.1)
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . hscroll)))
