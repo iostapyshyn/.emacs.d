@@ -104,7 +104,7 @@ github.com/radomirbosak/duden."
   (bookmark-maybe-load-default-file)
   (advice-remove 'bookmark-jump 'bookmark-jump@bookmarks-load))
 (with-eval-after-load "bookmark"
-  (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-file))))
+  (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-default-file))))
 
 (defun mode-line-render (left right)
   "Return a mode-line formatted string containing LEFT and RIGHT
@@ -285,7 +285,7 @@ If point reaches the beginning or end of buffer, it stops there."
   :ensure t
   :demand t
   :config
-  (add-to-list 'minions-direct #'lsp-mode)
+  (add-to-list 'minions-prominent-modes 'lsp-mode)
   (minions-mode 1))
 
 (use-package project
