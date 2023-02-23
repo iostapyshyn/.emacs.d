@@ -616,7 +616,7 @@ the buffer. Disable flyspell-mode otherwise."
   (consult-customize
    consult-bookmark consult-recent-file
    consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
-   :preview-key (kbd "M-."))
+   :preview-key "M-.")
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
@@ -680,24 +680,22 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (setq modus-themes-mode-line (list 'accented 'borderless)
-        modus-themes-region '(accented)
+  (setq modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-intense)
+                                                (fg-mode-line-active fg-main)
+                                                (bg-region bg-sage)
+                                                (fg-region unspecified)
+                                                (fringe unspecified))
         modus-themes-italic-constructs t
-        modus-themes-fringes nil
-        modus-themes-links '(italic)
-        modus-themes-box-buttons '(flat)
         modus-themes-org-blocks 'tinted-background
-        modus-themes-headings '((1 . (1.2 background overline))
-                                (2 . (1.1 background medium))
-                                (t . (1.0 background medium)))
-        modus-themes-completions '((matches   . (intense semibold background))
-                                   (selection . (intense semibold)))))
+        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
+  ;; Different mode-line for tinted themes
+  (setq modus-operandi-tinted-palette-overrides '((bg-mode-line-active bg-red-intense))))
 
 (use-package ef-themes
   :ensure t)
 
 (global-set-key (kbd "C-c t t") #'load-theme)
-(load-theme 'modus-operandi t)
+(load-theme 'modus-operandi-tinted t)
 
 (use-package rainbow-delimiters
   :ensure t
