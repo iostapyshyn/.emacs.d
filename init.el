@@ -680,19 +680,12 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind ("C-c t m" . modus-themes-toggle)
   :config
-  (setq modus-themes-common-palette-overrides '((bg-mode-line-active bg-blue-intense)
-                                                (fg-mode-line-active fg-main)
-                                                (bg-region bg-sage)
+  (setq modus-themes-common-palette-overrides '((bg-region bg-sage)
                                                 (fg-region unspecified)
                                                 (fringe unspecified))
         modus-themes-italic-constructs t
         modus-themes-org-blocks 'tinted-background
-        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
-  ;; Different mode-line for tinted themes
-  (setq modus-operandi-tinted-palette-overrides '((bg-mode-line-active bg-red-intense))))
-
-(use-package ef-themes
-  :ensure t)
+        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted)))
 
 (global-set-key (kbd "C-c t t") #'load-theme)
 (load-theme 'modus-operandi-tinted t)
