@@ -349,7 +349,9 @@ DIR must include a .project file to be considered a project."
 
 (use-package org
   :preface
-  (defvar my/org "~/org")
+  (defvar my/org (if (file-directory-p "~/org") ;; Override per host
+                     "~/org"
+                   "/ssh:duckdns:org"))
   (defun find-my/org ()
     (interactive)
     (push-mark)
@@ -363,6 +365,10 @@ DIR must include a .project file to be considered a project."
   :config
   ;; (setq-default org-display-custom-times t)
   ;; (setq org-time-stamp-custom-formats '("<%a %d %b %Y>" . "<%a %d %b %Y %H:%M>"))
+
+  (setq org-directory my/org
+        org-agenda-files (list my/org)
+        org-archive-location (concat my/org "/archive/%s::datetree/"))
 
   (setq org-agenda-prefix-format '((agenda . " %i %-12:c%-12t% s")
                                    (todo   . " %i %-12:c")
@@ -405,13 +411,11 @@ DIR must include a .project file to be considered a project."
 
   (setq org-agenda-follow-mode t)
 
-  (setq org-agenda-files (list my/org))
   (setq org-agenda-custom-commands '(("a" "Agenda and all TODOs"
                                       ((agenda "")
                                        (alltodo ""))
                                       nil)))
 
-  (setq org-archive-location (concat my/org "/archive/%s::datetree/"))
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
   (setq org-return-follows-link t)
