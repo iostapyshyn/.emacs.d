@@ -56,6 +56,7 @@
 ;; Parenthesis
 (setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
+(setq show-paren-context-when-offscreen 'overlay)
 (show-paren-mode 1)
 (electric-pair-mode 1)
 
@@ -238,6 +239,7 @@ If point reaches the beginning or end of buffer, it stops there."
 ;;       (defalias fn (lambda () (when (treesit-ready-p (cdr lang))
 ;;                                 (funcall ts-mode))))
 ;;       (add-hook hook fn))))
+;; Obsolete? See NEWS.29 and major-mode-remap-alist
 
 
 ;;; --- Packages ---
@@ -333,7 +335,8 @@ DIR must include a .project file to be considered a project."
 
 (use-package calc
   :config
-  (setq-default calc-multiplication-has-precedence nil))
+  (setq-default calc-multiplication-has-precedence nil
+                calc-kill-line-numbering nil))
 
 (use-package epg
   :config
@@ -429,6 +432,7 @@ DIR must include a .project file to be considered a project."
   :bind (("C-h 7" . eww-man7-index))
   :config
   (setq eww-search-prefix "https://lite.duckduckgo.com/html/?q=")
+  (setq eww-auto-rename-buffer t)
 
   (defun eww-man7-index ()
     "Opens the list of man7.org pages in EWW."
