@@ -799,7 +799,9 @@ the buffer. Disable flyspell-mode otherwise."
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
   (add-to-list 'eglot-server-programs
                '((c-mode c++-mode)
-                 . ("clangd" "--header-insertion=never"))))
+                 . ("clangd" "--header-insertion=never")))
+  (setq-default eglot-workspace-configuration
+                '((haskell (plugin (stan (globalOn . :json-false)))))))
 
 ;; (use-package lsp-mode
 ;;   :ensure t
@@ -919,6 +921,9 @@ the buffer. Disable flyspell-mode otherwise."
             #'TeX-revert-document-buffer)
 
   (setq preview-scale-function 1.0))
+
+(use-package haskell-mode
+  :ensure t)
 
 (use-package rust-mode
   :ensure t
