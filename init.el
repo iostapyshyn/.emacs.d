@@ -488,16 +488,21 @@ DIR must include a .project file to be considered a project."
 
 (use-package dired
   :custom
+  (dired-kill-when-opening-new-dired-buffer t)
   (dired-dwim-target t)
   (dired-recursive-copies 'top)
   (dired-recursive-deletes 'top)
-  (dired-listing-switches "-Alh")
+  (dired-listing-switches "-lah")
   (dired-auto-revert-buffer t)
   :config
   (require 'dired-x)
   (setq dired-omit-files "^\\.[^.]\\|^\\.$")
-  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
   (add-hook 'dired-mode-hook 'dired-omit-mode))
+
+(use-package diredfl
+  :after dired
+  :ensure t
+  :hook (dired-mode . diredfl-mode))
 
 (use-package eldoc
   :config
