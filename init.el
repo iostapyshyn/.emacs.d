@@ -130,6 +130,8 @@ aligned respectively."
                                                mode-line-modes)))))
 (setq mode-line-compact 'long)
 
+(setq frame-title-format '("%b - " invocation-name "@" system-name))
+
 (setq which-func-unknown "…")
 (which-function-mode 1)
 (column-number-mode 1)
