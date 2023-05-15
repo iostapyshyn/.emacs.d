@@ -9,7 +9,7 @@
 
 (setq custom-file (concat user-emacs-directory "custom.el")) ; Customize is not used
 
-(setq local-init-file (concat user-emacs-directory "local/" (system-name) ".el"))
+(setq local-init-file (concat user-emacs-directory "local/local.el"))
 (load local-init-file t nil t)
 
 (setq inhibit-startup-message t)
