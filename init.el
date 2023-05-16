@@ -632,7 +632,7 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap bookmark-jump]                   . consult-bookmark)
          ;; ([remap load-theme]                   . consult-theme)
          ([remap goto-line]                       . consult-goto-line)
-         ;; ([remap man]                          . consult-man)
+         ([remap man]                             . consult-man)
          ([remap yank-pop]                        . consult-yank-pop)
          ([remap imenu]                           . consult-imenu)
          ([remap flymake-show-buffer-diagnostics] . consult-flymake))
