@@ -502,7 +502,7 @@ DIR must include a .project file to be considered a project."
               ("C-x M-o" . my/dired-omit-switch))
   :config
   (require 'dired-x)
-  (setq dired-omit-files "^\\.[^.]\\|^\\.$")
+  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
 
   ;; Remember omit state across buffers
   (defvar my/dired-omit nil "Whether `dired-omit-mode' should be enabled.")
