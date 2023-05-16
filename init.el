@@ -279,11 +279,11 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (use-package tab-bar
   :bind* (("M-[" . tab-previous)
-          ("M-]" . tab-next)
-          ("M-o" . tab-bar-select-tab))
+          ("M-]" . tab-next))
   :config
   (setq tab-bar-tab-hints nil)
   (setq tab-bar-close-button-show nil)
+  (setq tab-bar-select-tab-modifiers '(meta))
   (setq tab-bar-format '(tab-bar-format-tabs-groups
                          tab-bar-format-history
                          tab-bar-separator)))
