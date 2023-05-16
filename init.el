@@ -496,10 +496,23 @@ DIR must include a .project file to be considered a project."
   (dired-recursive-deletes 'top)
   (dired-listing-switches "-lah")
   (dired-auto-revert-buffer t)
+  :bind (:map dired-mode-map
+              ("C-x M-o" . my/dired-omit-switch))
   :config
   (require 'dired-x)
   (setq dired-omit-files "^\\.[^.]\\|^\\.$")
-  (add-hook 'dired-mode-hook 'dired-omit-mode))
+
+  ;; Remember omit state across buffers
+  (defvar my/dired-omit nil "Whether `dired-omit-mode' should be enabled.")
+  (defun my/dired-omit-apply ()
+    (dired-omit-mode (if my/dired-omit nil -1)))
+  (defun my/dired-omit-switch ()
+    "Switch `dired-omit-mode' state.  See `my/dired-omit'."
+    (interactive)
+    (setq my/dired-omit (not my/dired-omit))
+    (my/dired-omit-apply))
+
+  (add-hook 'dired-mode-hook 'my/dired-omit-apply))
 
 (use-package diredfl
   :after dired
