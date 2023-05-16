@@ -650,7 +650,28 @@ the buffer. Disable flyspell-mode otherwise."
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
-            (project-root project)))))
+            (project-root project))))
+  (with-eval-after-load 'vterm
+    (defvar consult-vterm-source
+      (list :name     "Vterm Buffer"
+            :category 'buffer
+            :narrow   ?v
+            :face     'consult-buffer
+            :history  'buffer-name-history
+            :state    #'consult--buffer-state
+            :new
+            (lambda (name)
+              (with-current-buffer (get-buffer-create (concat "*vterm*<" name ">"))
+                (vterm-mode)
+                (consult--buffer-action (current-buffer))))
+            :items
+            (lambda ()
+              (mapcar #'buffer-name
+                      (seq-filter
+                       (lambda (x)
+                         (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                       (buffer-list))))))
+    (add-to-list 'consult-buffer-sources 'consult-vterm-source 'append)))
 
 (use-package embark
   :ensure t
