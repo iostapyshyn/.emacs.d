@@ -136,6 +136,9 @@ aligned respectively."
 (which-function-mode 1)
 (column-number-mode 1)
 
+;; Make sure the time stamps are formatted in English across the systems
+(setq system-time-locale "C")
+
 (dolist (k '("M-<down>" "M-n"))
   (global-set-key (kbd k) #'scroll-up-line))
 (dolist (k '("M-<up>" "M-p"))
@@ -381,9 +384,6 @@ DIR must include a .project file to be considered a project."
                                    (search . " %i %-12:c")))
 
   (setq org-agenda-start-on-weekday 1)
-
-  ;; Make sure the time stamps are formatted in English across the systems
-  (setq system-time-locale "C")
 
   (setq org-clock-mode-line-total 'today)
   (setq org-duration-format (quote h:mm))
