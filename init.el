@@ -150,6 +150,8 @@ aligned respectively."
 (global-set-key (kbd "M-z")   #'zap-up-to-char)
 (global-set-key (kbd "C-M-z") #'zap-to-char)
 
+(global-set-key (kbd "C-<tab>") #'completion-at-point)
+
 (setq compilation-scroll-output 'first-error)
 (global-set-key (kbd "C-c c") #'compile)
 
