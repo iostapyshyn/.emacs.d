@@ -301,15 +301,12 @@ If point reaches the beginning or end of buffer, it stops there."
 (use-package project
   :bind-keymap* ("C-x p" . project-prefix-map)
   :bind (([remap compile] . compile-maybe-project)
-         :map project-prefix-map
-              ("g" . magit)
-              ("z" . vterm))
+         :map project-prefix-map ("g" . project-magit)) ;; TODO: Add project-vterm?
   :config
   (setq project-switch-commands '((project-find-file "Find file")
                                   (project-dired "Dired")
                                   (project-compile "Compile")
-                                  (vterm "Vterm")
-                                  (magit "Magit")))
+                                  (project-magit "Magit")))
   ;; Credit to karthink for this .project detection snippet below
   (setq project-local-identifier ".project")
   (cl-defmethod project-root ((project (head local)))
@@ -327,7 +324,11 @@ DIR must include a .project file to be considered a project."
     (if (and (fboundp 'project-current)
              (project-current nil))
         (call-interactively #'project-compile)
-      (call-interactively #'compile))))
+      (call-interactively #'compile)))
+  (defun project-magit ()
+    "Show the status of the project repository in a magit buffer."
+    (interactive)
+    (magit-status (project-root (project-current t)))))
 
 (use-package recentf
   :demand t
@@ -638,7 +639,8 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap man]                             . consult-man)
          ([remap yank-pop]                        . consult-yank-pop)
          ([remap imenu]                           . consult-imenu)
-         ([remap flymake-show-buffer-diagnostics] . consult-flymake))
+         ([remap flymake-show-buffer-diagnostics] . consult-flymake)
+         ([remap vterm]                           . consult-vterm))
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
   (add-hook 'gud-mode-hook
@@ -654,27 +656,31 @@ the buffer. Disable flyspell-mode otherwise."
         (lambda ()
           (when-let (project (project-current))
             (project-root project))))
-  (with-eval-after-load 'vterm
-    (defvar consult-vterm-source
-      (list :name     "Vterm Buffer"
-            :category 'buffer
-            :narrow   ?v
-            :face     'consult-buffer
-            :history  'buffer-name-history
-            :state    #'consult--buffer-state
-            :new
-            (lambda (name)
-              (with-current-buffer (get-buffer-create (concat "*vterm*<" name ">"))
-                (vterm-mode)
-                (consult--buffer-action (current-buffer))))
-            :items
-            (lambda ()
-              (mapcar #'buffer-name
-                      (seq-filter
-                       (lambda (x)
-                         (eq (buffer-local-value 'major-mode x) 'vterm-mode))
-                       (buffer-list))))))
-    (add-to-list 'consult-buffer-sources 'consult-vterm-source 'append)))
+  (defvar consult-vterm-source
+    (list :name     "Vterm Buffer"
+          :category 'buffer
+          :narrow   ?v
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create (concat "*vterm*<" name ">"))
+              (vterm-mode)
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                     (buffer-list))))))
+  (add-to-list 'consult-buffer-sources 'consult-vterm-source 'append)
+  (defun consult-vterm (&optional arg)
+    (interactive "P")
+    (if arg
+        (vterm arg)
+      (consult-buffer '(consult-vterm-source)))))
 
 (use-package embark
   :ensure t
@@ -779,6 +785,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package vterm
   :ensure t
+  :commands (term vterm-mode)
   :bind (("C-z"     . vterm)
          ("C-x C-z" . vterm)
          (:map vterm-mode-map
