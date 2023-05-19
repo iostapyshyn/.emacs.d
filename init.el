@@ -656,6 +656,25 @@ the buffer. Disable flyspell-mode otherwise."
         (lambda ()
           (when-let (project (project-current))
             (project-root project))))
+  (defun dired-buffer-p (x)
+    (with-current-buffer x
+      (derived-mode-p 'dired-mode)))
+  (defvar consult-dired-source
+    (list :name     "Dired Buffer"
+          :category 'buffer
+          :narrow   ?d
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new      #'ignore
+          :items
+          (lambda ()
+            (mapcar #'buffer-name (seq-filter #'dired-buffer-p
+                                              (buffer-list))))))
+  (add-to-list 'consult-buffer-sources 'consult-dired-source 'append)
+  (defun vterm-buffer-p (x)
+    (with-current-buffer x
+      (derived-mode-p 'vterm-mode)))
   (defvar consult-vterm-source
     (list :name     "Vterm Buffer"
           :category 'buffer
@@ -670,11 +689,8 @@ the buffer. Disable flyspell-mode otherwise."
               (consult--buffer-action (current-buffer))))
           :items
           (lambda ()
-            (mapcar #'buffer-name
-                    (seq-filter
-                     (lambda (x)
-                       (eq (buffer-local-value 'major-mode x) 'vterm-mode))
-                     (buffer-list))))))
+            (mapcar #'buffer-name (seq-filter #'vterm-buffer-p
+                                              (buffer-list))))))
   (add-to-list 'consult-buffer-sources 'consult-vterm-source 'append)
   (defun consult-vterm (&optional arg)
     (interactive "P")
