@@ -283,9 +283,13 @@ If point reaches the beginning or end of buffer, it stops there."
   :bind* (("M-[" . tab-previous)
           ("M-]" . tab-next))
   :config
+  ;; Like tab-bar-select-tab-modifiers but won't be overriden.
+  (cl-loop for i from 1 to 9
+           do (bind-key* (format "M-%d" i) #'tab-bar-select-tab))
+  (bind-key* "M-0" #'tab-recent)
+
   (setq tab-bar-tab-hints nil)
   (setq tab-bar-close-button-show nil)
-  (setq tab-bar-select-tab-modifiers '(meta))
   (setq tab-bar-format '(tab-bar-format-tabs-groups
                          tab-bar-format-history
                          tab-bar-separator)))
