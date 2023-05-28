@@ -506,6 +506,8 @@ DIR must include a .project file to be considered a project."
   (dired-recursive-deletes 'top)
   (dired-listing-switches "-lah")
   (dired-auto-revert-buffer t)
+  (dired-maybe-use-globstar t)
+  (dired-isearch-filenames 'dwim)
   :bind (:map dired-mode-map
               ("C-x M-o" . my/dired-omit-switch))
   :config
