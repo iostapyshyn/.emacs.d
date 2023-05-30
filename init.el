@@ -159,6 +159,7 @@ aligned respectively."
 (global-set-key (kbd "M-g i") #'imenu)
 
 (global-set-key (kbd "C-h M") #'man)
+(setq Man-notify-method 'thrifty)
 
 (defun toggle-window-dedicated (&optional window)
   "Invert the dedicatation of the WINDOW to its buffer."
