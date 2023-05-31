@@ -824,6 +824,9 @@ the buffer. Disable flyspell-mode otherwise."
   (define-advice vterm
       (:before (&optional _arg) save-directory)
     (setq vterm-saved-directory default-directory))
+  (define-advice consult-vterm
+      (:before (&optional _arg) save-directory)
+    (setq vterm-saved-directory default-directory))
 
   (add-hook 'vterm-mode-hook
             (lambda () (setq cursor-type 'box)))
@@ -831,7 +834,7 @@ the buffer. Disable flyspell-mode otherwise."
   (defun vterm-cd-saved-directory ()
     (interactive)
     (when (bound-and-true-p vterm-saved-directory)
-      (vterm-insert (concat "cd " vterm-saved-directory))))
+      (vterm-insert vterm-saved-directory)))
 
   (setq vterm-max-scrollback 50000)
   (setq vterm-timer-delay 0.01)
