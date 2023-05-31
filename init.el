@@ -340,7 +340,7 @@ DIR must include a .project file to be considered a project."
   :bind ("C-x C-r" . recentf-open-files)
   :config
   (recentf-mode 1)
-  (setq recentf-max-saved-items 200)
+  (setq recentf-max-saved-items nil)
   (setq recentf-exclude '("^/var/folders\\.*"
                           "COMMIT_EDITMSG\\'"
                           ".*-autoloads\\.el\\'"
