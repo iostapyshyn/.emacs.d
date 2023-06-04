@@ -366,26 +366,25 @@ DIR must include a .project file to be considered a project."
 
 (use-package org
   :preface
-  (defun org-visit-directory ()
-    (interactive)
-    (push-mark)
-    (find-file org-directory))
   (defun org-set-directory (path)
     (interactive "D")
     (setq org-directory (file-name-as-directory path))
     (setq org-agenda-files (list org-directory)
           org-archive-location (concat org-directory "archive/%s::datetree/")))
-
-  (unless (boundp 'org-directory)
-    (org-set-directory "~/org"))
+  (defun org-visit-directory (arg)
+    (interactive "P")
+    (when arg
+      (call-interactively #'org-set-directory))
+    (push-mark)
+    (find-file org-directory))
   :bind*
-  (("C-c o a" . org-agenda)
-   ("C-c o i" . org-visit-directory)
-   ("C-c o o" . org-set-directory))
+  (("C-c a" . org-agenda)
+   ("C-c i" . org-visit-directory))
   :bind
   (:map org-mode-map
         ("C-c C-." . org-time-stamp-inactive))
   :config
+  (org-set-directory org-directory)
   ;; (setq-default org-display-custom-times t)
   ;; (setq org-time-stamp-custom-formats '("<%a %d %b %Y>" . "<%a %d %b %Y %H:%M>"))
 
