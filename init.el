@@ -289,7 +289,7 @@ If point reaches the beginning or end of buffer, it stops there."
            do (bind-key* (format "M-%d" i) #'tab-bar-select-tab))
   (bind-key* "M-0" #'tab-recent)
 
-  (setq tab-bar-tab-hints nil)
+  (setq tab-bar-tab-hints t)
   (setq tab-bar-close-button-show nil)
   (setq tab-bar-format '(tab-bar-format-tabs-groups
                          tab-bar-format-history
