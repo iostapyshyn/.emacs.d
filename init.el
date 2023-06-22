@@ -770,7 +770,7 @@ the buffer. Disable flyspell-mode otherwise."
         modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted)))
 
 (global-set-key (kbd "C-c t t") #'load-theme)
-(load-theme 'modus-operandi-tinted t)
+(load-theme 'modus-vivendi-tinted t)
 
 (use-package rainbow-delimiters
   :ensure t
