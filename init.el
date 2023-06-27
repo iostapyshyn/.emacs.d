@@ -717,6 +717,10 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind* (("C-=" . er/expand-region)))
 
+(use-package avy
+  :ensure t
+  :bind* (("C-j" . avy-goto-word-1)))
+
 ;; Get environment variables
 (use-package exec-path-from-shell
   :ensure t
