@@ -158,7 +158,7 @@ aligned respectively."
 (global-set-key (kbd "M-g o") #'ff-find-other-file)
 (global-set-key (kbd "M-g i") #'imenu)
 
-(global-set-key (kbd "C-h M") #'man)
+(global-set-key (kbd "C-h C-m") #'man)
 (setq Man-notify-method 'pushy)
 
 (defun toggle-window-dedicated (&optional window)
