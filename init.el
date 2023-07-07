@@ -161,6 +161,15 @@ aligned respectively."
 (global-set-key (kbd "C-h C-m") #'man)
 (setq Man-notify-method 'pushy)
 
+(defun toggle-window-no-delete (&optional window)
+  "Invert the dedicatation of the WINDOW to its buffer."
+  (interactive)
+  (let ((no-delete (not (window-parameter window 'no-delete-other-windows))))
+    (set-window-parameter window 'no-delete-other-windows no-delete)
+    (message (if no-delete
+                 "Window will not be deleted on delete-other-windows"
+               "Window will be deleted on delete-other-windows"))))
+
 (defun toggle-window-dedicated (&optional window)
   "Invert the dedicatation of the WINDOW to its buffer."
   (interactive)
@@ -170,7 +179,10 @@ aligned respectively."
                  "Window is now dedicated to its buffer"
                "Window is no longer dedicated to its buffer"))))
 
-(global-set-key (kbd "C-x C-d") #'toggle-window-dedicated)
+(global-set-key (kbd "C-c w d") #'toggle-window-dedicated)
+(global-set-key (kbd "C-c w s") #'toggle-window-no-delete)
+
+(global-set-key (kbd "C-x C-d") #'dired)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
