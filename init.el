@@ -187,16 +187,6 @@ aligned respectively."
 
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 
-(defun toggle-compilation-buffer ()
-  "Hide or display the compilation buffer."
-  (interactive)
-  (when-let ((buffer (get-buffer "*compilation*")))
-    (if-let ((window (get-buffer-window buffer)))
-        (quit-window nil window)
-      (pop-to-buffer buffer))))
-
-(global-set-key (kbd "C-c x") #'toggle-compilation-buffer)
-
 (defun turn-on-indent-tabs-local-mode ()
   "Turn on `indent-tabs-mode' locally."
   (interactive)
@@ -356,6 +346,18 @@ DIR must include a .project file to be considered a project."
     "Show the status of the project repository in a magit buffer."
     (interactive)
     (magit-status (project-root (project-current t)))))
+
+(use-package compile
+  :bind (("C-c x" . pop-to-compilation-buffer)
+         (:map compilation-mode-map
+               ("x" . quit-window)
+               ("c" . recompile)))
+  :config
+  (defun pop-to-compilation-buffer ()
+    "Display the compilation buffer."
+    (interactive)
+    (when-let ((buffer (get-buffer "*compilation*")))
+      (pop-to-buffer buffer))))
 
 (use-package recentf
   :demand t
