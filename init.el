@@ -187,6 +187,16 @@ aligned respectively."
 
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 
+(defun toggle-compilation-buffer ()
+  "Hide or display the compilation buffer."
+  (interactive)
+  (when-let ((buffer (get-buffer "*compilation*")))
+    (if-let ((window (get-buffer-window buffer)))
+        (quit-window nil window)
+      (pop-to-buffer buffer))))
+
+(global-set-key (kbd "C-c x") #'toggle-compilation-buffer)
+
 (defun turn-on-indent-tabs-local-mode ()
   "Turn on `indent-tabs-mode' locally."
   (interactive)
