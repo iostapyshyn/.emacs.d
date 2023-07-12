@@ -833,7 +833,21 @@ the buffer. Disable flyspell-mode otherwise."
   (defalias 'eshell/ff #'find-file)
   (defalias 'eshell/clear #'eshell/clear-scrollback))
 
+(use-package eat
+  :ensure t
+  :bind (("C-z" . eat)
+          ("C-x C-z" . eat))
+  :config
+  (setq eat-enable-shell-prompt-annotation nil
+        eat-default-cursor-type '(box nil nil)
+        eat-kill-buffer-on-exit t))
+
+  ;; (add-hook 'eat-mode-hook
+  ;;           (lambda ()
+  ;;             (eat--set-cursor nil (eat-term-cursor-type eat--terminal)))))
+
 (use-package vterm
+  :disabled t
   :ensure t
   :commands (term vterm-mode)
   :bind (("C-z"     . vterm)
