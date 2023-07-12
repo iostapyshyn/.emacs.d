@@ -726,7 +726,32 @@ the buffer. Disable flyspell-mode otherwise."
     (interactive "P")
     (if arg
         (vterm arg)
-      (consult-buffer '(consult-vterm-source)))))
+      (consult-buffer '(consult-vterm-source))))
+  (defun eat-buffer-p (x)
+    (with-current-buffer x
+      (derived-mode-p 'eat-mode)))
+  (defvar consult-eat-source
+    (list :name     "Eat Buffer"
+          :category 'buffer
+          :narrow   ?v
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create (concat "*eat*<" name ">"))
+              (eat-mode)
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (mapcar #'buffer-name (seq-filter #'eat-buffer-p
+                                              (buffer-list))))))
+  (add-to-list 'consult-buffer-sources 'consult-eat-source 'append)
+  (defun consult-eat (&optional arg)
+    (interactive "P")
+    (if arg
+        (eat arg)
+      (consult-buffer '(consult-eat-source)))))
 
 (use-package embark
   :ensure t
@@ -834,17 +859,34 @@ the buffer. Disable flyspell-mode otherwise."
   (defalias 'eshell/clear #'eshell/clear-scrollback))
 
 (use-package eat
-  :ensure t
+  :load-path "/home/illia/src/emacs-eat"
   :bind (("C-z" . eat)
-          ("C-x C-z" . eat))
+         ("C-x C-z" . eat)
+         (:map eat-semi-char-mode-map
+               ("C-c TAB" . eat-cd-saved-directory)
+               ("C-c C-t" . eat-emacs-mode)
+               ("C-<up>"  . eat-emacs-mode))
+         (:map eat-mode-map
+               ("C-c C-t"  . eat-semi-char-mode)
+               ("C-<up>"   . eat-previous-shell-prompt)
+               ("C-<down>" . eat-semi-char-mode)))
   :config
+  (define-advice eat
+      (:before (&rest _arg) save-directory)
+    (setq eat-saved-directory default-directory))
+  (defun eat-cd-saved-directory ()
+    (interactive)
+    (when (bound-and-true-p eat-saved-directory)
+      (eat-send-string-as-yank eat--terminal eat-saved-directory)))
+
   (setq eat-enable-shell-prompt-annotation nil
         eat-default-cursor-type '(box nil nil)
-        eat-kill-buffer-on-exit t))
+        eat-kill-buffer-on-exit t
+        eat-term-name "xterm-256color")
 
-  ;; (add-hook 'eat-mode-hook
-  ;;           (lambda ()
-  ;;             (eat--set-cursor nil (eat-term-cursor-type eat--terminal)))))
+  (defun eat-set-cursor-default ()
+    (eat--set-cursor nil :block))
+  (add-hook 'eat-mode-hook #'eat-set-cursor-default))
 
 (use-package vterm
   :disabled t
