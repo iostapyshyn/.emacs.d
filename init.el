@@ -244,6 +244,9 @@ If point reaches the beginning or end of buffer, it stops there."
 (global-set-key [remap move-beginning-of-line] #'move-back-to-indentation-or-line)
 (global-set-key [remap move-end-of-line]       #'move-end-of-line-comment)
 
+;; Complementary to C-x x t (toggle-truncate-lines)
+(global-set-key (kbd "C-x x v") #'visual-line-mode)
+
 (setq my-frame-scale-factor
       (if (fboundp 'frame-scale-factor)
           (frame-scale-factor) 1))
