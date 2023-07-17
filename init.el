@@ -983,6 +983,9 @@ the buffer. Disable flyspell-mode otherwise."
   ;; Use tool defaults
   (setq rmsbolt-asm-format nil))
 
+(use-package rainbow-mode
+  :ensure t)
+
 (use-package pdf-tools
   :ensure t
   :pin "melpa"
