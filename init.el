@@ -260,8 +260,7 @@ If point reaches the beginning or end of buffer, it stops there."
 (require 'treesit)
 
 (defconst treesit-langs
-  '(("c" . c) ("c++" . cpp) ("bash" . bash) ("python" . python) ("haskell" . haskell)
-    ("rust" . rust)))
+  '(("c" . c) ("c++" . cpp) ("bash" . bash) ("python" . python) ("rust" . rust)))
 
 (defun treesit-populate-mode-mapping ()
   "Populate `major-mode-remap-alist' according to `treesit-langs'."
