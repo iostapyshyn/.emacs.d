@@ -165,6 +165,8 @@ aligned respectively."
 (global-set-key (kbd "C-h C-m") #'man)
 (setq Man-notify-method 'pushy)
 
+(global-set-key (kbd "<menu>") 'mode-specific-command-prefix)
+
 (defun toggle-window-no-delete (&optional window)
   "Invert the dedicatation of the WINDOW to its buffer."
   (interactive)
