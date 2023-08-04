@@ -132,6 +132,10 @@ aligned respectively."
 
 (setq frame-title-format '("%b - " invocation-name "@" system-name))
 
+;; Override which-func-update with version that updates all windows
+(define-advice which-func-update (:override (&rest _args) which-func-update-all)
+  (walk-windows 'which-func-update-1 nil 'visible))
+
 (setq which-func-unknown "…")
 (which-function-mode 1)
 (column-number-mode 1)
