@@ -257,18 +257,31 @@ If point reaches the beginning or end of buffer, it stops there."
       (if (fboundp 'frame-scale-factor)
           (frame-scale-factor) 1))
 
-;; (when (and (fboundp 'treesit-available-p) (treesit-available-p))
-;;   (require 'treesit)
-;;   (add-to-list 'treesit-extra-load-path (concat user-emacs-directory "tree-sitter-module/dist"))
-;;   (dolist (lang '(("c" . c)
-;;                   ("c++" . cpp)))
-;;     (when-let ((hook (intern (concat (car lang) "-mode-hook")))
-;;                (ts-mode (intern (concat (car lang) "-ts-mode")))
-;;                (fn (intern (concat (car lang) "-use-ts"))))
-;;       (defalias fn (lambda () (when (treesit-ready-p (cdr lang))
-;;                                 (funcall ts-mode))))
-;;       (add-hook hook fn))))
-;; Obsolete? See NEWS.29 and major-mode-remap-alist
+(require 'treesit)
+
+(defconst treesit-langs
+  '(("c" . c) ("c++" . cpp) ("bash" . bash) ("python" . python) ("haskell" . haskell)
+    ("rust" . rust)))
+
+(defun treesit-populate-mode-mapping ()
+  "Populate `major-mode-remap-alist' according to `treesit-langs'."
+  (interactive)
+  (when (and (fboundp 'treesit-available-p) (treesit-available-p))
+    (dolist (lang treesit-langs)
+      (when-let (((treesit-ready-p (cdr lang) t))
+                 (mode (intern (concat (car lang) "-mode")))
+                 (ts-mode (intern (concat (car lang) "-ts-mode"))))
+        (add-to-list 'major-mode-remap-alist (cons mode ts-mode))))))
+
+(defun treesit-install-language-grammars ()
+  "Install tree-sitter grammars for languages in `treesit-langs'."
+  (interactive)
+  (dolist (lang treesit-langs)1
+    (unless (treesit-ready-p (cdr lang) t)
+      (treesit-install-language-grammar (cdr lang))))
+  (treesit-populate-mode-mapping))
+
+(treesit-populate-mode-mapping)
 
 
 ;;; --- Packages ---
