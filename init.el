@@ -868,7 +868,7 @@ the buffer. Disable flyspell-mode otherwise."
                ("M-n"       . vterm-send-C-n))
          (:map vterm-copy-mode-map
                ("C-<up>"    . vterm-previous-prompt)
-               ("C-<down>"  . vterm-copy-mode)))
+               ("C-<down>"  . vterm-next-prompt-or-copy)))
   :config
   (define-advice vterm
       (:before (&optional _arg) save-directory)
@@ -879,6 +879,13 @@ the buffer. Disable flyspell-mode otherwise."
 
   (add-hook 'vterm-mode-hook
             (lambda () (setq cursor-type 'box)))
+
+  (defun vterm-next-prompt-or-copy (n)
+    (interactive "p")
+    (let ((old-point (point)))
+      (vterm-next-prompt n)
+      (when (= (point) old-point)
+        (vterm-copy-mode -1))))
 
   (defun vterm-cd-saved-directory ()
     (interactive)
