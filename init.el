@@ -664,6 +664,9 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package vertico
   :ensure t
   :demand t
+  :bind (:map vertico-map
+              ("<prior>" . vertico-scroll-down)
+              ("<next>"  . vertico-scroll-up))
   :config
   (vertico-mode))
 
