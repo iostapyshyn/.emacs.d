@@ -123,8 +123,10 @@ aligned respectively."
                                                mode-line-remote
                                                mode-line-frame-identification
                                                mode-line-position " "
-                                               mode-line-buffer-identification)
+                                               ;; mode-line-buffer-identification
+                                               (breadcrumb-project-crumbs))
                                          (list mode-line-misc-info
+                                               "[" (breadcrumb-imenu-crumbs) "]"
                                                '(vc-mode vc-mode)
                                                " "
                                                mode-line-modes)))))
@@ -137,7 +139,7 @@ aligned respectively."
   (walk-windows 'which-func-update-1 nil 'visible))
 
 (setq which-func-unknown "…")
-(which-function-mode 1)
+;; (which-function-mode 1)
 (column-number-mode 1)
 
 ;; Make sure the time stamps are formatted in English across the systems
@@ -335,6 +337,12 @@ If point reaches the beginning or end of buffer, it stops there."
   (add-to-list 'minions-prominent-modes 'lsp-mode)
   (add-to-list 'minions-prominent-modes 'vterm-copy-mode)
   (minions-mode 1))
+
+(use-package breadcrumb
+  :ensure t
+  :demand t
+  :config
+  (setq breadcrumb-imenu-crumb-separator "/"))
 
 (use-package project
   :bind-keymap* ("C-x p" . project-prefix-map)
