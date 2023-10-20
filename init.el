@@ -349,6 +349,9 @@ If point reaches the beginning or end of buffer, it stops there."
   (add-hook 'after-make-frame-functions #'frame-set-scratch-buffer)
   (bufferlo-mode 1))
 
+(use-package wgrep
+  :ensure t)
+
 (use-package minions
   :ensure t
   :demand t
