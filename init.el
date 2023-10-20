@@ -871,7 +871,7 @@ the buffer. Disable flyspell-mode otherwise."
   (defalias 'eshell/clear #'eshell/clear-scrollback))
 
 (use-package vterm
-  :ensure t
+  :load-path "lisp/emacs-libvterm"
   :commands (term vterm-mode)
   :bind (("C-z"     . vterm)
          ("C-x C-z" . vterm)
@@ -912,9 +912,9 @@ the buffer. Disable flyspell-mode otherwise."
   (setq vterm-kill-buffer-on-exit t))
 
 (use-package eshell-vterm
-  :ensure t
-  :demand t
-  :after eshell
+  :load-path "list/eshell-vterm"
+  :disabled t
+  :after eshell vterm
   :config
   (eshell-vterm-mode))
 
@@ -979,12 +979,6 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package markdown-mode
   :ensure t)
-
-;; Install livedown with:
-;; $ npm install -g livedown
-(use-package livedown
-  :commands livedown-preview
-  :load-path "lisp/emacs-livedown")
 
 (use-package mensa-mode
   :commands mensa
