@@ -1013,6 +1013,17 @@ the buffer. Disable flyspell-mode otherwise."
     (set-fill-column 72))
   (add-hook 'git-commit-mode-hook #'set-commit-fill-column))
 
+(use-package diff-hl
+  :ensure t
+  :demand t
+  :config
+  (setq diff-hl-draw-borders nil
+        diff-hl-side 'right)
+  (global-diff-hl-mode 1)
+  (with-eval-after-load "magit"
+    (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
+
 (use-package markdown-mode
   :ensure t)
 
