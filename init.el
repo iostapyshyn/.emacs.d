@@ -333,6 +333,22 @@ If point reaches the beginning or end of buffer, it stops there."
                          tab-bar-format-history
                          tab-bar-separator)))
 
+(use-package bufferlo
+  :load-path "lisp/bufferlo"
+  :demand t
+  :bind* (("C-c b q" . bufferlo-bury)
+          ("C-c b 1" . bufferlo-clear)
+          ("C-c b 0" . bufferlo-remove)
+          ("C-c b k" . bufferlo-kill-buffers)
+          ("C-c b x" . bufferlo-remove-non-exclusive-buffers))
+  :config
+  (setq tab-bar-new-tab-choice "*scratch*")
+  (defun frame-set-scratch-buffer (frame)
+    (with-selected-frame frame
+      (switch-to-buffer "*scratch*")))
+  (add-hook 'after-make-frame-functions #'frame-set-scratch-buffer)
+  (bufferlo-mode 1))
+
 (use-package minions
   :ensure t
   :demand t
@@ -699,6 +715,7 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap switch-to-buffer]                . consult-buffer)
          ([remap switch-to-buffer-other-window]   . consult-buffer-other-window)
          ([remap switch-to-buffer-other-frame]    . consult-buffer-other-frame)
+         ([remap switch-to-buffer-other-tab]      . consult-buffer-other-tab)
          ([remap recentf-open-files]              . consult-recent-file)
          ([remap bookmark-jump]                   . consult-bookmark)
          ;; ([remap load-theme]                   . consult-theme)
@@ -723,29 +740,10 @@ the buffer. Disable flyspell-mode otherwise."
         (lambda ()
           (when-let (project (project-current))
             (project-root project))))
-  (defun dired-buffer-p (x)
-    (with-current-buffer x
-      (derived-mode-p 'dired-mode)))
-  (defvar consult-dired-source
-    (list :name     "Dired Buffer"
-          :category 'buffer
-          :narrow   ?d
-          :face     'consult-buffer
-          :history  'buffer-name-history
-          :state    #'consult--buffer-state
-          :new      #'ignore
-          :items
-          (lambda ()
-            (mapcar #'buffer-name (seq-filter #'dired-buffer-p
-                                              (buffer-list))))))
-  (add-to-list 'consult-buffer-sources 'consult-dired-source 'append)
-  (defun vterm-buffer-p (x)
-    (with-current-buffer x
-      (derived-mode-p 'vterm-mode)))
-  (defvar consult-vterm-source
+
+  (defvar consult--source-vterm
     (list :name     "Vterm Buffer"
           :category 'buffer
-          :narrow   ?v
           :face     'consult-buffer
           :history  'buffer-name-history
           :state    #'consult--buffer-state
@@ -756,14 +754,52 @@ the buffer. Disable flyspell-mode otherwise."
               (consult--buffer-action (current-buffer))))
           :items
           (lambda ()
-            (mapcar #'buffer-name (seq-filter #'vterm-buffer-p
-                                              (buffer-list))))))
-  (add-to-list 'consult-buffer-sources 'consult-vterm-source 'append)
+            (consult--buffer-query :mode 'vterm-mode :as #'buffer-name))))
   (defun consult-vterm (&optional arg)
     (interactive "P")
     (if arg
         (vterm arg)
-      (consult-buffer '(consult-vterm-source)))))
+      (consult--multi '(consult--source-vterm))))
+
+  (defvar consult--source-dired-buffer
+    (list :name     "Dired Buffer"
+          :category 'buffer
+          :narrow   ?d
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new      #'ignore
+          :items
+          (lambda ()
+            (consult--buffer-query :mode 'dired-mode :as #'buffer-name))))
+
+  (defvar consult--source-buffer-hidden
+    (append '(:hidden t) consult--source-buffer))
+  (defvar consult--source-local-buffer
+    (list :name     "Local Buffer"
+          :category 'buffer
+          :narrow   ?l
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :default  t
+          :items
+          (lambda ()
+            (consult--buffer-query :predicate #'bufferlo-local-buffer-p
+                                   :sort 'visibility
+                                   :as #'buffer-name))))
+
+  ;; (define-advice consult-buffer (:filter-args (&optional sources) show-local)
+  ;;   (if (or current-prefix-arg sources)
+  ;;       sources
+  ;;     `((consult--source-local-buffer))))
+
+  (setq consult-buffer-sources '(consult--source-local-buffer
+                                 consult--source-buffer-hidden
+                                 consult--source-hidden-buffer
+                                 consult--source-project-buffer-hidden
+                                 consult--source-modified-buffer
+                                 consult--source-dired-buffer)))
 
 (use-package embark
   :ensure t
@@ -912,7 +948,7 @@ the buffer. Disable flyspell-mode otherwise."
   (setq vterm-kill-buffer-on-exit t))
 
 (use-package eshell-vterm
-  :load-path "list/eshell-vterm"
+  :load-path "lisp/eshell-vterm"
   :disabled t
   :after eshell vterm
   :config
