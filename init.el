@@ -164,7 +164,7 @@ aligned respectively."
 
 (global-set-key (kbd "C-<tab>") #'completion-at-point)
 
-(setq compilation-scroll-output 'first-error)
+(setq compilation-scroll-output t)
 (global-set-key (kbd "C-c c") #'compile)
 
 (global-set-key (kbd "M-g o") #'ff-find-other-file)
