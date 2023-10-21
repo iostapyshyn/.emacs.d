@@ -26,6 +26,9 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+;; Save position in the file
+(save-place-mode)
+
 ;; Expand symlinks when visiting file
 (setq find-file-visit-truename t)
 
