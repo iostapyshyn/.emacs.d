@@ -747,8 +747,10 @@ the buffer. Disable flyspell-mode otherwise."
           (when-let (project (project-current))
             (project-root project))))
 
-  (defvar consult--source-vterm
+  (defvar consult--source-vterm-buffer
     (list :name     "Vterm Buffer"
+          :hidden   t
+          :narrow   ?z
           :category 'buffer
           :face     'consult-buffer
           :history  'buffer-name-history
@@ -756,19 +758,15 @@ the buffer. Disable flyspell-mode otherwise."
           :new
           (lambda (name)
             (with-current-buffer (get-buffer-create (concat "*vterm*<" name ">"))
-              (vterm-mode)
+              (unless (derived-mode-p 'vterm-mode)
+                (vterm-mode))
               (consult--buffer-action (current-buffer))))
           :items
           (lambda ()
             (consult--buffer-query :mode 'vterm-mode :as #'buffer-name))))
-  (defun consult-vterm (&optional arg)
-    (interactive "P")
-    (if arg
-        (vterm arg)
-      (consult--multi '(consult--source-vterm))))
-
   (defvar consult--source-dired-buffer
     (list :name     "Dired Buffer"
+          :hidden   t
           :category 'buffer
           :narrow   ?d
           :face     'consult-buffer
@@ -795,17 +793,40 @@ the buffer. Disable flyspell-mode otherwise."
                                    :sort 'visibility
                                    :as #'buffer-name))))
 
-  ;; (define-advice consult-buffer (:filter-args (&optional sources) show-local)
-  ;;   (if (or current-prefix-arg sources)
-  ;;       sources
-  ;;     `((consult--source-local-buffer))))
-
   (setq consult-buffer-sources '(consult--source-local-buffer
                                  consult--source-buffer-hidden
                                  consult--source-hidden-buffer
                                  consult--source-project-buffer-hidden
                                  consult--source-modified-buffer
-                                 consult--source-dired-buffer)))
+                                 consult--source-dired-buffer
+                                 consult--source-vterm-buffer))
+
+  ;; Prefix argument for all buffers
+  ;; (define-advice consult-buffer (:filter-args (&optional sources) show-local)
+  ;;   (if (or current-prefix-arg sources)
+  ;;       sources
+  ;;     `((consult--source-local-buffer))))
+
+  (defvar consult--source-vterm-local-buffer
+    (list :name     "Local Vterm Buffer"
+          :category 'buffer
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create (concat "*vterm*<" name ">"))
+              (unless (derived-mode-p 'vterm-mode)
+                (vterm-mode))
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (consult--buffer-query :predicate #'bufferlo-local-buffer-p :mode 'vterm-mode :as #'buffer-name :sort 'visibility))))
+  (defun consult-vterm (&optional arg)
+    (interactive "P")
+    (if arg
+        (vterm arg)
+      (consult--multi '(consult--source-vterm-local-buffer consult--source-vterm-buffer)))))
 
 (use-package embark
   :ensure t
