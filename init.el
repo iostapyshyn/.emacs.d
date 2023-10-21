@@ -806,7 +806,8 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package embark
   :ensure t
-  :bind ("C-c e" . embark-act))
+  :bind (("C-c e" . embark-act)
+         ("C-c E" . embark-act-all)))
 
 (use-package embark-consult
   :ensure t
