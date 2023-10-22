@@ -260,6 +260,7 @@ If point reaches the beginning or end of buffer, it stops there."
 
 ;; Complementary to C-x x t (toggle-truncate-lines)
 (global-set-key (kbd "C-x x v") #'visual-line-mode)
+(setq visual-line-fringe-indicators '(nil right-curly-arrow))
 
 (setq my-frame-scale-factor
       (if (fboundp 'frame-scale-factor)
@@ -1046,7 +1047,7 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :config
   (setq diff-hl-draw-borders nil
-        diff-hl-side 'right)
+        diff-hl-side 'left)
   (global-diff-hl-mode 1)
   (with-eval-after-load "magit"
     (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
