@@ -342,7 +342,7 @@ If point reaches the beginning or end of buffer, it stops there."
   :demand t
   :bind* (("C-c b q" . bufferlo-bury)
           ("C-c b 1" . bufferlo-clear)
-          ("C-c b 0" . bufferlo-remove)
+          ("C-c b r" . bufferlo-remove)
           ("C-c b k" . bufferlo-kill-buffers)
           ("C-c b x" . bufferlo-remove-non-exclusive-buffers))
   :config
