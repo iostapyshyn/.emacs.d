@@ -796,7 +796,10 @@ the buffer. Disable flyspell-mode otherwise."
                                    :sort 'visibility
                                    :as #'buffer-name))))
 
-  (setq consult-buffer-sources '(consult--source-local-buffer
+  (setq consult--source-buffer-hidden (plist-put consult--source-buffer-hidden :narrow ? )
+        consult--source-hidden-buffer (plist-put consult--source-hidden-buffer :narrow ?.))
+
+  (setq consult-buffer-sources `(consult--source-local-buffer
                                  consult--source-buffer-hidden
                                  consult--source-hidden-buffer
                                  consult--source-project-buffer-hidden
