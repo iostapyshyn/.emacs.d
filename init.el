@@ -260,7 +260,7 @@ If point reaches the beginning or end of buffer, it stops there."
 
 ;; Complementary to C-x x t (toggle-truncate-lines)
 (global-set-key (kbd "C-x x v") #'visual-line-mode)
-(setq visual-line-fringe-indicators '(nil right-curly-arrow))
+(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
 (setq my-frame-scale-factor
       (if (fboundp 'frame-scale-factor)
