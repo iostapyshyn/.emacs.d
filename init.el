@@ -344,7 +344,9 @@ If point reaches the beginning or end of buffer, it stops there."
           ("C-c b 1" . bufferlo-clear)
           ("C-c b r" . bufferlo-remove)
           ("C-c b k" . bufferlo-kill-buffers)
-          ("C-c b x" . bufferlo-remove-non-exclusive-buffers))
+          ("C-c b x" . bufferlo-remove-non-exclusive-buffers)
+          ("C-x t k" . bufferlo-tab-close-kill-buffers)
+          ("C-x 5 k" . bufferlo-delete-frame-kill-buffers))
   :config
   (setq tab-bar-new-tab-choice "*scratch*")
   (defun frame-set-scratch-buffer (frame)
