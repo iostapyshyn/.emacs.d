@@ -371,13 +371,11 @@ If point reaches the beginning or end of buffer, it stops there."
 (use-package bufferlo
   :load-path "lisp/bufferlo"
   :demand t
-  :bind* (("C-c b q" . bufferlo-bury)
-          ("C-c b 1" . bufferlo-clear)
-          ("C-c b r" . bufferlo-remove)
-          ("C-c b k" . bufferlo-kill-buffers)
-          ("C-c b x" . bufferlo-remove-non-exclusive-buffers)
-          ("C-x t k" . bufferlo-tab-close-kill-buffers)
-          ("C-x 5 k" . bufferlo-delete-frame-kill-buffers))
+  :bind* (("C-c b q"        . bufferlo-bury)
+          ("C-c b 1"        . bufferlo-clear)
+          ("C-c b <delete>" . bufferlo-kill-buffers)
+          ("C-x t <delete>" . bufferlo-tab-close-kill-buffers)
+          ("C-x 5 <delete>" . bufferlo-delete-frame-kill-buffers))
   :config
   (setq tab-bar-new-tab-choice "*scratch*")
   (defun frame-set-scratch-buffer (frame)
@@ -760,11 +758,12 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap bookmark-jump]                   . consult-bookmark)
          ;; ([remap load-theme]                   . consult-theme)
          ([remap goto-line]                       . consult-goto-line)
-         ;; ([remap man]                             . consult-man)
+         ;; ([remap man]                          . consult-man)
          ([remap yank-pop]                        . consult-yank-pop)
          ([remap imenu]                           . consult-imenu)
          ([remap flymake-show-buffer-diagnostics] . consult-flymake)
          ([remap vterm]                           . consult-vterm))
+  :bind* ("<insert>" . consult-buffer)
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
   (add-hook 'gud-mode-hook
