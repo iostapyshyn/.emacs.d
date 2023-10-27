@@ -322,6 +322,37 @@ If point reaches the beginning or end of buffer, it stops there."
           ("C-." . next-buffer)
           ("C-;" . other-window)))
 
+(use-package windmove
+  :bind* (("s-<f30>" . windmove-or-sway-left)
+          ("s-<f31>" . windmove-or-sway-right)
+          ("s-<f32>" . windmove-or-sway-up)
+          ("s-<f33>" . windmove-or-sway-down))
+  :config
+  ;; Sway helper
+  (defun windmove-or-sway (direction)
+    (let ((other-window (windmove-find-other-window direction)))
+    (if (or (null other-window)
+           (and (window-minibuffer-p other-window)
+                (not (minibuffer-window-active-p other-window))))
+        (call-process "swaymsg" nil nil nil "focus" (symbol-name direction))
+      (select-window other-window))))
+
+  (defun windmove-or-sway-left ()
+    (interactive)
+    (windmove-or-sway 'left))
+
+  (defun windmove-or-sway-right ()
+    (interactive)
+    (windmove-or-sway 'right))
+
+  (defun windmove-or-sway-up ()
+    (interactive)
+    (windmove-or-sway 'up))
+
+  (defun windmove-or-sway-down ()
+    (interactive)
+    (windmove-or-sway 'down)))
+
 (use-package tab-bar
   :bind* (("M-[" . tab-previous)
           ("M-]" . tab-next))
