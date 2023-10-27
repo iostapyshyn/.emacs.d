@@ -42,7 +42,7 @@
 (setq scroll-margin 1)
 
 ;; Text
-(setq-default truncate-lines t)
+(setq-default truncate-lines nil)
 (setq-default fill-column 80)
 
 ;; Region and transient mark
@@ -932,7 +932,16 @@ the buffer. Disable flyspell-mode otherwise."
                                                 (fringe unspecified))
         modus-themes-italic-constructs t
         modus-themes-org-blocks 'tinted-background
-        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted)))
+        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
+
+  (defun modus-theme-diff-hl-fringes ()
+    (modus-themes-with-colors
+      (set-face-attribute 'diff-hl-change nil :background bg-main :foreground bg-changed-fringe)
+      (set-face-attribute 'diff-hl-insert nil :background bg-main :foreground bg-added-fringe)
+      (set-face-attribute 'diff-hl-delete nil :background bg-main :foreground bg-removed-fringe)))
+  (with-eval-after-load "diff-hl"
+    (modus-theme-diff-hl-fringes)
+    (add-hook 'after-load-theme-hook #'modus-theme-diff-hl-fringes)))
 
 (global-set-key (kbd "C-c t t") #'load-theme)
 (load-theme 'modus-vivendi-tinted t)
@@ -1077,10 +1086,19 @@ the buffer. Disable flyspell-mode otherwise."
     (set-fill-column 72))
   (add-hook 'git-commit-mode-hook #'set-commit-fill-column))
 
+(use-package fringe-helper
+  :ensure t)
+
 (use-package diff-hl
   :ensure t
   :demand t
   :config
+  (require 'fringe-helper)
+  (defun my-diff-hl-fringe-bmp (_type _pos)
+    (fringe-helper-define 'my-diff-hl-fringe '(top periodic)
+      "..XXX..."))
+  (setq diff-hl-fringe-bmp-function 'my-diff-hl-fringe-bmp)
+
   (setq diff-hl-draw-borders nil
         diff-hl-side 'left)
   (global-diff-hl-mode 1)
