@@ -862,7 +862,8 @@ the buffer. Disable flyspell-mode otherwise."
     (interactive "P")
     (if arg
         (vterm arg)
-      (consult--multi '(consult--source-vterm-local-buffer consult--source-vterm-buffer)))))
+      (consult--multi `(consult--source-vterm-local-buffer
+                        ,(append '(:narrow ? ) consult--source-vterm-buffer))))))
 
 (use-package embark
   :ensure t
