@@ -475,6 +475,26 @@ DIR must include a .project file to be considered a project."
         calendar-longitude 9.69
         calendar-week-start-day 1))
 
+(use-package auth-source
+  :config
+  ;; Don't even try writing to plain-text .authinfo
+  (setq auth-sources '("~/.authinfo.gpg")))
+
+(use-package epg
+  :config
+  (fset 'epg-wait-for-status 'ignore))
+
+(use-package gnus
+  :config
+  (setq gnus-init-file (concat user-emacs-directory "gnus.el")))
+
+(use-package smtpmail
+  :config
+  (setq smtpmail-servers-requiring-authorization ".*"
+        smtpmail-smtp-service 465
+        smtpmail-stream-type 'tls
+        smtpmail-debug-info t))
+
 (use-package org
   :preface
   (defun org-set-directory (path)
