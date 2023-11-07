@@ -495,6 +495,14 @@ DIR must include a .project file to be considered a project."
         smtpmail-stream-type 'tls
         smtpmail-debug-info t))
 
+(use-package message
+  :config
+  ;; Extract Message-ID domain from the From field, if present
+  (define-advice message-make-fqdn (:before-until (&rest _args) from-fqdn)
+    (when-let ((from-mail (message-fetch-field "from" t))
+               ((string-match "@\\([.[:alnum:]-]*\\)" from-mail)))
+      (match-string 1 from-mail))))
+
 (use-package org
   :preface
   (defun org-set-directory (path)
