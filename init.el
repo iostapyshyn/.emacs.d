@@ -486,7 +486,8 @@ DIR must include a .project file to be considered a project."
 
 (use-package gnus
   :config
-  (setq gnus-init-file (concat user-emacs-directory "gnus.el")))
+  (setq gnus-select-method '(nnnil "")
+        gnus-init-file (concat user-emacs-directory "gnus.el")))
 
 (use-package smtpmail
   :config
