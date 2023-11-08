@@ -1109,6 +1109,12 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package cmake-mode :ensure t)
 
+(use-package with-editor
+  :ensure t
+  :demand t
+  :config
+  (shell-command-with-editor-mode))
+
 (use-package magit
   :ensure t
   :config
