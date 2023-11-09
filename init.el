@@ -898,7 +898,7 @@ the buffer. Disable flyspell-mode otherwise."
     (if arg
         (vterm arg)
       (consult--multi `(consult--source-vterm-local-buffer
-                        ,(append '(:narrow ? ) consult--source-vterm-buffer))))))
+                        ,(plist-put consult--source-vterm-buffer :narrow ? ))))))
 
 (use-package embark
   :ensure t
