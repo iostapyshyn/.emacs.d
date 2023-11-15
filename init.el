@@ -488,7 +488,8 @@ DIR must include a .project file to be considered a project."
 (use-package gnus
   :config
   (setq gnus-select-method '(nnnil "")
-        gnus-init-file (concat user-emacs-directory "gnus.el"))
+        gnus-init-file (concat user-emacs-directory "gnus.el")
+        gnus-inhibit-mime-unbuttonizing t)
 
   ;; Useful default servers
   (add-to-list 'gnus-secondary-select-methods
