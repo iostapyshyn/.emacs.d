@@ -503,13 +503,35 @@ DIR must include a .project file to be considered a project."
         smtpmail-stream-type 'tls
         smtpmail-debug-info t))
 
+(use-package mml
+  :config
+  (setq mml-smime-use 'openssl))
+
 (use-package message
   :config
   ;; Extract Message-ID domain from the From field, if present
   (define-advice message-make-fqdn (:before-until (&rest _args) from-fqdn)
     (when-let ((from-mail (message-fetch-field "from" t))
                ((string-match "@\\([.[:alnum:]-]*\\)" from-mail)))
-      (match-string 1 from-mail))))
+      (match-string 1 from-mail)))
+
+  (defun message-recipients-contain (addr)
+    (let ((recipients (message-all-recipients))
+          (addr (mail-extract-address-components addr)))
+      (seq-contains-p recipients addr
+                      (lambda (x y) (string-equal (cadr x) (cadr y))))))
+
+  (defun message-add-self-to-bcc ()
+    (let ((bcc (message-fetch-field "Bcc"))
+          (from (message-fetch-field "From")))
+      (unless (message-recipients-contain from)
+        (save-excursion
+          (message-goto-bcc)
+          (when bcc
+            (insert ", "))
+          (insert from)))))
+
+  (add-hook 'message-send-hook #'message-add-self-to-bcc))
 
 (use-package org
   :preface
