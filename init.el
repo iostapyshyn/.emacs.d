@@ -369,7 +369,7 @@ If point reaches the beginning or end of buffer, it stops there."
                          tab-bar-separator)))
 
 (use-package bufferlo
-  :load-path "lisp/bufferlo"
+  :ensure t
   :demand t
   :bind* (("C-c b q"        . bufferlo-bury)
           ("C-c b 1"        . bufferlo-clear)

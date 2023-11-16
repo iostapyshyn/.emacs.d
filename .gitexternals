@@ -8,11 +8,6 @@
 	url = https://github.com/iostapyshyn/emacs-libvterm.git
 	branch = master
 	vcs = git
-[external "lisp/bufferlo"]
-	path = lisp/bufferlo
-	url = https://github.com/florommel/bufferlo.git
-	branch = main
-	vcs = git
 [external "lisp/eshell-vterm"]
 	path = lisp/eshell-vterm
 	url = https://github.com/iostapyshyn/eshell-vterm.git
