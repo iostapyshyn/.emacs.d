@@ -317,6 +317,10 @@ If point reaches the beginning or end of buffer, it stops there."
   :bind* (([remap eval-last-sexp]  . pp-eval-last-sexp)
           ([remap eval-expression] . pp-eval-expression)))
 
+(use-package frame
+  :config
+  (undelete-frame-mode))
+
 (use-package window
   :bind* (("C-," . previous-buffer)
           ("C-." . next-buffer)
