@@ -291,6 +291,8 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (treesit-populate-mode-mapping)
 
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
 
 ;;; --- Packages ---
 (eval-when-compile
