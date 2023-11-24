@@ -4,12 +4,12 @@
 
 ;; Load early-init.el if emacs < 27
 (when (version< emacs-version "27")
-  (let ((early-init-file (concat user-emacs-directory "early-init.el")))
+  (let ((early-init-file (locate-user-emacs-file "early-init.el")))
     (load early-init-file t nil t)))
 
-(setq custom-file (concat user-emacs-directory "custom.el")) ; Customize is not used
+(setq custom-file (locate-user-emacs-file "custom.el")) ; Customize is not used
 
-(setq local-init-file (concat user-emacs-directory "local.el"))
+(setq local-init-file (locate-user-emacs-file "local.el"))
 (load local-init-file t nil t)
 
 (setq inhibit-startup-message t)
@@ -470,12 +470,12 @@ DIR must include a .project file to be considered a project."
 (use-package auth-source
   :config
   ;; Don't even try writing to plain-text .authinfo
-  (setq auth-sources '("~/.authinfo.gpg")))
+  (setq auth-sources (list (locate-user-emacs-file "authinfo.gpg"))))
 
 (use-package gnus
   :config
   (setq gnus-select-method '(nnnil "")
-        gnus-init-file (concat user-emacs-directory "gnus.el")
+        gnus-init-file (locate-user-emacs-file "gnus.el")
         gnus-inhibit-mime-unbuttonizing t)
 
   ;; Useful default servers
@@ -1238,7 +1238,7 @@ the buffer. Disable flyspell-mode otherwise."
   :after pdf-tools
   :hook (pdf-view-mode . pdf-view-restore-mode)
   :config
-  (setq pdf-view-restore-filename "~/.emacs.d/pdf-view-restore"))
+  (setq pdf-view-restore-filename (locate-user-emacs-file "pdf-view-restore")))
 
 (use-package sprunge
   :ensure t
