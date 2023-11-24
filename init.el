@@ -826,15 +826,17 @@ the buffer. Disable flyspell-mode otherwise."
               (setq-local completion-in-region-function #'completion--in-region)
               (setq-local completion-styles '(basic partial-completion))))
   :config
+  ;; xref
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
+  ;; Less preview by default
   (consult-customize
    consult-bookmark consult-recent-file
    consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
    :preview-key "M-.")
-  (setq consult-project-root-function
-        (lambda ()
-          (when-let (project (project-current))
-            (project-root project))))
 
+  ;; Useful buffer sources
   (defvar consult--source-vterm-buffer
     (list :name     "Vterm Buffer"
           :hidden   t
@@ -865,6 +867,7 @@ the buffer. Disable flyspell-mode otherwise."
           (lambda ()
             (consult--buffer-query :mode 'dired-mode :as #'buffer-name))))
 
+  ;; Bufferlo integration
   (defvar consult--source-buffer-hidden
     (append '(:hidden t) consult--source-buffer))
   (defvar consult--source-local-buffer
@@ -892,12 +895,7 @@ the buffer. Disable flyspell-mode otherwise."
                                  consult--source-dired-buffer
                                  consult--source-vterm-buffer))
 
-  ;; Prefix argument for all buffers
-  ;; (define-advice consult-buffer (:filter-args (&optional sources) show-local)
-  ;;   (if (or current-prefix-arg sources)
-  ;;       sources
-  ;;     `((consult--source-local-buffer))))
-
+  ;; Vterm
   (defvar consult--source-vterm-local-buffer
     (list :name     "Local Vterm Buffer"
           :category 'buffer
@@ -1102,10 +1100,6 @@ the buffer. Disable flyspell-mode otherwise."
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
-
-(use-package ggtags
-  :config
-  (setq ggtags-enable-navigation-keys nil))
 
 (use-package dumb-jump
   :demand t :after xref
