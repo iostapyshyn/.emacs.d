@@ -456,7 +456,8 @@ DIR must include a .project file to be considered a project."
 
 (use-package epg
   :config
-  (setq epg-pinentry-mode 'loopback))
+  (setq epg-pinentry-mode 'loopback)
+  (fset 'epg-wait-for-status 'ignore))
 
 
 ;;; --- Org Mode and Calendar ---
@@ -470,10 +471,6 @@ DIR must include a .project file to be considered a project."
   :config
   ;; Don't even try writing to plain-text .authinfo
   (setq auth-sources '("~/.authinfo.gpg")))
-
-(use-package epg
-  :config
-  (fset 'epg-wait-for-status 'ignore))
 
 (use-package gnus
   :config
