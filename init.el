@@ -723,14 +723,16 @@ the buffer. Disable flyspell-mode otherwise."
                 ("C-c ! s" . flymake-start)))
   :hook ((prog-mode LaTeX-mode) . flymake-mode))
 
-;; (use-package flymake-diagnostic-at-point
-;;   :ensure t
-;;   :after flymake
-;;   :hook (flymake-mode . flymake-diagnostic-at-point-mode)
-;;   :config
-;;   (setq flymake-diagnostic-at-point-display-diagnostic-function
-;;         'flymake-diagnostic-at-point-display-minibuffer)
-;;   (setq flymake-diagnostic-at-point-error-prefix ""))
+(use-package flymake-diagnostic-at-point
+  :ensure t
+  :after flymake
+  :hook (flymake-mode . flymake-diagnostic-at-point-mode)
+  :config
+  (setq flymake-diagnostic-at-point-error-prefix ""
+        flymake-diagnostic-at-point-display-diagnostic-function
+        'flymake-diagnostic-at-point-display-minibuffer
+        ;; Take priority over eldoc with its 0.5s delay
+        flymake-diagnostic-at-point-timer-delay 0.51))
 
 ;; Already present in Emacs 29:
 (use-package flymake-shellcheck
