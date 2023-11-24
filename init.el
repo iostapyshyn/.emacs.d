@@ -1107,6 +1107,19 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (setq ggtags-enable-navigation-keys nil))
 
+(use-package dumb-jump
+  :demand t :after xref
+  :ensure t
+  :config
+  ;; Fix dumb-jump not using project.el:
+  (define-advice dumb-jump-get-project-root (:override (filepath) dumb-jump-project)
+    (s-chop-suffix
+     "/"
+     (expand-file-name
+      (project-root (project-current t (file-name-directory filepath))))))
+
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 50))
+
 (use-package eglot
   :config
   ;; project.el does not resolve symlinks:
