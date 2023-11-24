@@ -291,8 +291,6 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (treesit-populate-mode-mapping)
 
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-
 
 ;;; --- Packages ---
 (eval-when-compile
@@ -318,6 +316,13 @@ If point reaches the beginning or end of buffer, it stops there."
 (use-package pp
   :bind* (([remap eval-last-sexp]  . pp-eval-last-sexp)
           ([remap eval-expression] . pp-eval-expression)))
+
+(use-package display-fill-column-indicator
+  :demand t
+  :config
+  (setq global-display-fill-column-indicator-modes
+        '(prog-mode message-mode (not special-mode)))
+  (global-display-fill-column-indicator-mode))
 
 (use-package frame
   :config
