@@ -662,6 +662,11 @@ DIR must include a .project file to be considered a project."
   (setq isearch-yank-on-move 'shift)
   (setq isearch-allow-scroll 'unlimited))
 
+(use-package xref
+  :config
+  ;; Also used by dired and project
+  (setq xref-search-program 'ripgrep))
+
 (use-package dired
   :custom
   (dired-kill-when-opening-new-dired-buffer t)
