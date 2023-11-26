@@ -700,6 +700,15 @@ DIR must include a .project file to be considered a project."
   :ensure t
   :hook (dired-mode . diredfl-mode))
 
+(use-package dired-du
+  :after dired
+  :ensure t
+  :bind (:map dired-mode-map
+              ("C-x M-r" . dired-du-mode)
+              ("* N"     . dired-du-count-sizes))
+  :config
+  (setq dired-du-size-format t))
+
 (use-package eldoc
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
