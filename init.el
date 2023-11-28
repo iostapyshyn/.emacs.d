@@ -326,7 +326,13 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (use-package frame
   :config
-  (undelete-frame-mode))
+  (when (fboundp #'undelete-frame-mode)
+    (undelete-frame-mode)))
+
+(use-package mouse
+  :config
+  (when (fboundp #'context-menu-mode)
+    (context-menu-mode)))
 
 (use-package window
   :bind* (("C-," . previous-buffer)
