@@ -334,6 +334,12 @@ If point reaches the beginning or end of buffer, it stops there."
   (when (fboundp #'context-menu-mode)
     (context-menu-mode)))
 
+(use-package pixel-scroll
+  :if (not (version< emacs-version "29.1"))
+  :demand t
+  :config
+  (pixel-scroll-precision-mode))
+
 (use-package window
   :bind* (("C-," . previous-buffer)
           ("C-." . next-buffer)
