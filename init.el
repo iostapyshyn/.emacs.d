@@ -343,12 +343,7 @@ If point reaches the beginning or end of buffer, it stops there."
 (use-package window
   :bind* (("C-," . previous-buffer)
           ("C-." . next-buffer)
-          ("C-;" . other-window-backwards)
-          ("C-'" . other-window))
-  :config
-  (defun other-window-backwards (count &optional all-frames interactive)
-    (interactive "p\ni\np")
-    (other-window (- count) all-frames interactive)))
+          ("C-;" . other-window)))
 
 (use-package windmove
   :demand t
