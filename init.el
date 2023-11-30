@@ -45,6 +45,12 @@
 (setq-default truncate-lines nil)
 (setq-default fill-column 80)
 
+;; Don't fill with C-u - C-x f
+(define-advice set-fill-column (:filter-args (arg) set-fill-column-max)
+  (if (equal arg '(-))
+      (list most-positive-fixnum)
+    arg))
+
 ;; Region and transient mark
 (setq mark-even-if-inactive nil)
 (delete-selection-mode 1)
