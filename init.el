@@ -126,12 +126,13 @@ aligned respectively."
                                                mode-line-remote
                                                mode-line-frame-identification
                                                mode-line-position " "
-                                               (if (fboundp #'breadcrumb-project-crumbs)
+                                               (if (and (fboundp #'breadcrumb-project-crumbs)
+                                                        (not (breadcrumb-broken-p)))
                                                    (breadcrumb-project-crumbs)
                                                  mode-line-buffer-identification))
                                          (list mode-line-misc-info
                                                (if (and (fboundp #'breadcrumb-imenu-crumbs)
-                                                        (not breadcrumb-broken))
+                                                        (not (breadcrumb-broken-p)))
                                                  (list "[" (breadcrumb-imenu-crumbs) "]"))
                                                '(vc-mode vc-mode)
                                                " "
@@ -397,7 +398,9 @@ If point reaches the beginning or end of buffer, it stops there."
   :demand t
   :config
   (setq breadcrumb-imenu-crumb-separator "/")
-  (setq-default breadcrumb-broken nil))
+  (defun breadcrumb-broken-p ()
+    (or (file-remote-p default-directory)
+        (derived-mode-p 'pdf-view-mode))))
 
 (use-package project
   :bind-keymap* ("C-x p" . project-prefix-map)
@@ -1247,10 +1250,6 @@ the buffer. Disable flyspell-mode otherwise."
   (pdf-loader-install)
   :config
   (setq-default pdf-view-display-size 'fit-page)
-
-  (add-hook 'pdf-view-mode-hook
-            (lambda ()
-              (setq-local breadcrumb-broken t)))
 
   ;; Fix blurriness on retina
   (setq pdf-view-use-scaling t
