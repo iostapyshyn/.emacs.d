@@ -1234,6 +1234,9 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package haskell-mode
   :ensure t)
 
+(use-package yaml-mode
+  :ensure t)
+
 (use-package rust-mode
   :ensure t
   :config
