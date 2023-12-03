@@ -783,7 +783,11 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :demand t
   :config
-  (setq undo-tree-auto-save-history nil)
+  (setq undo-tree-auto-save-history t
+        undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo-tree"))
+        undo-tree-visualizer-diff t
+        undo-tree-visualizer-timestamps t
+        undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
 (use-package which-key
