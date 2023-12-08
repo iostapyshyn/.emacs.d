@@ -125,6 +125,18 @@ aligned respectively."
                             `(space :align-to (- scroll-bar ,(string-width right))))))
     (replace-regexp-in-string "%" "%%" (concat left space right))))
 
+;; When in a project, show filename relative to the project root
+(defun project-mode-line-buffer-identification ()
+  (let* ((filename (buffer-file-name))
+         (project (project-current)))
+    (cons
+     (if (and filename project)
+         (file-name-directory
+          (file-relative-name
+           filename
+           (file-name-parent-directory (project-root project)))))
+     mode-line-buffer-identification)))
+
 (setq-default mode-line-format '((:eval (mode-line-render
                                          (list " "
                                                mode-line-mule-info
@@ -132,14 +144,8 @@ aligned respectively."
                                                mode-line-remote
                                                mode-line-frame-identification
                                                mode-line-position " "
-                                               (if (and (fboundp #'breadcrumb-project-crumbs)
-                                                        (not (breadcrumb-broken-p)))
-                                                   (breadcrumb-project-crumbs)
-                                                 mode-line-buffer-identification))
+                                               (project-mode-line-buffer-identification))
                                          (list mode-line-misc-info
-                                               (if (and (fboundp #'breadcrumb-imenu-crumbs)
-                                                        (not (breadcrumb-broken-p)))
-                                                 (list "[" (breadcrumb-imenu-crumbs) "]"))
                                                '(vc-mode vc-mode)
                                                " "
                                                mode-line-modes)))))
@@ -152,7 +158,7 @@ aligned respectively."
   (walk-windows 'which-func-update-1 nil 'visible))
 
 (setq which-func-unknown "…")
-;; (which-function-mode 1)
+(which-function-mode 1)
 (column-number-mode 1)
 
 ;; Make sure the time stamps are formatted in English across the systems
@@ -398,15 +404,6 @@ If point reaches the beginning or end of buffer, it stops there."
   (add-to-list 'minions-prominent-modes 'lsp-mode)
   (add-to-list 'minions-prominent-modes 'vterm-copy-mode)
   (minions-mode 1))
-
-(use-package breadcrumb
-  :ensure t
-  :demand t
-  :config
-  (setq breadcrumb-imenu-crumb-separator "/")
-  (defun breadcrumb-broken-p ()
-    (or (file-remote-p default-directory)
-        (derived-mode-p 'pdf-view-mode))))
 
 (use-package project
   :bind-keymap* ("C-x p" . project-prefix-map)
