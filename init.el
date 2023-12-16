@@ -128,14 +128,15 @@ aligned respectively."
 ;; When in a project, show filename relative to the project root
 (defun project-mode-line-buffer-identification ()
   (let* ((filename (buffer-file-name))
-         (project (project-current)))
-    (cons
-     (if (and filename project)
-         (file-name-directory
-          (file-relative-name
-           filename
-           (file-name-parent-directory (project-root project)))))
-     mode-line-buffer-identification)))
+         (project  (project-current))
+         (prefix   (if (and filename project)
+                       (file-name-directory
+                        (file-relative-name
+                         filename
+                         (file-name-parent-directory (project-root project)))))))
+    (if prefix
+        (cons prefix mode-line-buffer-identification)
+      mode-line-buffer-identification)))
 
 (setq-default mode-line-format '((:eval (mode-line-render
                                          (list " "
