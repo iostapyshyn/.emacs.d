@@ -766,8 +766,9 @@ the buffer. Disable flyspell-mode otherwise."
         ;; Take priority over eldoc with its 0.5s delay
         flymake-diagnostic-at-point-timer-delay 0.51))
 
-;; Already present in Emacs 29:
+;; TODO: Already present in Emacs 29:
 (use-package flymake-shellcheck
+  :if (version< emacs-version "29")
   :ensure t
   :after flymake
   :hook (sh-mode . flymake-shellcheck-load))
