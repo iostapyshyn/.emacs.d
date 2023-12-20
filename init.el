@@ -542,6 +542,10 @@ DIR must include a .project file to be considered a project."
 
   (add-hook 'message-send-hook #'message-add-self-to-bcc))
 
+(use-package tramp
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
 (use-package org
   :preface
   (defun org-set-directory (path)
