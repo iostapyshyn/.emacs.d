@@ -501,12 +501,28 @@ DIR must include a .project file to be considered a project."
 (use-package smtpmail
   :config
   (setq smtpmail-servers-requiring-authorization ".*"
-        smtpmail-smtp-service 465
-        smtpmail-stream-type 'tls
-        smtpmail-debug-info t))
+        smtpmail-debug-info t)
+
+  ;; Be explicit about server/port
+  (define-advice smtpmail-send-it (:before () reset-server)
+    (setq smtpmail-smtp-server
+          (read-string "Outgoing SMTP mail server: " smtpmail-smtp-server)
+
+          smtpmail-smtp-service
+          (read-number (format "Port number to use when contacting %s: "
+			       smtpmail-smtp-server)
+                       (or smtpmail-smtp-service 587)))))
 
 (use-package mml
   :config
+  ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=67931
+  (define-advice mml-smime-openssl-sign (:override (cont) fix-openssl-sign)
+    (smime-sign-buffer (cdr (assq 'keyfile cont)))
+    (goto-char (point-min))
+    (while (search-forward "\r\n" nil t)
+      (replace-match "\n" t t))
+    (goto-char (point-max)))
+
   (setq mml-smime-use 'openssl))
 
 (use-package message
@@ -540,7 +556,8 @@ DIR must include a .project file to be considered a project."
               (insert ", "))
             (insert from))))))
 
-  (add-hook 'message-send-hook #'message-add-self-to-bcc))
+  (add-hook 'message-send-hook #'message-add-self-to-bcc)
+  (setq message-send-mail-function #'smtpmail-send-it))
 
 (use-package tramp
   :config
