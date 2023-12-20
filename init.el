@@ -1255,6 +1255,9 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package yaml-mode
   :ensure t)
 
+(use-package csv-mode
+  :ensure t)
+
 (use-package rust-mode
   :ensure t
   :config
