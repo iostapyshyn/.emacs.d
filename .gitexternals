@@ -13,3 +13,8 @@
 	url = https://github.com/iostapyshyn/eshell-vterm.git
 	branch = master
 	vcs = git
+[external "lisp/beancount-mode"]
+	path = lisp/beancount-mode
+	url = https://github.com/beancount/beancount-mode.git
+	branch = main
+	vcs = git

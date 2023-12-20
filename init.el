@@ -1250,6 +1250,15 @@ the buffer. Disable flyspell-mode otherwise."
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
+(use-package beancount
+  :load-path "lisp/beancount-mode"
+  :commands (beancount-mode)
+  :mode ("\\.beancount\\'" . beancount-mode)
+  :config
+  (add-hook 'beancount-mode-hook #'outline-minor-mode)
+  (require 'flymake-bean-check)
+  (add-hook 'beancount-mode-hook #'flymake-bean-check-enable))
+
 (use-package rmsbolt
   :config
   ;; Use tool defaults
