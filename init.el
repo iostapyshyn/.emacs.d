@@ -793,16 +793,28 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (reverse-im-mode t))
 
-(use-package undo-tree
+;; (use-package undo-tree
+;;   :ensure t
+;;   :demand t
+;;   :config
+;;   (setq undo-tree-auto-save-history t
+;;         undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo-tree"))
+;;         undo-tree-visualizer-diff t
+;;         undo-tree-visualizer-timestamps t
+;;         undo-tree-enable-undo-in-region t)
+;;   (global-undo-tree-mode))
+
+(use-package vundo
+  :ensure t
+  :bind* ("C-x u" . vundo)
+  :config
+  (setq vundo-glyph-alist vundo-unicode-symbols))
+
+(use-package undo-fu-session
   :ensure t
   :demand t
   :config
-  (setq undo-tree-auto-save-history t
-        undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo-tree"))
-        undo-tree-visualizer-diff t
-        undo-tree-visualizer-timestamps t
-        undo-tree-enable-undo-in-region t)
-  (global-undo-tree-mode))
+  (undo-fu-session-global-mode))
 
 (use-package which-key
   :ensure t
