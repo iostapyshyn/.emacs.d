@@ -495,7 +495,8 @@ DIR must include a .project file to be considered a project."
 (use-package smtpmail
   :config
   (setq smtpmail-servers-requiring-authorization ".*"
-        smtpmail-debug-info t)
+        smtpmail-debug-info t
+        smtpmail-smtp-service 587)
 
   ;; Be explicit about server/port
   (define-advice smtpmail-send-it (:before () reset-server)
@@ -505,7 +506,7 @@ DIR must include a .project file to be considered a project."
           smtpmail-smtp-service
           (read-number (format "Port number to use when contacting %s: "
 			       smtpmail-smtp-server)
-                       (or smtpmail-smtp-service 587)))))
+                       smtpmail-smtp-service))))
 
 (use-package mml
   :config
