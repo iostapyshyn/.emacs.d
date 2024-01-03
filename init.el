@@ -14,7 +14,7 @@
 
 (setq inhibit-startup-message t)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; (scroll-bar-mode -1)
 (menu-bar-mode -1)
 
 ;; Don't pop up the *Warnings* buffer during native compilation
@@ -1007,6 +1007,13 @@ the buffer. Disable flyspell-mode otherwise."
 
 
 ;;; --- Color theme ---
+(use-package custom-css
+  :demand t
+  :load-path "lisp/custom-css"
+  :config
+  (setq custom-css-scroll-bar-width 4)
+  (custom-css-scroll-bar-mode))
+
 (setq custom-safe-themes t)
 
 (defvar after-load-theme-hook nil "Functions called after loading a theme.")
@@ -1060,6 +1067,9 @@ the buffer. Disable flyspell-mode otherwise."
 
 (global-set-key (kbd "C-c t t") #'load-theme)
 (load-theme 'modus-vivendi-tinted t)
+
+;; FIXME:
+;; (set-window-scroll-bars (minibuffer-window) nil nil)
 
 (use-package rainbow-delimiters
   :ensure t

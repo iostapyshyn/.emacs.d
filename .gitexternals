@@ -18,3 +18,8 @@
 	url = https://github.com/beancount/beancount-mode.git
 	branch = main
 	vcs = git
+[external "lisp/custom-css"]
+	path = lisp/custom-css
+	url = https://github.com/florommel/custom-css.git
+	branch = main
+	vcs = git
