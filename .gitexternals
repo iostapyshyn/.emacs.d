@@ -23,3 +23,8 @@
 	url = https://github.com/florommel/custom-css.git
 	branch = main
 	vcs = git
+[external "lisp/on-demand-scroll-bar"]
+	path = lisp/on-demand-scroll-bar
+	url = https://github.com/florommel/on-demand-scroll-bar.git
+	branch = main
+	vcs = git

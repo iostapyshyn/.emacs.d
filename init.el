@@ -341,7 +341,9 @@ If point reaches the beginning or end of buffer, it stops there."
 (use-package frame
   :config
   (when (fboundp #'undelete-frame-mode)
-    (undelete-frame-mode)))
+    (undelete-frame-mode))
+  (setq window-divider-default-right-width 1)
+  (window-divider-mode))
 
 (use-package mouse
   :config
@@ -826,6 +828,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 ;;; --- Completion ---
 (setq enable-recursive-minibuffers t)
+(setq read-minibuffer-restore-windows nil)
 (setq minibuffer-prompt-properties
       '(read-only t cursor-intangible t face minibuffer-prompt))
 (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
@@ -1011,8 +1014,13 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :load-path "lisp/custom-css"
   :config
-  (setq custom-css-scroll-bar-width 4)
   (custom-css-scroll-bar-mode))
+
+(use-package on-demand-scroll-bar
+  :demand t
+  :load-path "lisp/on-demand-scroll-bar"
+  :config
+  (on-demand-scroll-bar-mode))
 
 (setq custom-safe-themes t)
 
@@ -1042,8 +1050,14 @@ the buffer. Disable flyspell-mode otherwise."
     (set-face-attribute 'mode-line          nil :box box-active)
     (set-face-attribute 'mode-line-inactive nil :box box-inactive)))
 
+(defun theme-set-scroll-bar-background ()
+  "Set scroll-bar background to default background."
+  (set-face-attribute 'scroll-bar nil :background
+                      (face-attribute 'default :background)))
+
 (add-hook 'after-load-theme-hook #'theme-fixup-fill-column-indicator)
 (add-hook 'after-load-theme-hook #'theme-add-mode-line-padding)
+(add-hook 'after-load-theme-hook #'theme-set-scroll-bar-background)
 
 (use-package modus-themes
   :ensure t
@@ -1067,9 +1081,6 @@ the buffer. Disable flyspell-mode otherwise."
 
 (global-set-key (kbd "C-c t t") #'load-theme)
 (load-theme 'modus-vivendi-tinted t)
-
-;; FIXME:
-;; (set-window-scroll-bars (minibuffer-window) nil nil)
 
 (use-package rainbow-delimiters
   :ensure t
