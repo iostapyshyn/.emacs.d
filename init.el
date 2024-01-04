@@ -117,12 +117,16 @@ github.com/radomirbosak/duden."
   (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-default-file))))
 
 (defun mode-line-render (left right)
-  "Return a mode-line formatted string containing LEFT and RIGHT
-aligned respectively."
+  "Return a LEFT and RIGHT aligned in the window respectively."
   (let* ((left (format-mode-line left))
          (right (format-mode-line right))
+         (space-width (- (+ (window-width nil t)
+                            (cadr (window-fringes))
+                            (window-scroll-bar-width))
+                         (string-pixel-width left)
+                         (string-pixel-width right)))
          (space (propertize " " 'display
-                            `(space :align-to (- scroll-bar ,(string-width right))))))
+                            `(space :width (,space-width)))))
     (replace-regexp-in-string "%" "%%" (concat left space right))))
 
 ;; When in a project, show filename relative to the project root
