@@ -120,13 +120,12 @@ github.com/radomirbosak/duden."
   "Return a LEFT and RIGHT aligned in the window respectively."
   (let* ((left (format-mode-line left))
          (right (format-mode-line right))
-         (space-width (- (+ (window-width nil t)
-                            (cadr (window-fringes))
-                            (window-scroll-bar-width))
-                         (string-pixel-width left)
-                         (string-pixel-width right)))
-         (space (propertize " " 'display
-                            `(space :width (,space-width)))))
+         (skip (- (+ (window-width nil t)
+                     (cadr (window-fringes))
+                     (window-scroll-bar-width))
+                  (string-pixel-width left)
+                  (string-pixel-width right)))
+         (space (propertize " " 'display `(space :width (,skip)))))
     (replace-regexp-in-string "%" "%%" (concat left space right))))
 
 ;; When in a project, show filename relative to the project root
