@@ -117,12 +117,15 @@ github.com/radomirbosak/duden."
   (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-default-file))))
 
 (defun mode-line-render (left right)
-  "Return a LEFT and RIGHT aligned in the window respectively."
+  "Return LEFT and RIGHT aligned in the mode-line respectively."
   (let* ((left (format-mode-line left))
          (right (format-mode-line right))
-         (skip (- (+ (window-width nil t)
-                     (cadr (window-fringes))
-                     (window-scroll-bar-width))
+         (box-width (when (display-graphic-p)
+                      (plist-get (face-attribute 'mode-line :box) :line-width)))
+         (box-width (abs (or (car-safe box-width) box-width 0)))
+         (skip (- (window-pixel-width)
+                  (window-right-divider-width)
+                  (* 2 box-width)
                   (string-pixel-width left)
                   (string-pixel-width right)))
          (space (propertize " " 'display `(space :width (,skip)))))
@@ -1045,7 +1048,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (defun theme-add-mode-line-padding ()
   "Prettify the mode-line by adding padding to it."
-  (let* ((mode-line-border (truncate 6 my-frame-scale-factor))
+  (let* ((mode-line-border (cons 1 (truncate 6 my-frame-scale-factor)))
          (bg-active   (face-attribute 'mode-line :background))
          (bg-inactive (face-attribute 'mode-line-inactive :background))
          (box-active   (list :line-width mode-line-border :color bg-active))
