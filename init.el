@@ -131,18 +131,25 @@ github.com/radomirbosak/duden."
          (space (propertize " " 'display `(space :width (,skip)))))
     (replace-regexp-in-string "%" "%%" (concat left space right))))
 
-;; When in a project, show filename relative to the project root
+(defface project-mode-line-buffer-id
+  '((t (:height 0.9 :inherit shadow)))
+  "Face used for project part of buffer identification in the mode line.")
+
 (defun project-mode-line-buffer-identification ()
-  (let* ((filename (buffer-file-name))
-         (project  (project-current))
-         (prefix   (if (and filename project)
-                       (file-name-directory
-                        (file-relative-name
-                         filename
-                         (file-name-parent-directory (project-root project)))))))
-    (if prefix
-        (cons prefix mode-line-buffer-identification)
-      mode-line-buffer-identification)))
+  "When in a project, indicate project name and path to file."
+  (if-let ((dir (cond ((or (derived-mode-p 'dired-mode)
+                           (derived-mode-p 'magit-mode))
+                       ;; These buffers have default-directory in their name
+                       (file-name-parent-directory default-directory))
+                      (t default-directory)))
+           (dir (expand-file-name dir))
+           (proj (project-current))
+           (proj (expand-file-name (project-root proj)))
+           ((string-prefix-p proj dir)) ;; Is dir actually in the project?
+           (prefix (file-relative-name dir (file-name-parent-directory proj))))
+      (cons (propertize prefix 'face 'project-mode-line-buffer-id)
+            mode-line-buffer-identification)
+    mode-line-buffer-identification))
 
 (setq-default mode-line-format '((:eval (mode-line-render
                                          (list " "
