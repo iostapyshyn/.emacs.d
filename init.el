@@ -1289,6 +1289,11 @@ the buffer. Disable flyspell-mode otherwise."
 
   (setq preview-scale-function 1.0))
 
+(use-package vhdl-mode
+  :config
+  (setq vhdl-intelligent-tab nil)
+  (add-hook 'vhdl-mode-hook #'vhdl-activate-customizations))
+
 (use-package haskell-mode
   :ensure t)
 
