@@ -120,15 +120,15 @@ github.com/radomirbosak/duden."
   "Return LEFT and RIGHT aligned in the mode-line respectively."
   (let* ((left (format-mode-line left))
          (right (format-mode-line right))
-         (box-width (when (display-graphic-p)
-                      (plist-get (face-attribute 'mode-line :box) :line-width)))
-         (box-width (abs (or (car-safe box-width) box-width 0)))
-         (skip (- (window-pixel-width)
-                  (window-right-divider-width)
-                  (* 2 box-width)
-                  (string-pixel-width left)
-                  (string-pixel-width right)))
-         (space (propertize " " 'display `(space :width (,skip)))))
+         (box-width (if-let (((display-graphic-p))
+                             (box (face-attribute 'mode-line :box))
+                             (width (plist-get box :line-width)))
+                        (abs (or (car-safe width) width)) 0))
+         (display `(space :align-to (+ (- scroll-bar
+                                          ,(string-width right)        ; chars
+                                          (,box-width))                ; px
+                                       (,(window-scroll-bar-width))))) ; px
+         (space (propertize " " 'display display)))
     (replace-regexp-in-string "%" "%%" (concat left space right))))
 
 (defface project-mode-line-buffer-id
