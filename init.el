@@ -318,6 +318,29 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (treesit-populate-mode-mapping)
 
+(defun increment-dec-at-point (n)
+  "Add N (or 1 if nil) to decimal at point."
+  (interactive "p*")
+  (save-match-data
+    (if-let (((thing-at-point-looking-at "-?[0-9]+"))
+             (match (match-string 0)))
+        (replace-match (format (format "%%0%dd" (length match))
+                               (+ (or n 1) (string-to-number match 10))))
+      (message "No decimal at point"))))
+
+(defun increment-hex-at-point (n)
+  "Add N (or 1 if nil) to hexadecimal at point."
+  (interactive "p*")
+  (save-match-data
+    (if-let (((thing-at-point-looking-at "[0-9a-fA-F]+"))
+             (match (match-string 0)))
+        (replace-match (format (format "%%0%dx" (length match))
+                               (+ (or n 1) (string-to-number match 16))))
+      (message "No hexadecimal at point"))))
+
+(global-set-key (kbd "C-c   +") #'increment-dec-at-point)
+(global-set-key (kbd "C-c 6 +") #'increment-hex-at-point)
+
 
 ;;; --- Packages ---
 (eval-when-compile
