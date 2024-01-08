@@ -14,7 +14,7 @@
 
 (setq inhibit-startup-message t)
 (tool-bar-mode -1)
-;; (scroll-bar-mode -1)
+(scroll-bar-mode -1)
 (menu-bar-mode -1)
 
 ;; Don't pop up the *Warnings* buffer during native compilation
@@ -1047,6 +1047,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 ;;; --- Color theme ---
 (use-package custom-css
+  :if (eq x-toolkit-scroll-bars 'gtk)
   :demand t
   :load-path "lisp/custom-css"
   :config
