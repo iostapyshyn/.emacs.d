@@ -594,6 +594,7 @@ DIR must include a .project file to be considered a project."
 
 (use-package tramp
   :config
+  (setq tramp-completion-use-auth-sources nil)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (use-package org
