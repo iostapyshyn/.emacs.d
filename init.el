@@ -137,11 +137,10 @@ github.com/radomirbosak/duden."
 
 (defun project-mode-line-buffer-identification ()
   "When in a project, indicate project name and path to file."
-  (if-let ((dir (cond ((or (derived-mode-p 'dired-mode)
-                           (derived-mode-p 'magit-mode))
-                       ;; These buffers have default-directory in their name
+  (if-let ((dir (cond ((derived-mode-p 'dired-mode)
                        (file-name-parent-directory default-directory))
-                      (t default-directory)))
+                      ((derived-mode-p 'vterm-mode) default-directory)
+                      ((buffer-file-name) default-directory)))
            (dir (expand-file-name dir))
            (proj (project-current))
            (proj (expand-file-name (project-root proj)))
