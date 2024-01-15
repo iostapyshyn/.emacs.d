@@ -515,6 +515,7 @@ DIR must include a .project file to be considered a project."
 (use-package auth-source
   :config
   ;; Don't even try writing to plain-text .authinfo
+  (setq auth-source-save-behavior nil)
   (setq auth-sources (list (locate-user-emacs-file "authinfo.gpg"))))
 
 (use-package gnus
