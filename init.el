@@ -1045,6 +1045,12 @@ the buffer. Disable flyspell-mode otherwise."
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
+(use-package direnv
+  :ensure t
+  :demand t
+  :config
+  (direnv-mode))
+
 
 ;;; --- Color theme ---
 (use-package custom-css
