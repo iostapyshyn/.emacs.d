@@ -1207,6 +1207,20 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   (eshell-vterm-mode))
 
+(use-package magit-todos
+  :ensure t
+  :preface
+  ;; quite buggy -- trigger manually
+  (with-eval-after-load "magit-status"
+    (transient-append-suffix #'magit-status-jump
+      '(0 -1) '[("t" "List todos" magit-todos-list)])))
+
+(use-package hl-todo
+  :ensure t
+  :demand t
+  :config
+  (global-hl-todo-mode))
+
 ;; Smart trailing whitespace trimming
 (use-package ws-butler
   :ensure t
@@ -1241,6 +1255,8 @@ the buffer. Disable flyspell-mode otherwise."
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 50))
 
 (use-package eglot
+  :bind (:map eglot-mode-map
+              ("C-c l a" . eglot-code-actions))
   :config
   ;; project.el does not resolve symlinks:
   ;; If project root path includes a symlink, jump to definition fails to fire up eglot
