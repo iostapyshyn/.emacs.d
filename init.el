@@ -1045,12 +1045,6 @@ the buffer. Disable flyspell-mode otherwise."
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
-(use-package direnv
-  :ensure t
-  :demand t
-  :config
-  (direnv-mode))
-
 
 ;;; --- Color theme ---
 (use-package custom-css
@@ -1411,6 +1405,13 @@ the buffer. Disable flyspell-mode otherwise."
     (if (region-active-p)
         (sprunge-region)
       (sprunge-buffer))))
+
+;; envrc-mode should be enabled late since it prepends itself to var. hooks
+(use-package envrc
+  :ensure t
+  :demand t
+  :config
+  (envrc-global-mode))
 
 
 ;;; --- Some final nuances ---
