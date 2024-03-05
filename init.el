@@ -919,7 +919,8 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap yank-pop]                        . consult-yank-pop)
          ([remap imenu]                           . consult-imenu)
          ([remap flymake-show-buffer-diagnostics] . consult-flymake)
-         ([remap vterm]                           . consult-vterm))
+         ([remap vterm]                           . consult-vterm)
+         ([remap eshell]                          . consult-eshell))
   :bind* ("<insert>" . consult-buffer)
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
@@ -939,6 +940,23 @@ the buffer. Disable flyspell-mode otherwise."
    :preview-key "M-.")
 
   ;; Useful buffer sources
+  (defvar consult--source-eshell-buffer
+    (list :name     "Eshell Buffer"
+          :hidden   t
+          :narrow   ?s
+          :category 'buffer
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create (concat "*eshell*<" name ">"))
+              (unless (derived-mode-p 'eshell-mode)
+                (eshell-mode))
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (consult--buffer-query :mode 'eshell-mode :as #'buffer-name))))
   (defvar consult--source-vterm-buffer
     (list :name     "Vterm Buffer"
           :hidden   t
@@ -995,7 +1013,8 @@ the buffer. Disable flyspell-mode otherwise."
                                  consult--source-project-buffer-hidden
                                  consult--source-modified-buffer
                                  consult--source-dired-buffer
-                                 consult--source-vterm-buffer))
+                                 consult--source-vterm-buffer
+                                 consult--source-eshell-buffer))
 
   ;; Vterm
   (defvar consult--source-vterm-local-buffer
@@ -1018,7 +1037,32 @@ the buffer. Disable flyspell-mode otherwise."
     (if arg
         (vterm arg)
       (consult--multi `(consult--source-vterm-local-buffer
-                        ,(plist-put consult--source-vterm-buffer :narrow ? ))))))
+                        ,(plist-put consult--source-vterm-buffer :narrow ? )))))
+
+  ;; Eshell
+  (defvar consult--source-eshell-local-buffer
+    (list :name     "Local Eshell Buffer"
+          :category 'buffer
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create (concat "*eshell*<" name ">"))
+              (unless (derived-mode-p 'eshell-mode)
+                (eshell-mode))
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (consult--buffer-query :predicate #'bufferlo-local-buffer-p :mode 'eshell-mode :as #'buffer-name :sort 'visibility))))
+
+  (defun consult-eshell (&optional arg)
+    (interactive "P")
+    (if arg
+        (eshell arg)
+      (consult--multi `(consult--source-eshell-local-buffer
+                        ,(plist-put consult--source-eshell-buffer :narrow ? ))))))
+
 
 (use-package embark
   :ensure t
@@ -1127,19 +1171,9 @@ the buffer. Disable flyspell-mode otherwise."
           lisp-mode) . rainbow-delimiters-mode))
 
 (use-package eshell
+  :bind (("C-z" . eshell))
   :config
-  (define-advice eshell
-      (:around (orig-fun &rest args) save-directory)
-    (if (and (derived-mode-p 'eshell-mode)
-             (not (car args))
-             (bound-and-true-p eshell-saved-directory))
-        (progn
-          (cd eshell-saved-directory)
-          (eshell-reset nil))
-      (setq eshell-saved-directory default-directory)
-      (apply orig-fun args)))
-
-  (defun eshell/last-remote (&optional _indices)
+  (defun eshell/last-remote ()
     (when-let ((r (if-let ((base (file-remote-p default-directory)))
                       base
                     (seq-some 'file-remote-p (ring-elements eshell-last-dir-ring)))))
@@ -1147,7 +1181,7 @@ the buffer. Disable flyspell-mode otherwise."
       ;; i.e. cd $r|sudo::
       (replace-regexp-in-string ":\\'" "" r)))
   (require 'esh-var)
-  (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote))
+  (add-to-list 'eshell-variable-aliases-list '("r" eshell/last-remote nil t))
 
   (setq eshell-destroy-buffer-when-process-dies t)
   (defalias 'eshell/v #'eshell-exec-visual)
@@ -1155,10 +1189,9 @@ the buffer. Disable flyspell-mode otherwise."
   (defalias 'eshell/clear #'eshell/clear-scrollback))
 
 (use-package vterm
-  :load-path "lisp/emacs-libvterm"
+  :ensure t
   :commands (term vterm-mode)
-  :bind (("C-z"     . vterm)
-         ("C-x C-z" . vterm)
+  :bind (("C-x C-z" . vterm)
          (:map vterm-mode-map
                ("C-c TAB"   . vterm-cd-saved-directory)
                ("C-c C-x"   . vterm-send-C-x)
@@ -1197,10 +1230,18 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package eshell-vterm
   :load-path "lisp/eshell-vterm"
-  :disabled t
-  :after eshell vterm
+  :demand t
+  :after eshell
   :config
+  (require 'vterm)
   (eshell-vterm-mode))
+
+(use-package inheritenv
+  :ensure t
+  :demand t
+  :config
+  (eval-after-load 'eshell-vterm
+    '(inheritenv-add-advice #'eshell-vterm-exec-visual)))
 
 (use-package magit-todos
   :ensure t
