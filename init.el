@@ -1290,6 +1290,26 @@ the buffer. Disable flyspell-mode otherwise."
 
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 50))
 
+(use-package copilot
+  :load-path "lisp/copilot.el"
+  :demand t
+  :bind ("C-c p" . copilot-call)
+  :config
+  (defun copilot-call ()
+    (interactive)
+    (copilot-mode 1)
+    (copilot-complete)
+    (copilot-transient))
+
+  ;; Todo make on-demand
+  (transient-define-prefix copilot-transient ()
+    ["Select"
+     ("l" "List" copilot-panel-complete :transient t)
+     ("p" "Previous" copilot-previous-completion :transient t)
+     ("n" "Next" copilot-next-completion :transient t)]
+    ["Actions"
+     ("a" "Accept" copilot-accept-completion)]))
+
 (use-package eglot
   :bind (:map eglot-mode-map
               ("C-c l a" . eglot-code-actions))
