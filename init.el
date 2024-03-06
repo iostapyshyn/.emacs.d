@@ -1236,13 +1236,6 @@ the buffer. Disable flyspell-mode otherwise."
   (require 'vterm)
   (eshell-vterm-mode))
 
-(use-package inheritenv
-  :ensure t
-  :demand t
-  :config
-  (eval-after-load 'eshell-vterm
-    '(inheritenv-add-advice #'eshell-vterm-exec-visual)))
-
 (use-package magit-todos
   :ensure t
   :preface
