@@ -3,6 +3,11 @@
 	url = https://github.com/iostapyshyn/mensa-mode.git
 	branch = master
 	vcs = git
+[external "lisp/emacs-libvterm"]
+	path = lisp/emacs-libvterm
+	url = https://github.com/florommel/emacs-libvterm.git
+	branch = master
+	vcs = git
 [external "lisp/eshell-vterm"]
 	path = lisp/eshell-vterm
 	url = https://github.com/florommel/eshell-vterm.git

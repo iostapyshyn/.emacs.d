@@ -1189,7 +1189,7 @@ the buffer. Disable flyspell-mode otherwise."
   (defalias 'eshell/clear #'eshell/clear-scrollback))
 
 (use-package vterm
-  :ensure t
+  :load-path "lisp/emacs-libvterm"
   :commands (term vterm-mode)
   :bind (("C-x C-z" . vterm)
          (:map vterm-mode-map
