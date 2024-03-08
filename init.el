@@ -1285,7 +1285,6 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package copilot
   :load-path "lisp/copilot.el"
-  :demand t
   :bind ("C-c p" . copilot-call)
   :config
   (defun copilot-call ()
