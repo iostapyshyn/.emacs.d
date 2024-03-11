@@ -739,7 +739,7 @@ DIR must include a .project file to be considered a project."
 
 (use-package dired
   :custom
-  (dired-kill-when-opening-new-dired-buffer t)
+  ;; (dired-kill-when-opening-new-dired-buffer t)
   (dired-dwim-target t)
   (dired-recursive-copies 'top)
   (dired-recursive-deletes 'top)
