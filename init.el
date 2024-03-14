@@ -435,6 +435,7 @@ If point reaches the beginning or end of buffer, it stops there."
   :demand t
   :config
   (add-to-list 'minions-prominent-modes 'lsp-mode)
+  (add-to-list 'minions-prominent-modes 'envrc-mode)
   (add-to-list 'minions-prominent-modes 'vterm-copy-mode)
   (minions-mode 1))
 
@@ -1465,6 +1466,7 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :demand t
   :config
+  (setq envrc-none-lighter nil)
   (envrc-global-mode))
 
 
