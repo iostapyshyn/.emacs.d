@@ -295,8 +295,11 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (require 'treesit)
 
-(defconst treesit-langs '())
-;; '(("c" . c) ("c++" . cpp) ("bash" . bash) ("python" . python) ("rust" . rust)))
+(add-to-list 'treesit-language-source-alist
+             '(typst "https://github.com/uben0/tree-sitter-typst"))
+
+(defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
+                          ("python" . python) ("rust" . rust) ("typst" . typst)))
 
 (defun treesit-populate-mode-mapping ()
   "Populate `major-mode-remap-alist' according to `treesit-langs'."
@@ -1420,6 +1423,9 @@ the buffer. Disable flyspell-mode otherwise."
   (add-hook 'beancount-mode-hook #'outline-minor-mode)
   (require 'flymake-bean-check)
   (add-hook 'beancount-mode-hook #'flymake-bean-check-enable))
+
+(use-package typst-ts-mode
+  :load-path "lisp/typst-ts-mode")
 
 (use-package rmsbolt
   :config

@@ -28,3 +28,8 @@
 	url = https://github.com/florommel/on-demand-scroll-bar.git
 	branch = main
 	vcs = git
+[external "list/typst-ts-mode"]
+	path = list/typst-ts-mode
+	url = https://git.sr.ht/~meow_king/typst-ts-mode
+	branch = main
+	vcs = git
