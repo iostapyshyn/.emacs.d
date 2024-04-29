@@ -1425,7 +1425,8 @@ the buffer. Disable flyspell-mode otherwise."
   (add-hook 'beancount-mode-hook #'flymake-bean-check-enable))
 
 (use-package typst-ts-mode
-  :load-path "lisp/typst-ts-mode")
+  :load-path "lisp/typst-ts-mode"
+  :mode ("\\.typ\\'"))
 
 (use-package rmsbolt
   :config

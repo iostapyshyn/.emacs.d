@@ -29,7 +29,7 @@
 	branch = main
 	vcs = git
 [external "list/typst-ts-mode"]
-	path = list/typst-ts-mode
+	path = lisp/typst-ts-mode
 	url = https://git.sr.ht/~meow_king/typst-ts-mode
 	branch = main
 	vcs = git
