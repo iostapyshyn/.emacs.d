@@ -519,10 +519,17 @@ DIR must include a .project file to be considered a project."
 
 (use-package auth-source
   :config
-  ;; Don't even try writing to plain-text .authinfo
+  ;; Don't even dare to write plain-text .authinfo
   (setq auth-sources (list (locate-user-emacs-file "authinfo.gpg")))
   (setq auth-source-save-behavior nil)
-  (auth-source-pass-enable))
+  (auth-source-pass-enable)
+
+  (define-advice auth-source-pass-search (:before-while (&rest _) open-coffin)
+    (let ((coffin-path (concat
+                        (file-name-as-directory auth-source-pass-filename)
+                        ".coffin/coffin.tar.gpg")))
+      (or (not (file-exists-p coffin-path))
+          (equal (call-process "pass" nil nil nil "open" "-t" "3min") 0)))))
 
 (use-package gnus
   :config
