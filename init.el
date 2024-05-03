@@ -1269,6 +1269,7 @@ the buffer. Disable flyspell-mode otherwise."
          "\\.[agj]sp\\'"
          "\\.as[cp]x\\'"
          "\\.erb\\'"
+         "\\.njk\\'"
          "\\.mustache\\'"
          "\\.djhtml\\'"
          "\\.html?\\'")
