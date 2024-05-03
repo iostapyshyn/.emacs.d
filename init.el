@@ -344,6 +344,12 @@ If point reaches the beginning or end of buffer, it stops there."
 (global-set-key (kbd "C-c   +") #'increment-dec-at-point)
 (global-set-key (kbd "C-c 6 +") #'increment-hex-at-point)
 
+(defun alist-merge (old new)
+  "Update OLD alist with values from NEW alist, with NEW taking precedence."
+  (dolist (pair new)
+    (setq old (cons pair (assq-delete-all (car pair) old))))
+  old)
+
 
 ;;; --- Packages ---
 (eval-when-compile
@@ -536,6 +542,50 @@ DIR must include a .project file to be considered a project."
   (setq gnus-select-method '(nnnil "")
         gnus-init-file (locate-user-emacs-file "gnus.el")
         gnus-inhibit-mime-unbuttonizing t)
+
+  (defun gnus-easyimap-add (name address server &rest keyword-args)
+    "Add secondary nnimap method to Gnus with sane defaults.
+
+Add an nnimap method called NAME (defaults to ADDRESS if nil)
+with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
+:parameters, and :posting-style to allow customizing
+`gnus-secondary-select-methods', `gnus-parameters', and
+`gnus-posting-styles', respectively."
+    (let* ((name (or name address))
+           (method (alist-merge
+                    `((nnimap-user ,address)
+                      (nnimap-address ,server)
+                      (nnimap-server-port "imaps"))
+                    (plist-get keyword-args :method)))
+           (parameters (alist-merge
+                        `((gcc-self ,(concat "nnimap+" name ":Sent")))
+                        (plist-get keyword-args :parameters)))
+           (posting-style (alist-merge
+                           `((address ,address)
+                             (X-Message-SMTP-Method ,(concat "smtp " server " 587")))
+                           (plist-get keyword-args :posting-style))))
+      (add-to-list 'gnus-secondary-select-methods
+                   (append `(nnimap ,name) method))
+      (add-to-list 'gnus-parameters
+                   (cons (concat "^nnimap\\+" (regexp-quote name) ":.*")
+                         parameters))
+      (add-to-list 'gnus-posting-styles
+                   (cons (concat "^nnimap\\+" (regexp-quote name) ":.*")
+                         posting-style))))
+
+  (defun gnus-easyimap-organize-topics (parent)
+    "Organize nnimap groups under topics for each method."
+    (interactive (list (read-string "Parent topic: " "Mail")))
+    (unless (gnus-topic-find-topology parent)
+      (gnus-topic-create-topic parent nil))
+    (dolist (method gnus-secondary-select-methods)
+      (when-let (((equal (car method) 'nnimap))
+                 (name (cadr method))
+                 (topic name))
+        (if (gnus-topic-find-topology topic)
+            (gnus-topic-move topic parent)
+          (gnus-topic-create-topic topic parent))
+        (gnus-topic-move-matching (concat "^nnimap\\+" (regexp-quote name) ":.*") topic))))
 
   ;; Useful default servers
   (add-to-list 'gnus-secondary-select-methods
