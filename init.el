@@ -549,7 +549,10 @@ DIR must include a .project file to be considered a project."
           smtpmail-smtp-service
           (read-number (format "Port number to use when contacting %s: "
 			       smtpmail-smtp-server)
-                       smtpmail-smtp-service))))
+                       smtpmail-smtp-service)
+
+          smtpmail-smtp-user
+          (cadr (mail-extract-address-components (message-fetch-field "From"))))))
 
 (use-package mml
   :config
@@ -594,7 +597,7 @@ DIR must include a .project file to be considered a project."
               (insert ", "))
             (insert from))))))
 
-  (add-hook 'message-send-hook #'message-add-self-to-bcc)
+  ;; (add-hook 'message-send-hook #'message-add-self-to-bcc)
   (setq message-send-mail-function #'smtpmail-send-it))
 
 (use-package tramp
