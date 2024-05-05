@@ -1368,6 +1368,13 @@ the buffer. Disable flyspell-mode otherwise."
     ["Actions"
      ("a" "Accept" copilot-accept-completion)]))
 
+;; How does this get along with dtrt-mode?
+(use-package editorconfig
+  :ensure t
+  :demand t
+  :config
+  (editorconfig-mode 1))
+
 (use-package eglot
   :bind (:map eglot-mode-map
               ("C-c l a" . eglot-code-actions))
