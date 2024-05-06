@@ -541,7 +541,8 @@ DIR must include a .project file to be considered a project."
   :config
   (setq gnus-select-method '(nnnil "")
         gnus-init-file (locate-user-emacs-file "gnus.el")
-        gnus-inhibit-mime-unbuttonizing t)
+        gnus-inhibit-mime-unbuttonizing t
+        gnus-always-read-dribble-file t)
 
   (defun gnus-easyimap-add (name address server &rest keyword-args)
     "Add secondary nnimap method to Gnus with sane defaults.
