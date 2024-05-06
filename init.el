@@ -588,10 +588,10 @@ with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
         (gnus-topic-move-matching (concat "^nnimap\\+" (regexp-quote name) ":.*") topic))))
 
   ;; Useful default servers
+  ;; (add-to-list 'gnus-secondary-select-methods
+  ;;              '(nntp "gwene" (nntp-address "news.gwene.org")))
   (add-to-list 'gnus-secondary-select-methods
-               '(nntp "gmane" (nntp-address "news.gmane.io")))
-  (add-to-list 'gnus-secondary-select-methods
-               '(nntp "gwene" (nntp-address "news.gwene.org"))))
+               '(nntp "gmane" (nntp-address "news.gmane.io"))))
 
 (use-package smtpmail
   :config
