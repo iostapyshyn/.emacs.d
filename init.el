@@ -2,11 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-;; Load early-init.el if emacs < 27
-(when (version< emacs-version "27")
-  (let ((early-init-file (locate-user-emacs-file "early-init.el")))
-    (load early-init-file t nil t)))
-
 (setq custom-file (locate-user-emacs-file "custom.el")) ; Customize is not used
 
 (setq local-init-file (locate-user-emacs-file "local.el"))
@@ -62,6 +57,9 @@
 ;; German postfix input method: ae -> ä
 (setq default-input-method 'german-postfix)
 
+(when (boundp kill-ring-deindent-mode) ;; emacs 29 compatibility
+  (kill-ring-deindent-mode 1))
+
 ;; Parenthesis
 (setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
@@ -116,6 +114,7 @@ github.com/radomirbosak/duden."
 (with-eval-after-load "bookmark"
   (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-default-file))))
 
+;; Like mode-line-format-right-align in emacs 30, but more precise
 (defun mode-line-render (left right)
   "Return LEFT and RIGHT aligned in the mode-line respectively."
   (let* ((left (format-mode-line left))
@@ -203,7 +202,7 @@ github.com/radomirbosak/duden."
 (global-set-key (kbd "<menu>") 'mode-specific-command-prefix)
 
 (defun toggle-window-no-delete (&optional window)
-  "Invert the dedicatation of the WINDOW to its buffer."
+  "Invert the no-delete-other-windows parameter of the WINDOW."
   (interactive)
   (let ((no-delete (not (window-parameter window 'no-delete-other-windows))))
     (set-window-parameter window 'no-delete-other-windows no-delete)
@@ -211,14 +210,15 @@ github.com/radomirbosak/duden."
                  "Window will not be deleted on delete-other-windows"
                "Window will be deleted on delete-other-windows"))))
 
-(defun toggle-window-dedicated (&optional window)
-  "Invert the dedicatation of the WINDOW to its buffer."
-  (interactive)
-  (let ((dedicated (not (window-dedicated-p window))))
-    (set-window-dedicated-p window dedicated)
-    (message (if dedicated
-                 "Window is now dedicated to its buffer"
-               "Window is no longer dedicated to its buffer"))))
+(unless (fboundp #'toggle-window-dedicated) ;; emacs 29 compatibility
+  (defun toggle-window-dedicated (&optional window)
+    "Invert the dedicatation of the WINDOW to its buffer."
+    (interactive)
+    (let ((dedicated (not (window-dedicated-p window))))
+      (set-window-dedicated-p window dedicated)
+      (message (if dedicated
+                   "Window is now dedicated to its buffer"
+                 "Window is no longer dedicated to its buffer")))))
 
 (global-set-key (kbd "C-c w d") #'toggle-window-dedicated)
 (global-set-key (kbd "C-c w s") #'toggle-window-no-delete)
@@ -288,6 +288,10 @@ If point reaches the beginning or end of buffer, it stops there."
 ;; Complementary to C-x x t (toggle-truncate-lines)
 (global-set-key (kbd "C-x x v") #'visual-line-mode)
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+
+(when (fboundp #'visual-wrap-prefix-mode) ;; emacs 29 compatibility
+  (global-set-key (kbd "C-x x w") #'visual-wrap-prefix-mode)
+  (global-visual-wrap-prefix-mode))
 
 (setq my-frame-scale-factor
       (if (fboundp 'frame-scale-factor)
@@ -883,13 +887,6 @@ the buffer. Disable flyspell-mode otherwise."
         'flymake-diagnostic-at-point-display-minibuffer
         ;; Take priority over eldoc with its 0.5s delay
         flymake-diagnostic-at-point-timer-delay 0.51))
-
-;; TODO: Already present in Emacs 29:
-(use-package flymake-shellcheck
-  :if (version< emacs-version "29")
-  :ensure t
-  :after flymake
-  :hook (sh-mode . flymake-shellcheck-load))
 
 ;; Make key-bindings work in other keyboard layouts
 (use-package reverse-im
