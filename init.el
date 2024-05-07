@@ -1543,7 +1543,10 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :config
   (setq envrc-none-lighter nil)
-  (envrc-global-mode))
+  (envrc-global-mode)
+
+  (define-advice vterm--set-directory (:after (&rest _) update-envrc)
+    (when envrc-mode (envrc--update))))
 
 
 ;;; --- Some final nuances ---
