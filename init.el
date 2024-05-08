@@ -57,7 +57,7 @@
 ;; German postfix input method: ae -> ä
 (setq default-input-method 'german-postfix)
 
-(when (boundp kill-ring-deindent-mode) ;; emacs 29 compatibility
+(when (fboundp #'kill-ring-deindent-mode) ;; emacs 29 compatibility
   (kill-ring-deindent-mode 1))
 
 ;; Parenthesis
@@ -294,7 +294,7 @@ If point reaches the beginning or end of buffer, it stops there."
   (global-visual-wrap-prefix-mode))
 
 (setq my-frame-scale-factor
-      (if (fboundp 'frame-scale-factor)
+      (if (fboundp #'frame-scale-factor)
           (frame-scale-factor) 1))
 
 (require 'treesit)
@@ -308,7 +308,7 @@ If point reaches the beginning or end of buffer, it stops there."
 (defun treesit-populate-mode-mapping ()
   "Populate `major-mode-remap-alist' according to `treesit-langs'."
   (interactive)
-  (when (and (fboundp 'treesit-available-p) (treesit-available-p))
+  (when (and (fboundp #'treesit-available-p) (treesit-available-p))
     (dolist (lang treesit-langs)
       (when-let (((treesit-ready-p (cdr lang) t))
                  (mode (intern (concat (car lang) "-mode")))
@@ -475,7 +475,7 @@ DIR must include a .project file to be considered a project."
   (defun compile-maybe-project ()
     "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
     (interactive)
-    (if (and (fboundp 'project-current)
+    (if (and (fboundp #'project-current)
              (project-current nil))
         (call-interactively #'project-compile)
       (call-interactively #'compile)))
