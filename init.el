@@ -527,6 +527,10 @@ DIR must include a .project file to be considered a project."
         calendar-longitude 9.69
         calendar-week-start-day 1))
 
+(use-package password-cache
+  :config
+  (setq password-cache-expiry 600))
+
 (use-package auth-source
   :config
   ;; Don't even dare to write plain-text .authinfo
