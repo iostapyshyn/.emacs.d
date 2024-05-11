@@ -1150,6 +1150,12 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind* (("C-j" . avy-goto-word-1)))
 
+(use-package winner
+  :ensure t
+  :demand t
+  :config
+  (winner-mode))
+
 ;; Get environment variables
 (use-package exec-path-from-shell
   :ensure t
