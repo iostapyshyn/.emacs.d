@@ -111,8 +111,6 @@ github.com/radomirbosak/duden."
   "Load bookmarks file before trying to jump non-interactively."
   (bookmark-maybe-load-default-file)
   (advice-remove 'bookmark-jump 'bookmark-jump@bookmarks-load))
-(with-eval-after-load "bookmark"
-  (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-default-file))))
 
 ;; Like mode-line-format-right-align in emacs 30, but more precise
 (defun mode-line-render (left right)
@@ -501,6 +499,8 @@ DIR must include a .project file to be considered a project."
   :bind ("C-x C-r" . recentf-open-files)
   :config
   (recentf-mode 1)
+  (with-eval-after-load "bookmark"
+    (add-to-list 'recentf-exclude (regexp-quote (expand-file-name bookmark-default-file))))
   (setq recentf-max-saved-items nil
         recentf-auto-cleanup 'never
         recentf-exclude '("^/var/folders\\.*"
