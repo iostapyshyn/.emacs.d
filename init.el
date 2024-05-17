@@ -551,7 +551,8 @@ DIR must include a .project file to be considered a project."
         gnus-init-file (locate-user-emacs-file "gnus.el")
         gnus-inhibit-mime-unbuttonizing t
         gnus-always-read-dribble-file t
-        gnus-refer-thread-limit 5000)
+        gnus-refer-thread-limit 5000
+        gnus-large-newsgroup 1000)
 
   (defun gnus-easyimap-add (name address server &rest keyword-args)
     "Add secondary nnimap method to Gnus with sane defaults.
