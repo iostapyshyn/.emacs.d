@@ -554,6 +554,14 @@ DIR must include a .project file to be considered a project."
         gnus-refer-thread-limit 5000
         gnus-large-newsgroup 1000)
 
+  (setq gnus-summary-line-format "%1{%U%R%O %4k %&user-date;%*%} │ %2{%f%}%-42= │ %I%S\n")
+  (setq gnus-thread-indent-level 2)
+
+  (setq gnus-user-date-format-alist
+        '(((gnus-seconds-today) . "  %k:%M")
+          (31536000 . " %e %b")
+          (t . "%Y-%m")))
+
   (defun gnus-easyimap-add (name address server &rest keyword-args)
     "Add secondary nnimap method to Gnus with sane defaults.
 
