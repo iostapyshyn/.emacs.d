@@ -554,8 +554,19 @@ DIR must include a .project file to be considered a project."
         gnus-refer-thread-limit 5000
         gnus-large-newsgroup 1000)
 
-  (setq gnus-summary-line-format "%1{%U%R%O %4k %&user-date;%*%} │ %2{%f%}%-42= │ %I%S\n")
-  (setq gnus-thread-indent-level 2)
+  ;; Simple indent using dots
+  (setq gnus-sum-thread-tree-root ""
+        gnus-sum-thread-tree-false-root ""
+        gnus-sum-thread-tree-single-indent ""
+        gnus-sum-thread-tree-vertical "· "
+        gnus-sum-thread-tree-indent "· "
+        gnus-sum-thread-tree-leaf-with-other "· "
+        gnus-sum-thread-tree-single-leaf "· ")
+
+  (setq gnus-summary-line-format "%1{%U%R%O %4k %&user-date;%*%} │ %2{%f%}%-42= │ %B%S\n"
+        gnus-summary-dummy-line-format "%13=... │ ... %42= │ %S\n")
+  (setq gnus-thread-indent-level 2
+        gnus-summary-make-false-root 'dummy)
 
   (setq gnus-user-date-format-alist
         '(((gnus-seconds-today) . "  %k:%M")
