@@ -1536,6 +1536,10 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package rainbow-mode
   :ensure t)
 
+(use-package visual-fill-column
+  :ensure t
+  :bind (("C-x x C-v" . visual-fill-column-mode)))
+
 (use-package pdf-tools
   :ensure t
   :pin "melpa"
