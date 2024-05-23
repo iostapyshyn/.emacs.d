@@ -554,6 +554,9 @@ DIR must include a .project file to be considered a project."
         gnus-refer-thread-limit 5000
         gnus-large-newsgroup 1000)
 
+  (setq gnus-cacheable-groups "^nnimap"
+        gnus-use-cache t)
+
   ;; Simple indent using dots
   (setq gnus-sum-thread-tree-root ""
         gnus-sum-thread-tree-false-root ""
