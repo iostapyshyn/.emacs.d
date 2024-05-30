@@ -1417,7 +1417,10 @@ the buffer. Disable flyspell-mode otherwise."
   ;; If project root path includes a symlink, jump to definition fails to fire up eglot
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
   ;; Keep inlay hints off
-  (add-to-list 'eglot-ignored-server-capabilities :inlayHintProvider)
+  (setq eglot-ignored-server-capabilities '(:documentFormattingProvider
+                                            :documentRangeFormattingProvider
+                                            :documentOnTypeFormattingProvider
+                                            :inlayHintProvider))
   (add-to-list 'eglot-server-programs
                '((c-mode c++-mode)
                  . ("clangd" "--header-insertion=never")))
