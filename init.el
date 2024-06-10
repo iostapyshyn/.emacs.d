@@ -352,6 +352,26 @@ If point reaches the beginning or end of buffer, it stops there."
     (setq old (cons pair (assq-delete-all (car pair) old))))
   old)
 
+(defun termbin-publish (text)
+  "Upload TEXT to termbin.com and save the URL to the kill ring."
+  (let* ((filter (lambda (_ output)
+                   (let ((url (string-trim-right output "[ \t\n\r\0]+")))
+                     (message url)
+                     (kill-new url))))
+         (stream (open-network-stream "termbin-publish" nil "termbin.com" 9999)))
+    (set-process-filter stream filter)
+    (process-send-string stream text)))
+
+(defun termbin-dwim ()
+  "Upload the region or whole buffer to termbin.com."
+  (interactive)
+  (termbin-publish
+   (if (region-active-p)
+       (buffer-substring (region-beginning) (region-end))
+     (buffer-string))))
+
+(global-set-key (kbd "C-c q p") #'termbin-dwim)
+
 
 ;;; --- Packages ---
 (eval-when-compile
@@ -1566,16 +1586,6 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package saveplace-pdf-view
   :ensure t
   :demand t)
-
-(use-package sprunge
-  :ensure t
-  :bind (("C-c q p" . sprunge-dwim))
-  :config
-  (defun sprunge-dwim ()
-    (interactive)
-    (if (region-active-p)
-        (sprunge-region)
-      (sprunge-buffer))))
 
 ;; envrc-mode should be enabled late since it prepends itself to var. hooks
 (use-package envrc
