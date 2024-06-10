@@ -1593,7 +1593,8 @@ the buffer. Disable flyspell-mode otherwise."
 ;; Start the server if not running
 (require 'server)
 (unless (or (daemonp) (server-running-p))
-  (server-start))
+  (server-start)
+  (add-to-list 'frame-title-format " (server)" t))
 
 ;;; Show startup time:
 (add-hook 'emacs-startup-hook
