@@ -372,6 +372,50 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (global-set-key (kbd "C-c q p") #'termbin-dwim)
 
+(cl-defmethod register-command-info ((_command (eql save-register-dwim)))
+  (make-register-preview-info
+   :types '(all)
+   :noconfirm (memq register-use-preview '(nil never))))
+
+(cl-defmethod register-command-info ((_command (eql load-register-dwim)))
+  (make-register-preview-info
+   :types '(all)
+   :smatch t
+   :noconfirm (memq register-use-preview '(nil never))))
+
+(defun save-register-dwim (register &optional arg)
+  "Save REGISTER (DWIM) with ARG."
+  (interactive (list (register-read-with-preview
+                      (format "%s to register: "
+                              (if (region-active-p) "Region" "Location")))
+                     current-prefix-arg))
+  (if (region-active-p)
+      (progn
+        (copy-to-register register (mark) (point) nil t))
+    (if (and (>= register ?0) (<= register ?9))
+        (window-configuration-to-register register)
+      (point-to-register register arg)))
+  (message "Saved register %c" register))
+
+(defun load-register-dwim (register &optional arg)
+  "Load REGISTER (DWIM) with ARG."
+  (interactive (list (register-read-with-preview "Load from register: ")
+                      current-prefix-arg))
+  (if (and (not arg) (markerp (get-register register)))
+      (let ((buf (marker-buffer (get-register register))))
+        (or (eq (current-buffer) buf)
+            (when-let (w (get-buffer-window buf (selected-frame)))
+              (select-window w))
+            (when-let (w (get-buffer-window buf (old-selected-frame)))
+              (select-window w))
+            (bufferlo-find-buffer-switch buf))
+        (jump-to-register register))
+    (consult-register-load register arg))
+  (message "Loaded register %c" register))
+
+(global-set-key (kbd "C-c R") #'save-register-dwim)
+(global-set-key (kbd "C-c r") #'load-register-dwim)
+
 
 ;;; --- Packages ---
 (eval-when-compile
