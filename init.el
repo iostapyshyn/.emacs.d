@@ -197,8 +197,6 @@ github.com/radomirbosak/duden."
 (global-set-key (kbd "C-h C-m") #'man)
 (setq Man-notify-method 'pushy)
 
-(global-set-key (kbd "<menu>") 'mode-specific-command-prefix)
-
 (defun toggle-window-no-delete (&optional window)
   "Invert the no-delete-other-windows parameter of the WINDOW."
   (interactive)
@@ -492,25 +490,27 @@ If point reaches the beginning or end of buffer, it stops there."
   :config
   (global-devil-mode)
   (devil-set-key (kbd "<menu>"))
-  (setq devil-repeatable-keys '(("%k /")
-                                ("%k d")
-                                ("%k k")
-                                ("%k %k ^") ;; Join line
-                                ("%k %k n" "%k %k p" "%k %k r" "%k l" ) ;; Window scrolling
-                                ("%k v") ("%k %k v") ;; Page scrolling
-                                ("%k p" "%k n" "%k b" "%k f" "%k a" "%k e") ;; Char navigation
-                                ("%k %k b" "%k %k f" "%k %k a" "%k %k e" "%k %k }" "%k %k {") ;; Word navigation
-                                ("%k %k %k f" "%k %k %k b" "%k %k %k u" "%k %k %k d") ;; Sexp navigation
-                                ("%k %k @" "%k %k h")
-                                ("%k s" "%k r") ;; Search
-                                ("%k x [" "%k x ]") ;; Page
-                                ("%k x ^" "%k x {" "%k x }") ;; Window size
-                                ("%k ," "%k ." "%k ;"))) ;; Buffer/window selection
-  (setq devil-special-keys '(("%k h %k k" . devil-describe-key)
-                             ("%k h %k l" . devil-toggle-logging)))
-  (setq devil-translations '(("%k %k %k" . "C-M-")
-                             ("%k %k"    . "M-")
-                             ("%k"       . "C-"))))
+  (setq devil-translations '(("%k m m" . "C-M-")
+                             ("%k m"   . "M-")
+                             ("%k"     . "C-")))
+  (setq devil-special-keys '(("%k %k"     . consult-buffer)
+                             ("%k h %k k" . devil-describe-key)
+                             ("%k h %k l" . devil-toggle-logging))) ;; Buffer/window selection
+  (setq devil-repeatable-keys
+        '(("%k /")
+          ("%k d")
+          ("%k k")
+          ("%k m ^") ;; Join line
+          ("%k m n" "%k m p" "%k m r" "%k l" ) ;; Window scrolling
+          ("%k v") ("%k m v") ;; Page scrolling
+          ("%k p" "%k n" "%k b" "%k f" "%k a" "%k e") ;; Char navigation
+          ("%k m b" "%k m f" "%k m a" "%k m e" "%k m }" "%k m {") ;; Word navigation
+          ("%k m m f" "%k m m b" "%k m m u" "%k m m d") ;; Sexp navigation
+          ("%k m @" "%k m h")
+          ("%k s" "%k r") ;; Search
+          ("%k x [" "%k x ]") ;; Page
+          ("%k x ^" "%k x {" "%k x }") ;; Window size
+          ("%k ," "%k ." "%k ;"))))
 
 (use-package bufferlo
   :ensure t
