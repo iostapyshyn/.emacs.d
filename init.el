@@ -486,6 +486,32 @@ If point reaches the beginning or end of buffer, it stops there."
                          tab-bar-format-history
                          tab-bar-separator)))
 
+(use-package devil
+  :load-path "lisp/devil"
+  :demand t
+  :config
+  (global-devil-mode)
+  (devil-set-key (kbd "<menu>"))
+  (setq devil-repeatable-keys '(("%k /")
+                                ("%k d")
+                                ("%k k")
+                                ("%k %k ^") ;; Join line
+                                ("%k %k n" "%k %k p" "%k %k r" "%k l" ) ;; Window scrolling
+                                ("%k v") ("%k %k v") ;; Page scrolling
+                                ("%k p" "%k n" "%k b" "%k f" "%k a" "%k e") ;; Char navigation
+                                ("%k %k b" "%k %k f" "%k %k a" "%k %k e" "%k %k }" "%k %k {") ;; Word navigation
+                                ("%k %k %k f" "%k %k %k b" "%k %k %k u" "%k %k %k d") ;; Sexp navigation
+                                ("%k %k @" "%k %k h")
+                                ("%k s" "%k r") ;; Search
+                                ("%k x [" "%k x ]") ;; Page
+                                ("%k x ^" "%k x {" "%k x }") ;; Window size
+                                ("%k ," "%k ." "%k ;"))) ;; Buffer/window selection
+  (setq devil-special-keys '(("%k h %k k" . devil-describe-key)
+                             ("%k h %k l" . devil-toggle-logging)))
+  (setq devil-translations '(("%k %k %k" . "C-M-")
+                             ("%k %k"    . "M-")
+                             ("%k"       . "C-"))))
+
 (use-package bufferlo
   :ensure t
   :demand t
@@ -515,7 +541,7 @@ If point reaches the beginning or end of buffer, it stops there."
   (minions-mode 1))
 
 (use-package project
-  :bind-keymap* ("C-x p" . project-prefix-map)
+  ;; :bind-keymap ("C-x p" . project-prefix-map) ;; TODO: bind-keymap* breaks devil
   :bind (([remap compile] . compile-maybe-project)
          :map project-prefix-map ("g" . project-magit)) ;; TODO: Add project-vterm?
   :config
