@@ -506,7 +506,7 @@ If point reaches the beginning or end of buffer, it stops there."
                                 ("%k m b" "%k m f" "%k m a" "%k m e" "%k m }" "%k m {") ;; Word navigation
                                 ("%k m m f" "%k m m b" "%k m m u" "%k m m d") ;; Sexp navigation
                                 ("%k m @" "%k m h")
-                                ("%k s" "%k r") ;; Search
+                                ("%k s") ("%k r") ;; Search
                                 ("%k x [" "%k x ]") ;; Page
                                 ("%k x ^" "%k x {" "%k x }") ;; Window size
                                 ("%k ," "%k ." "%k ;") ;; Buffer/window selection
