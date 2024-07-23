@@ -1090,6 +1090,7 @@ the buffer. Disable flyspell-mode otherwise."
          ("M-s g"                                 . consult-git-grep)
          ("M-s r"                                 . consult-ripgrep)
          ("M-g m"                                 . consult-mark)
+         ("M-g M-m"                               . consult-global-mark)
          ([remap switch-to-buffer]                . consult-buffer)
          ([remap switch-to-buffer-other-window]   . consult-buffer-other-window)
          ([remap switch-to-buffer-other-frame]    . consult-buffer-other-frame)
