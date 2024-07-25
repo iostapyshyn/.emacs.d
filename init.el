@@ -176,6 +176,13 @@ github.com/radomirbosak/duden."
 ;; Make sure the time stamps are formatted in English across the systems
 (setq system-time-locale "C")
 
+(global-set-key (kbd "C-<mouse-9>") #'next-buffer)
+(global-set-key (kbd "C-<mouse-8>") #'previous-buffer)
+
+(global-set-key (kbd "<mouse-9>") #'xref-find-definitions-at-mouse)
+(global-set-key (kbd "M-<mouse-9>") #'xref-find-references-at-mouse)
+(global-set-key (kbd "<mouse-8>") #'xref-go-back)
+
 (dolist (k '("M-<down>" "M-n"))
   (global-set-key (kbd k) #'scroll-up-line))
 (dolist (k '("M-<up>" "M-p"))
@@ -1064,9 +1071,12 @@ the buffer. Disable flyspell-mode otherwise."
   :demand t
   :bind (:map vertico-map
               ("<prior>" . vertico-scroll-down)
-              ("<next>"  . vertico-scroll-up))
+              ("<next>"  . vertico-scroll-up)
+              ;; Avy-like
+              ("C-j" . vertico-quick-insert))
   :config
-  (vertico-mode))
+  (vertico-mode)
+  (vertico-mouse-mode))
 
 (use-package orderless
   :ensure t
@@ -1264,7 +1274,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package avy
   :ensure t
-  :bind* (("C-j" . avy-goto-word-1)))
+  :bind (("C-j" . avy-goto-word-1)))
 
 (use-package winner
   :ensure t
