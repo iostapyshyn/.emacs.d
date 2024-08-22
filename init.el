@@ -306,8 +306,10 @@ If point reaches the beginning or end of buffer, it stops there."
 (add-to-list 'treesit-language-source-alist
              '(typst "https://github.com/uben0/tree-sitter-typst"))
 
-(defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
-                          ("python" . python) ("rust" . rust) ("typst" . typst)))
+;; (defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
+;;                           ("python" . python) ("rust" . rust) ("typst" . typst)))
+
+(defconst treesit-langs '(("typst" . typst)))
 
 (defun treesit-populate-mode-mapping ()
   "Populate `major-mode-remap-alist' according to `treesit-langs'."
@@ -1523,7 +1525,7 @@ the buffer. Disable flyspell-mode otherwise."
                                             :documentOnTypeFormattingProvider
                                             :inlayHintProvider))
   (add-to-list 'eglot-server-programs
-               '((c-mode c++-mode)
+               '((c-mode c-ts-mode c++-mode c++-ts-mode)
                  . ("clangd" "--header-insertion=never")))
   (setq-default eglot-workspace-configuration
                 '((haskell (plugin (stan (globalOn . :json-false)))))))
