@@ -24,8 +24,8 @@
 ;; Save position in the file
 (save-place-mode)
 
-;; Don't expand symlinks when visiting file
-(setq find-file-visit-truename nil)
+;; Expand symlinks when visiting file
+(setq find-file-visit-truename t)
 
 (setq visible-bell nil)
 (setq ring-bell-function #'ignore)
