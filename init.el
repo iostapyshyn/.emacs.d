@@ -1438,14 +1438,6 @@ the buffer. Disable flyspell-mode otherwise."
   (require 'vterm)
   (eshell-vterm-mode))
 
-(use-package magit-todos
-  :ensure t
-  :preface
-  ;; quite buggy -- trigger manually
-  (with-eval-after-load "magit-status"
-    (transient-append-suffix #'magit-status-jump
-      '(0 -1) '[("t" "List todos" magit-todos-list)])))
-
 (use-package hl-todo
   :ensure t
   :demand t
