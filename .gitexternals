@@ -30,7 +30,7 @@
 	vcs = git
 [external "list/typst-ts-mode"]
 	path = lisp/typst-ts-mode
-	url = https://git.sr.ht/~meow_king/typst-ts-mode
+	url = https://codeberg.org/meow_king/typst-ts-mode.git
 	branch = main
 	vcs = git
 [external "list/devil"]
