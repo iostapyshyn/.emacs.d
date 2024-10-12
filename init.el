@@ -1004,7 +1004,7 @@ the buffer. Disable flyspell-mode otherwise."
                 ("C-c ! p" . flymake-goto-prev-error)
                 ("C-c ! b" . flymake-running-backends)
                 ("C-c ! s" . flymake-start)))
-  :hook ((prog-mode LaTeX-mode) . flymake-mode))
+  :hook ((prog-mode LaTeX-mode typst-ts-mode) . flymake-mode))
 
 (use-package flymake-diagnostic-at-point
   :ensure t
@@ -1016,6 +1016,15 @@ the buffer. Disable flyspell-mode otherwise."
         'flymake-diagnostic-at-point-display-minibuffer
         ;; Take priority over eldoc with its 0.5s delay
         flymake-diagnostic-at-point-timer-delay 0.51))
+
+(use-package flymake-languagetool
+  :ensure t
+  :after flymake
+  :hook (find-file . flymake-languagetool-maybe-load)
+  :config
+  (add-to-list 'flymake-languagetool-active-modes 'typst-ts-mode)
+  (setq flymake-languagetool-server-jar
+        (concat user-emacs-directory ".cache/LanguageTool-6.5/languagetool-server.jar")))
 
 ;; Make key-bindings work in other keyboard layouts
 (use-package reverse-im
