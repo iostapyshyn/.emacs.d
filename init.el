@@ -1638,14 +1638,6 @@ the buffer. Disable flyspell-mode otherwise."
   :load-path "lisp/typst-ts-mode"
   :mode ("\\.typ\\'"))
 
-(with-eval-after-load 'eglot
-  (with-eval-after-load 'typst-ts-mode
-    (add-to-list 'eglot-server-programs
-                 `((typst-ts-mode) .
-                   ,(eglot-alternatives `(,typst-ts-lsp-download-path
-                                          "tinymist"
-                                          "typst-lsp"))))))
-
 (use-package rmsbolt
   :config
   ;; Use tool defaults
