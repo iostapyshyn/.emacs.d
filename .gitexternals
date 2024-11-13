@@ -33,8 +33,3 @@
 	url = https://codeberg.org/meow_king/typst-ts-mode.git
 	branch = main
 	vcs = git
-[external "list/devil"]
-	path = lisp/devil
-	url = https://github.com/susam/devil.git
-	branch = main
-	vcs = git

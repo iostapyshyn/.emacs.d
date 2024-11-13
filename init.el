@@ -494,33 +494,6 @@ If point reaches the beginning or end of buffer, it stops there."
                          tab-bar-format-history
                          tab-bar-separator)))
 
-(use-package devil
-  :load-path "lisp/devil"
-  :demand t
-  :config
-  (global-devil-mode)
-  (devil-set-key (kbd "<menu>"))
-  (setq devil-translations '(("%k m m" . "C-M-")
-                             ("%k m"   . "M-")
-                             ("%k"     . "C-"))
-        devil-special-keys '(("%k %k"     . consult-buffer)
-                             ("%k h %k k" . devil-describe-key))
-        devil-repeatable-keys '(("%k /")
-                                ("%k d")
-                                ("%k k")
-                                ("%k m ^") ;; Join line
-                                ("%k m n" "%k m p" "%k m r" "%k l" ) ;; Window scrolling
-                                ("%k v") ("%k m v") ;; Page scrolling
-                                ("%k p" "%k n" "%k b" "%k f" "%k a" "%k e") ;; Char navigation
-                                ("%k m b" "%k m f" "%k m a" "%k m e" "%k m }" "%k m {") ;; Word navigation
-                                ("%k m m f" "%k m m b" "%k m m u" "%k m m d") ;; Sexp navigation
-                                ("%k m @" "%k m h")
-                                ("%k s") ("%k r") ;; Search
-                                ("%k x [" "%k x ]") ;; Page
-                                ("%k x ^" "%k x {" "%k x }") ;; Window size
-                                ("%k ," "%k ." "%k ;") ;; Buffer/window selection
-                                ("%k SPC" "%k @")))) ;; Popping marks
-
 (use-package bufferlo
   :ensure t
   :demand t
