@@ -601,7 +601,7 @@ DIR must include a .project file to be considered a project."
 
 (use-package password-cache
   :config
-  (setq password-cache-expiry 600))
+  (setq password-cache-expiry (* 60 60)))
 
 (use-package auth-source
   :config
@@ -1592,6 +1592,9 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t)
 
 (use-package nix-mode
+  :ensure t)
+
+(use-package fish-mode
   :ensure t)
 
 (use-package nftables-mode
