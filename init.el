@@ -1597,6 +1597,9 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package fish-mode
   :ensure t)
 
+(use-package scad-mode
+  :ensure t)
+
 (use-package nftables-mode
   :ensure t)
 
