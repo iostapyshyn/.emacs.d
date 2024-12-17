@@ -1099,7 +1099,7 @@ the buffer. Disable flyspell-mode otherwise."
          ([remap flymake-show-buffer-diagnostics] . consult-flymake)
          ([remap vterm]                           . consult-vterm)
          ([remap eshell]                          . consult-eshell))
-  :bind* ("<insert>" . consult-buffer)
+  :bind* ("<menu>" . consult-buffer)
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
   (add-hook 'gud-mode-hook
