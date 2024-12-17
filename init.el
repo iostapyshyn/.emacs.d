@@ -1619,6 +1619,10 @@ the buffer. Disable flyspell-mode otherwise."
   (require 'flymake-bean-check)
   (add-hook 'beancount-mode-hook #'flymake-bean-check-enable))
 
+(use-package outline
+  :init
+  (setq outline-minor-mode-prefix (kbd "C-c o")))
+
 (use-package typst-ts-mode
   :load-path "lisp/typst-ts-mode"
   :mode ("\\.typ\\'"))
