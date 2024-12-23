@@ -1373,7 +1373,7 @@ the buffer. Disable flyspell-mode otherwise."
   (defalias 'eshell/clear #'eshell/clear-scrollback))
 
 (use-package vterm
-  :load-path "lisp/emacs-libvterm"
+  :ensure t
   :commands (term vterm-mode)
   :bind (("C-x C-z" . vterm)
          (:map vterm-mode-map
@@ -1413,7 +1413,7 @@ the buffer. Disable flyspell-mode otherwise."
   (setq vterm-kill-buffer-on-exit t))
 
 (use-package eshell-vterm
-  :load-path "lisp/eshell-vterm"
+  :ensure t
   :demand t
   :after eshell
   :config
@@ -1611,7 +1611,7 @@ the buffer. Disable flyspell-mode otherwise."
             (lambda () (setq indent-tabs-mode nil))))
 
 (use-package beancount
-  :load-path "lisp/beancount-mode"
+  :ensure t
   :commands (beancount-mode)
   :mode ("\\.beancount\\'" . beancount-mode)
   :config
