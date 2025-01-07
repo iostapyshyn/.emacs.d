@@ -979,16 +979,24 @@ the buffer. Disable flyspell-mode otherwise."
                 ("C-c ! s" . flymake-start)))
   :hook ((prog-mode LaTeX-mode typst-ts-mode) . flymake-mode))
 
-(use-package flymake-diagnostic-at-point
+(use-package sideline
   :ensure t
-  :after flymake
-  :hook (flymake-mode . flymake-diagnostic-at-point-mode)
+  :demand t
   :config
-  (setq flymake-diagnostic-at-point-error-prefix ""
-        flymake-diagnostic-at-point-display-diagnostic-function
-        'flymake-diagnostic-at-point-display-minibuffer
-        ;; Take priority over eldoc with its 0.5s delay
-        flymake-diagnostic-at-point-timer-delay 0.51))
+  (global-sideline-mode))
+
+(use-package sideline-flymake
+  :ensure t
+  :after sideline
+  :init
+  (setq sideline-flymake-display-mode 'line)
+  (add-to-list 'sideline-backends-right 'sideline-flymake))
+
+(use-package sideline-blame
+  :ensure t
+  :after sideline
+  :init
+  (add-to-list 'sideline-backends-right 'sideline-blame))
 
 (use-package flymake-languagetool
   :ensure t
