@@ -992,12 +992,6 @@ the buffer. Disable flyspell-mode otherwise."
   (setq sideline-flymake-display-mode 'line)
   (add-to-list 'sideline-backends-right 'sideline-flymake))
 
-(use-package sideline-blame
-  :ensure t
-  :after sideline
-  :init
-  (add-to-list 'sideline-backends-right 'sideline-blame))
-
 (use-package flymake-languagetool
   :ensure t
   :after flymake
