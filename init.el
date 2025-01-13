@@ -979,6 +979,12 @@ the buffer. Disable flyspell-mode otherwise."
                 ("C-c ! s" . flymake-start)))
   :hook ((prog-mode LaTeX-mode typst-ts-mode) . flymake-mode))
 
+;; TODO Wrap into use-package with vc
+(when (fboundp 'ultra-scroll-mode)
+  (setq scroll-conservatively 101
+        scroll-margin 0)
+  (ultra-scroll-mode 1))
+
 (use-package sideline
   :ensure t
   :demand t
