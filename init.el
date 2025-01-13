@@ -1613,6 +1613,14 @@ the buffer. Disable flyspell-mode otherwise."
   (add-hook 'rust-mode-hook
             (lambda () (setq indent-tabs-mode nil))))
 
+(use-package julia-mode
+  :ensure t)
+
+(use-package plutojl-mode
+  :load-path "lisp/plutojl-mode"
+  :after julia-mode
+  :hook (julia-mode . turn-on-plutojl-mode))
+
 (use-package beancount
   :ensure t
   :commands (beancount-mode)
