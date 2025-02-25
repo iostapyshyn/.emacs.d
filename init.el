@@ -1612,6 +1612,9 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package nftables-mode
   :ensure t)
 
+(use-package dts-mode
+  :ensure t)
+
 (use-package rust-mode
   :ensure t
   :config
