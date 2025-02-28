@@ -719,15 +719,6 @@ with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
 
 (use-package mml
   :config
-  (when (version< emacs-version "30")
-    ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=67931
-    (define-advice mml-smime-openssl-sign (:override (cont) fix-openssl-sign)
-      (smime-sign-buffer (cdr (assq 'keyfile cont)))
-      (goto-char (point-min))
-      (while (search-forward "\r\n" nil t)
-        (replace-match "\n" t t))
-      (goto-char (point-max))))
-
   (setq mml-smime-use 'openssl))
 
 (use-package message
