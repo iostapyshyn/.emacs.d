@@ -1,8 +1,3 @@
-[external "lisp/mensa-mode"]
-	path = lisp/mensa-mode
-	url = https://github.com/iostapyshyn/mensa-mode.git
-	branch = master
-	vcs = git
 [external "lisp/custom-css"]
 	path = lisp/custom-css
 	url = https://github.com/florommel/custom-css.git
@@ -11,10 +6,5 @@
 [external "lisp/on-demand-scroll-bar"]
 	path = lisp/on-demand-scroll-bar
 	url = https://github.com/florommel/on-demand-scroll-bar.git
-	branch = main
-	vcs = git
-[external "list/typst-ts-mode"]
-	path = lisp/typst-ts-mode
-	url = https://codeberg.org/meow_king/typst-ts-mode.git
 	branch = main
 	vcs = git

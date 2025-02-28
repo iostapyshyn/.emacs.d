@@ -58,9 +58,6 @@
 ;; German postfix input method: ae -> ä
 (setq default-input-method 'german-postfix)
 
-(when (fboundp #'kill-ring-deindent-mode) ;; emacs 29 compatibility
-  (kill-ring-deindent-mode 1))
-
 ;; Parenthesis
 (setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0)
@@ -214,16 +211,6 @@ github.com/radomirbosak/duden."
                  "Window will not be deleted on delete-other-windows"
                "Window will be deleted on delete-other-windows"))))
 
-(unless (fboundp #'toggle-window-dedicated) ;; emacs 29 compatibility
-  (defun toggle-window-dedicated (&optional window)
-    "Invert the dedicatation of the WINDOW to its buffer."
-    (interactive)
-    (let ((dedicated (not (window-dedicated-p window))))
-      (set-window-dedicated-p window dedicated)
-      (message (if dedicated
-                   "Window is now dedicated to its buffer"
-                 "Window is no longer dedicated to its buffer")))))
-
 (global-set-key (kbd "C-c w d") #'toggle-window-dedicated)
 (global-set-key (kbd "C-c w s") #'toggle-window-no-delete)
 
@@ -293,13 +280,9 @@ If point reaches the beginning or end of buffer, it stops there."
 (global-set-key (kbd "C-x x v") #'visual-line-mode)
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
-(when (fboundp #'visual-wrap-prefix-mode) ;; emacs 29 compatibility
-  (global-set-key (kbd "C-x x w") #'visual-wrap-prefix-mode)
-  (global-visual-wrap-prefix-mode))
-
-(setq my-frame-scale-factor
-      (if (fboundp #'frame-scale-factor)
-          (frame-scale-factor) 1))
+(global-set-key (kbd "C-x x w") #'visual-wrap-prefix-mode)
+(global-visual-wrap-prefix-mode)
+(kill-ring-deindent-mode 1)
 
 (require 'treesit)
 
@@ -459,15 +442,13 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (use-package frame
   :config
-  (when (fboundp #'undelete-frame-mode)
-    (undelete-frame-mode))
+  (undelete-frame-mode)
   (setq window-divider-default-right-width 1)
   (window-divider-mode))
 
 (use-package mouse
   :config
-  (when (fboundp #'context-menu-mode)
-    (context-menu-mode)))
+  (context-menu-mode))
 
 (use-package window
   :bind* (("C-," . previous-buffer)
@@ -545,8 +526,7 @@ DIR must include a .project file to be considered a project."
   (defun compile-maybe-project ()
     "Call `project-compile' if buffer belongs to a project or `compile' otherwise."
     (interactive)
-    (if (and (fboundp #'project-current)
-             (project-current nil))
+    (if (project-current nil)
         (call-interactively #'project-compile)
       (call-interactively #'compile)))
   (defun project-magit ()
@@ -971,12 +951,6 @@ the buffer. Disable flyspell-mode otherwise."
                 ("C-c ! s" . flymake-start)))
   :hook ((prog-mode LaTeX-mode typst-ts-mode) . flymake-mode))
 
-;; TODO Wrap into use-package with vc
-(when (fboundp 'ultra-scroll-mode)
-  (setq scroll-conservatively 101
-        scroll-margin 0)
-  (ultra-scroll-mode 1))
-
 (use-package sideline
   :ensure t
   :demand t
@@ -1310,7 +1284,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (defun theme-add-mode-line-padding ()
   "Prettify the mode-line by adding padding to it."
-  (let* ((mode-line-border (cons 1 (truncate 6 my-frame-scale-factor)))
+  (let* ((mode-line-border (cons 1 (truncate 6 (frame-scale-factor))))
          (bg-active   (face-attribute 'mode-line :background))
          (bg-inactive (face-attribute 'mode-line-inactive :background))
          (box-active   (list :line-width mode-line-border :color bg-active))
@@ -1461,28 +1435,8 @@ the buffer. Disable flyspell-mode otherwise."
 
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 50))
 
-(use-package copilot
-  :load-path "lisp/copilot.el"
-  :bind ("C-c p" . copilot-call)
-  :config
-  (defun copilot-call ()
-    (interactive)
-    (copilot-mode 1)
-    (copilot-complete)
-    (copilot-transient))
-
-  ;; Todo make on-demand
-  (transient-define-prefix copilot-transient ()
-    ["Select"
-     ("l" "List" copilot-panel-complete :transient t)
-     ("p" "Previous" copilot-previous-completion :transient t)
-     ("n" "Next" copilot-next-completion :transient t)]
-    ["Actions"
-     ("a" "Accept" copilot-accept-completion)]))
-
 ;; How does this get along with dtrt-mode?
 (use-package editorconfig
-  :ensure t
   :demand t
   :config
   (editorconfig-mode 1))
@@ -1558,7 +1512,8 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package mensa-mode
   :commands mensa
-  :load-path "lisp/mensa-mode")
+  :ensure t
+  :vc (:url "https://github.com/iostapyshyn/mensa-mode"))
 
 (use-package tex
   :ensure auctex
@@ -1636,7 +1591,7 @@ the buffer. Disable flyspell-mode otherwise."
   (setq outline-minor-mode-prefix (kbd "C-c o")))
 
 (use-package typst-ts-mode
-  :load-path "lisp/typst-ts-mode"
+  :ensure t
   :mode ("\\.typ\\'"))
 
 (use-package rmsbolt
