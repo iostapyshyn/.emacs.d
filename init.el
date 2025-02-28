@@ -767,7 +767,8 @@ with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
 (use-package tramp
   :config
   (setq tramp-completion-use-auth-sources nil
-        tramp-show-ad-hoc-proxies t)
+        tramp-show-ad-hoc-proxies t
+        tramp-inhibit-errors-if-setting-file-attributes-fail t)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 (use-package org
