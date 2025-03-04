@@ -132,17 +132,21 @@ github.com/radomirbosak/duden."
 
 (defun project-mode-line-buffer-identification ()
   "When in a project, indicate project name and path to file."
-  (if-let ((dir (cond ((file-remote-p default-directory) nil)
-                      ((derived-mode-p 'dired-mode)
-                       (file-name-parent-directory default-directory))
-                      ((derived-mode-p 'vterm-mode) default-directory)
-                      ((buffer-file-name) default-directory)))
-           (dir (expand-file-name dir))
-           (proj (project-current))
-           (proj (expand-file-name (project-root proj)))
-           ((string-prefix-p proj dir)) ;; Is dir actually in the project?
-           (prefix (file-relative-name dir (file-name-parent-directory proj))))
-      (cons (propertize prefix 'face 'project-mode-line-buffer-id)
+  (unless (boundp 'project-mode-line-buffer-identification-prefix)
+    (setq-local project-mode-line-buffer-identification-prefix
+                (if-let ((dir (cond ((file-remote-p default-directory) nil)
+                                    ((derived-mode-p 'dired-mode)
+                                     (file-name-parent-directory default-directory))
+                                    ((derived-mode-p 'vterm-mode) default-directory)
+                                    ((buffer-file-name) default-directory)))
+                         (dir (expand-file-name dir))
+                         (proj (project-current))
+                         (proj (expand-file-name (project-root proj)))
+                         ((string-prefix-p proj dir)) ;; Is dir actually in the project?
+                         (prefix (file-relative-name dir (file-name-parent-directory proj))))
+                    prefix)))
+  (if project-mode-line-buffer-identification-prefix
+      (cons (propertize project-mode-line-buffer-identification-prefix 'face 'project-mode-line-buffer-id)
             mode-line-buffer-identification)
     mode-line-buffer-identification))
 
