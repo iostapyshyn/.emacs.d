@@ -740,6 +740,7 @@ with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
   (setq message-send-mail-function #'smtpmail-send-it))
 
 (use-package tramp
+  :bind ("C-c #" . tramp-revert-buffer-with-sudo)
   :config
   (setq tramp-completion-use-auth-sources nil
         tramp-show-ad-hoc-proxies t
@@ -930,6 +931,11 @@ with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
 (use-package eldoc
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
+
+(use-package gud
+  :config
+  (setq gud-highlight-current-line t
+        gdb-display-io-buffer nil))
 
 (use-package flyspell
   :bind* ("C-c @" . flyspell-toggle)
@@ -1564,6 +1570,9 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t)
 
 (use-package dts-mode
+  :ensure t)
+
+(use-package go-mode
   :ensure t)
 
 (use-package rust-mode
