@@ -1605,7 +1605,9 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package typst-ts-mode
   :ensure t
-  :mode ("\\.typ\\'"))
+  :mode ("\\.typ\\'")
+  :config
+  (setq typst-ts-mode-indent-offset 2))
 
 (use-package rmsbolt
   :config
