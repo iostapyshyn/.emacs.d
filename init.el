@@ -1007,7 +1007,6 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :bind* ("C-x u" . vundo)
   :config
-  (vundo-popup-mode)
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
 (use-package undo-fu-session
