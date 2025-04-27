@@ -1337,6 +1337,7 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package rainbow-delimiters
   :ensure t
   :hook ((emacs-lisp-mode
+          scheme-mode
           lisp-mode) . rainbow-delimiters-mode))
 
 (use-package eshell
@@ -1584,6 +1585,15 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package julia-mode
   :ensure t)
+
+(use-package geiser
+  :ensure t)
+
+(use-package geiser-chicken
+  :ensure t
+  :config
+  (with-eval-after-load "envrc"
+    (advice-add 'geiser-chicken--version :around #'envrc-propagate-environment)))
 
 (use-package plutojl-mode
   :load-path "lisp/plutojl-mode"
