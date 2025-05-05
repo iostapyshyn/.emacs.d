@@ -1464,6 +1464,7 @@ the buffer. Disable flyspell-mode otherwise."
                                             :documentRangeFormattingProvider
                                             :documentOnTypeFormattingProvider
                                             :inlayHintProvider))
+  (add-to-list 'eglot-server-programs '(typst-ts-mode "tinymist"))
   (add-to-list 'eglot-server-programs
                '((c-mode c-ts-mode c++-mode c++-ts-mode)
                  . ("clangd" "--header-insertion=never")))
@@ -1617,7 +1618,11 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t
   :mode ("\\.typ\\'")
   :config
-  (setq typst-ts-mode-indent-offset 2))
+  (setq typst-ts-indent-offset 2))
+
+(use-package typst-preview
+  :ensure t
+  :vc (:url "https://github.com/havarddj/typst-preview.el" :rev :newest))
 
 (use-package rmsbolt
   :config
