@@ -493,6 +493,7 @@ If point reaches the beginning or end of buffer, it stops there."
     (with-selected-frame frame
       (switch-to-buffer "*scratch*")))
   (add-hook 'after-make-frame-functions #'frame-set-scratch-buffer)
+  (setopt bufferlo-mode-line '())
   (bufferlo-mode 1))
 
 (use-package wgrep
