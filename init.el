@@ -1041,8 +1041,8 @@ the buffer. Disable flyspell-mode otherwise."
   :bind (:map vertico-map
               ("<prior>" . vertico-scroll-down)
               ("<next>"  . vertico-scroll-up)
-              ;; Avy-like
-              ("C-j" . vertico-quick-insert))
+               ;; Avy-like
+              ("C-`" . vertico-quick-insert))
   :config
   (vertico-mode)
   (vertico-mouse-mode))
@@ -1244,7 +1244,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package avy
   :ensure t
-  :bind* (("C-j" . avy-goto-word-1)))
+  :bind (("C-`" . avy-goto-word-1)))
 
 (use-package winner
   :ensure t
