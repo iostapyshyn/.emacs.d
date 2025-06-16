@@ -293,10 +293,10 @@ If point reaches the beginning or end of buffer, it stops there."
 (add-to-list 'treesit-language-source-alist
              '(typst "https://github.com/uben0/tree-sitter-typst"))
 
-;; (defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
-;;                           ("python" . python) ("rust" . rust) ("typst" . typst)))
+(defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
+                          ("python" . python) ("rust" . rust) ("typst" . typst)))
 
-(defconst treesit-langs '(("typst" . typst)))
+;; (defconst treesit-langs '(("typst" . typst)))
 
 (defun treesit-populate-mode-mapping ()
   "Populate `major-mode-remap-alist' according to `treesit-langs'."
@@ -311,7 +311,7 @@ If point reaches the beginning or end of buffer, it stops there."
 (defun treesit-install-language-grammars ()
   "Install tree-sitter grammars for languages in `treesit-langs'."
   (interactive)
-  (dolist (lang treesit-langs)1
+  (dolist (lang treesit-langs)
     (unless (treesit-ready-p (cdr lang) t)
       (treesit-install-language-grammar (cdr lang))))
   (treesit-populate-mode-mapping))
