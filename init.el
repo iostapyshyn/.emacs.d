@@ -707,6 +707,7 @@ with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
   (setq mml-smime-use 'openssl))
 
 (use-package message
+  :mode ("\\.eml\\'" . message-mode)
   :config
   ;; Extract Message-ID domain from the From field, if present
   (define-advice message-make-fqdn (:before-until (&rest _args) from-fqdn)
@@ -1555,6 +1556,9 @@ the buffer. Disable flyspell-mode otherwise."
   :ensure t)
 
 (use-package yaml-mode
+  :ensure t)
+
+(use-package kdl-mode
   :ensure t)
 
 (use-package csv-mode
