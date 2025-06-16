@@ -1302,6 +1302,7 @@ the buffer. Disable flyspell-mode otherwise."
          (box-active   (list :line-width mode-line-border :color bg-active))
          (box-inactive (list :line-width mode-line-border :color bg-inactive)))
     (set-face-attribute 'mode-line          nil :box box-active)
+    (set-face-attribute 'mode-line-active   nil :box box-active)
     (set-face-attribute 'mode-line-inactive nil :box box-inactive)))
 
 (defun theme-set-scroll-bar-background ()
@@ -1334,7 +1335,7 @@ the buffer. Disable flyspell-mode otherwise."
     (add-hook 'after-load-theme-hook #'modus-theme-diff-hl-fringes)))
 
 (global-set-key (kbd "C-c t t") #'load-theme)
-(load-theme 'modus-vivendi-tinted t)
+(load-theme 'modus-operandi-tinted t)
 
 (use-package rainbow-delimiters
   :ensure t
