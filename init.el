@@ -294,7 +294,8 @@ If point reaches the beginning or end of buffer, it stops there."
              '(typst "https://github.com/uben0/tree-sitter-typst"))
 
 (defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
-                          ("python" . python) ("rust" . rust) ("typst" . typst)))
+                          ("python" . python) ("rust" . rust) ("typst" . typst)
+                          ("nix" . nix)))
 
 ;; (defconst treesit-langs '(("typst" . typst)))
 
@@ -1586,7 +1587,7 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package csv-mode
   :ensure t)
 
-(use-package nix-mode
+(use-package nix-ts-mode
   :ensure t)
 
 (use-package fish-mode
