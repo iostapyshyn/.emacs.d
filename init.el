@@ -1544,6 +1544,15 @@ the buffer. Disable flyspell-mode otherwise."
     (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
     (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
 
+(use-package gptel
+  :ensure t
+  :config
+  ;; (gptel-make-gh-copilot "Copilot")
+  (setq gptel-backend (gptel-make-ollama "appelmus"
+                        :host "10.33.23.185:11434"
+                        :models '(llama4:scout)
+                        :stream t)))
+
 (use-package markdown-mode
   :ensure t)
 
