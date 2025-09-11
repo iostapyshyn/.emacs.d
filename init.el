@@ -295,7 +295,7 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
                           ("python" . python) ("rust" . rust) ("typst" . typst)
-                          ("nix" . nix)))
+                          ("nix" . nix) ("nushell" . nushell)))
 
 ;; (defconst treesit-langs '(("typst" . typst)))
 
