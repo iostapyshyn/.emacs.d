@@ -295,7 +295,7 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (defconst treesit-langs '(("c" . c) ("c++" . cpp) ("bash" . bash)
                           ("python" . python) ("rust" . rust) ("typst" . typst)
-                          ("nix" . nix) ("nushell" . nushell)))
+                          ("nix" . nix)))
 
 ;; (defconst treesit-langs '(("typst" . typst)))
 
@@ -411,6 +411,8 @@ If point reaches the beginning or end of buffer, it stops there."
 
 (global-set-key (kbd "C-c R") #'save-register-dwim)
 (global-set-key (kbd "C-c r") #'load-register-dwim)
+
+(global-set-key (kbd "M-C") #'upcase-char)
 
 
 ;;; --- Packages ---
