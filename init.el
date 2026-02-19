@@ -1347,7 +1347,7 @@ the buffer. Disable flyspell-mode otherwise."
                                                 (fringe unspecified))
         modus-themes-italic-constructs t
         modus-themes-org-blocks 'tinted-background
-        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
+        modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
 
   (defun modus-theme-diff-hl-fringes ()
     (modus-themes-with-colors
