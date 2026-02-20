@@ -1125,11 +1125,11 @@ the buffer. Disable flyspell-mode otherwise."
   ;; Less preview by default
   (consult-customize
    consult-bookmark consult-recent-file
-   consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+   consult-source-recent-file consult-source-project-recent-file consult-source-bookmark
    :preview-key "M-.")
 
   ;; Useful buffer sources
-  (defvar consult--source-eshell-buffer
+  (defvar consult-source-eshell-buffer
     (list :name     "Eshell Buffer"
           :hidden   t
           :narrow   ?s
@@ -1146,7 +1146,7 @@ the buffer. Disable flyspell-mode otherwise."
           :items
           (lambda ()
             (consult--buffer-query :mode 'eshell-mode :as #'buffer-name))))
-  (defvar consult--source-vterm-buffer
+  (defvar consult-source-vterm-buffer
     (list :name     "Vterm Buffer"
           :hidden   t
           :narrow   ?z
@@ -1163,7 +1163,7 @@ the buffer. Disable flyspell-mode otherwise."
           :items
           (lambda ()
             (consult--buffer-query :mode 'vterm-mode :as #'buffer-name))))
-  (defvar consult--source-dired-buffer
+  (defvar consult-source-dired-buffer
     (list :name     "Dired Buffer"
           :hidden   t
           :category 'buffer
@@ -1177,9 +1177,9 @@ the buffer. Disable flyspell-mode otherwise."
             (consult--buffer-query :mode 'dired-mode :as #'buffer-name))))
 
   ;; Bufferlo integration
-  (defvar consult--source-buffer-hidden
-    (append '(:hidden t) consult--source-buffer))
-  (defvar consult--source-local-buffer
+  (defvar consult-source-buffer-hidden
+    (append '(:hidden t) consult-source-buffer))
+  (defvar consult-source-local-buffer
     (list :name     "Local Buffer"
           :category 'buffer
           :narrow   ?l
@@ -1193,20 +1193,20 @@ the buffer. Disable flyspell-mode otherwise."
                                    :sort 'visibility
                                    :as #'buffer-name))))
 
-  (setq consult--source-buffer-hidden (plist-put consult--source-buffer-hidden :narrow ? )
-        consult--source-hidden-buffer (plist-put consult--source-hidden-buffer :narrow ?.))
+  (setq consult-source-buffer-hidden (plist-put consult-source-buffer-hidden :narrow ? )
+        consult-source-hidden-buffer (plist-put consult-source-hidden-buffer :narrow ?.))
 
-  (setq consult-buffer-sources `(consult--source-local-buffer
-                                 consult--source-buffer-hidden
-                                 consult--source-hidden-buffer
-                                 consult--source-project-buffer-hidden
-                                 consult--source-modified-buffer
-                                 consult--source-dired-buffer
-                                 consult--source-vterm-buffer
-                                 consult--source-eshell-buffer))
+  (setq consult-buffer-sources `(consult-source-local-buffer
+                                 consult-source-buffer-hidden
+                                 consult-source-hidden-buffer
+                                 consult-source-project-buffer-hidden
+                                 consult-source-modified-buffer
+                                 consult-source-dired-buffer
+                                 consult-source-vterm-buffer
+                                 consult-source-eshell-buffer))
 
   ;; Vterm
-  (defvar consult--source-vterm-local-buffer
+  (defvar consult-source-vterm-local-buffer
     (list :name     "Local Vterm Buffer"
           :category 'buffer
           :face     'consult-buffer
@@ -1225,11 +1225,11 @@ the buffer. Disable flyspell-mode otherwise."
     (interactive "P")
     (if arg
         (vterm arg)
-      (consult--multi `(consult--source-vterm-local-buffer
-                        ,(plist-put consult--source-vterm-buffer :narrow ? )))))
+      (consult--multi `(consult-source-vterm-local-buffer
+                        ,(plist-put consult-source-vterm-buffer :narrow ? )))))
 
   ;; Eshell
-  (defvar consult--source-eshell-local-buffer
+  (defvar consult-source-eshell-local-buffer
     (list :name     "Local Eshell Buffer"
           :category 'buffer
           :face     'consult-buffer
@@ -1249,8 +1249,8 @@ the buffer. Disable flyspell-mode otherwise."
     (interactive "P")
     (if arg
         (eshell arg)
-      (consult--multi `(consult--source-eshell-local-buffer
-                        ,(plist-put consult--source-eshell-buffer :narrow ? ))))))
+      (consult--multi `(consult-source-eshell-local-buffer
+                        ,(plist-put consult-source-eshell-buffer :narrow ? ))))))
 
 
 (use-package embark
