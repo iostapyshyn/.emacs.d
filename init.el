@@ -1627,10 +1627,19 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package rust-mode
   :ensure t
-  :config
-  (define-key rust-mode-map (kbd "C-c C-c") #'rust-run-clippy)
+  :bind (:map rust-mode-map
+              ("C-c C-f" . rust-format-buffer)
+              ("C-c C-c" . rust-run-clippy)
+              :map rust-ts-mode-map
+              ("C-c C-f" . rust-format-buffer)
+              ("C-c C-c" . rust-run-clippy))
+  :preface
   (add-hook 'rust-mode-hook
-            (lambda () (setq indent-tabs-mode nil))))
+            (lambda () (setq indent-tabs-mode nil)
+              (set-fill-column 100)))
+  (add-hook 'rust-ts-mode-hook
+            (lambda () (setq indent-tabs-mode nil)
+              (set-fill-column 100))))
 
 (use-package julia-mode
   :ensure t)
