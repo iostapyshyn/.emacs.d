@@ -1598,6 +1598,9 @@ the buffer. Disable flyspell-mode otherwise."
 (use-package csv-mode
   :ensure t)
 
+(use-package nix-mode
+  :ensure t)
+
 (use-package nix-ts-mode
   :ensure t)
 
