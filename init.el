@@ -1554,14 +1554,16 @@ the buffer. Disable flyspell-mode otherwise."
          ("C-c g r" . gptel-rewrite)
          ("C-c g g" . gptel))
   :config
-  (setq gtpel-model 'deepseek/deepseek-v4-flash
+  (setq gptel-model 'deepseek/deepseek-v4-flash
+        gptel-default-mode 'org-mode
         gptel-backend
         (gptel-make-openai "OpenRouter"
           :host "openrouter.ai"
           :endpoint "/api/v1/chat/completions"
           :stream t
           :key (lambda ()
-                 (auth-source-pass-get "Key" "openrouter.ai/ostapyshyn@sra.uni-hannover.de"))
+                 (or (and (boundp 'openrouter-key-cache) openrouter-key-cache)
+                     (setq openrouter-key-cache (auth-source-pass-get "Key" "openrouter.ai/ostapyshyn@sra.uni-hannover.de"))))
           :models '(deepseek/deepseek-v4-flash
                     deepseek/deepseek-v4-pro))))
 
