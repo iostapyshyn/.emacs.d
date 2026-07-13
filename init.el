@@ -1548,12 +1548,26 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package gptel
   :ensure t
+  :bind (("C-c g m" . gptel-menu)
+         ("C-c g ." . gptel-add)
+         ("C-c g q" . gptel-quick)
+         ("C-c g r" . gptel-rewrite)
+         ("C-c g g" . gptel))
   :config
-  ;; (gptel-make-gh-copilot "Copilot")
-  (setq gptel-backend (gptel-make-ollama "appelmus"
-                        :host "10.33.23.185:11434"
-                        :models '(llama4:scout)
-                        :stream t)))
+  (setq gtpel-model 'deepseek/deepseek-v4-flash
+        gptel-backend
+        (gptel-make-openai "OpenRouter"
+          :host "openrouter.ai"
+          :endpoint "/api/v1/chat/completions"
+          :stream t
+          :key (lambda ()
+                 (auth-source-pass-get "Key" "openrouter.ai/ostapyshyn@sra.uni-hannover.de"))
+          :models '(deepseek/deepseek-v4-flash
+                    deepseek/deepseek-v4-pro))))
+
+(use-package gptel-agent
+  :ensure t
+  :config (gptel-agent-update))
 
 (use-package markdown-mode
   :ensure t)
