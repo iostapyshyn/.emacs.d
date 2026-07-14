@@ -416,20 +416,20 @@ If point reaches the beginning or end of buffer, it stops there."
 
 
 ;;; --- Packages ---
+(require 'package)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                         ("melpa" . "https://melpa.org/packages/")))
+(setq package-archive-priorities '(("gnu" . 20)
+                                   ("nongnu" . 10)
+                                   ("melpa" . 0)))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 (eval-when-compile
-  (require 'package)
-  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-                           ("melpa" . "https://melpa.org/packages/")))
-  (setq package-archive-priorities '(("gnu" . 20)
-                                     ("nongnu" . 10)
-                                     ("melpa" . 0)))
-  (package-initialize)
-
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
   (require 'use-package)
   (require 'bind-key))
 (setq use-package-always-defer t)
@@ -576,8 +576,7 @@ DIR must include a .project file to be considered a project."
 
 (use-package epg
   :config
-  (setq epg-pinentry-mode 'loopback)
-  (fset 'epg-wait-for-status 'ignore))
+  (setq epg-pinentry-mode 'loopback))
 
 
 ;;; --- Org Mode and Calendar ---
@@ -842,8 +841,9 @@ with user ADDRESS on SERVER.  KEYWORD-ARGS might include :method,
 
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
+  (add-hook 'org-mode-hook #'visual-line-mode)
   (setq org-return-follows-link t)
-  (setq org-startup-indented t))
+  (setq org-startup-indented nil))
 
 (use-package python
   :bind (:map python-mode-map
@@ -1466,10 +1466,7 @@ the buffer. Disable flyspell-mode otherwise."
   :config
   ;; Fix dumb-jump not using project.el:
   (define-advice dumb-jump-get-project-root (:override (filepath) dumb-jump-project)
-    (s-chop-suffix
-     "/"
-     (expand-file-name
-      (project-root (project-current t (file-name-directory filepath))))))
+    (string-remove-suffix "/" (expand-file-name (project-root (project-current t (file-name-directory filepath))))))
 
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate 50))
 
@@ -1566,6 +1563,9 @@ the buffer. Disable flyspell-mode otherwise."
                      (setq openrouter-key-cache (auth-source-pass-get "Key" "openrouter.ai/ostapyshyn@sra.uni-hannover.de"))))
           :models '(deepseek/deepseek-v4-flash
                     deepseek/deepseek-v4-pro))))
+
+(use-package eca
+  :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
 
 (use-package gptel-agent
   :ensure t
