@@ -1478,7 +1478,9 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package eglot
   :bind (:map eglot-mode-map
-              ("C-c l a" . eglot-code-actions))
+              ("C-c l a" . eglot-code-actions)
+              ("C-c l h f" . eglot-show-call-hierarchy)
+              ("C-c l h t" . eglot-show-type-hierarchy))
   :config
   ;; project.el does not resolve symlinks:
   ;; If project root path includes a symlink, jump to definition fails to fire up eglot
