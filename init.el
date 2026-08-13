@@ -1568,6 +1568,7 @@ the buffer. Disable flyspell-mode otherwise."
 
 (use-package eca
   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest)
+  :bind (("C-c /" . eca-chat-toggle-window))
   :config
   (defun my/eca-jail-wrapper (command roots)
   "Wrap the eca server COMMAND with `jai', exposing ROOTS."
