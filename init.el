@@ -1566,33 +1566,6 @@ the buffer. Disable flyspell-mode otherwise."
           :models '(deepseek/deepseek-v4-flash
                     deepseek/deepseek-v4-pro))))
 
-(use-package eca
-  :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest)
-  :bind (("C-c /" . eca-chat-toggle-window))
-  :config
-  (defun my/eca-jail-wrapper (command roots)
-  "Wrap the eca server COMMAND with `jai', exposing ROOTS."
-  (append (list "jai" "-j" "eca"
-                "-D"                       ; do not expose $CWD
-                "--unsetenv=*"             ; hide all environment vars
-                "--setenv" "TERM"
-                "--setenv" "PATH")
-          ;; Workspace roots picked at session startup.
-          (cl-loop for d in roots
-                   append (list "-d" (expand-file-name d)))
-          ;; Always-needed directories for ECA itself.
-          (list "-d" (expand-file-name "~/.config/eca/")
-                "-d" (expand-file-name "~/.cache/eca/")
-                "-d" (expand-file-name "~/.emacs.d/"))
-          command))
-
-  (setq eca-process-wrapper-function #'my/eca-jail-wrapper)
-  (setq eca-send-process-id nil))
-
-(use-package gptel-agent
-  :ensure t
-  :config (gptel-agent-update))
-
 (use-package markdown-mode
   :ensure t)
 
